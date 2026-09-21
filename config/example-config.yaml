@@ -1,0 +1,19 @@
+mysql:
+  host: 127.0.0.1
+  port: 3306
+  user: root
+  pass: 123456
+  name: root
+server:
+  host: 0.0.0.0
+  port: 49180
+  debug: false
+redis:
+  host: 127.0.0.1
+  port: 6379
+  pass: redispass
+  index: 0
+frps-web:
+  host: 127.0.0.1
+  port: 7500
+  token: VXNlcm5hbWU6UGFzc3dvcmQ=

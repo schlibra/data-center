@@ -1,0 +1,36 @@
+user:
+  rsa_key:
+    generate_pubkey_success: "RSA公钥生成成功"
+  login:
+    empty: "用户名或密码不能为空"
+    username_empty: "用户名不能为空"
+    success: "登录成功"
+    disabled: "用户未启用"
+    password_error: "密码错误"
+    not_exists: "用户不存在"
+  register:
+    exist: "用户名已存在"
+    success: "注册成功，请等待管理员确认"
+    username_empty: "用户名不能为空"
+    empty: "用户名或密码不能为空"
+  token:
+    id_not_match: "token id不匹配"
+    expired: "token已过期"
+    invalid: "token无效"
+  logout:
+    success: "退出成功"
+  permission:
+    denied: "用户没有权限"
+  update:
+    success: "用户信息修改成功"
+  password:
+    success: "密码修改成功"
+frp:
+  token:
+    exist: "token已存在"
+    created: "token创建成功"
+    got: "token获取成功"
+    forbidden: "没有权限"
+    updated: "token更新成功"
+    deleted: "token删除成功"
+    generated: "token生成成功"
