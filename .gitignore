@@ -2,3 +2,5 @@
 /*.log
 /*.exe
 /config/config.yaml
+/.workbuddy
+/docs

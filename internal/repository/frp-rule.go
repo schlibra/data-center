@@ -26,10 +26,18 @@ func (r *FrpRule) UpdateById(id int, min int, max int, token int, user int) (sql
 	return r.DB.Exec("UPDATE `frp-rule` SET `min`=?, `max`=?, `token`=?, `user`=? WHERE `id`=?;", min, max, token, user, id)
 }
 func (r *FrpRule) SelectById(id int) (rule models.FrpRuleTable, err error) {
+	frpToken := FrpToken{DB: r.DB}
 	err = r.DB.QueryRow("SELECT * FROM `frp-rule` WHERE `id`=?;", id).Scan(&rule.ID, &rule.Min, &rule.Max, &rule.Token, &rule.User)
+	tokenRow, err := frpToken.SelectById(rule.Token)
+	if err != nil {
+		return rule, err
+	}
+	rule.TokenInfo = tokenRow
+	rule.UserInfo = tokenRow.UserInfo
 	return rule, err
 }
 func (r *FrpRule) SelectByToken(token int) (rules []models.FrpRuleTable, err error) {
+	frpToken := FrpToken{DB: r.DB}
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	rows, err := r.DB.QueryContext(ctx, "SELECT * FROM `frp-rule` WHERE `token` = ?;", token)
@@ -42,11 +50,42 @@ func (r *FrpRule) SelectByToken(token int) (rules []models.FrpRuleTable, err err
 		if err := rows.Scan(&row.ID, &row.Min, &row.Max, &row.Token, &row.User); err != nil {
 			return nil, err
 		}
+		tokenRow, err := frpToken.SelectById(row.Token)
+		if err != nil {
+			return nil, err
+		}
+		row.TokenInfo = tokenRow
+		row.UserInfo = tokenRow.UserInfo
+		rules = append(rules, row)
+	}
+	return rules, nil
+}
+func (r *FrpRule) SelectByUser(user int) (rules []models.FrpRuleTable, err error) {
+	frpToken := FrpToken{DB: r.DB}
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	rows, err := r.DB.QueryContext(ctx, "SELECT * FROM `frp-rule` WHERE `user` = ?;", user)
+	if err != nil {
+		return nil, err
+	}
+	defer Close(rows)
+	for rows.Next() {
+		var row models.FrpRuleTable
+		if err := rows.Scan(&row.ID, &row.Min, &row.Max, &row.Token, &row.User); err != nil {
+			return nil, err
+		}
+		tokenRow, err := frpToken.SelectById(row.Token)
+		if err != nil {
+			return nil, err
+		}
+		row.TokenInfo = tokenRow
+		row.UserInfo = tokenRow.UserInfo
 		rules = append(rules, row)
 	}
 	return rules, nil
 }
 func (r *FrpRule) SelectAll() (rules []models.FrpRuleTable, err error) {
+	frpToken := FrpToken{DB: r.DB}
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	rows, err := r.DB.QueryContext(ctx, "SELECT * FROM `frp-rule`;")
@@ -59,6 +98,12 @@ func (r *FrpRule) SelectAll() (rules []models.FrpRuleTable, err error) {
 		if err := rows.Scan(&row.ID, &row.Min, &row.Max, &row.Token, &row.User); err != nil {
 			return nil, err
 		}
+		tokenRow, err := frpToken.SelectById(row.Token)
+		if err != nil {
+			return nil, err
+		}
+		row.TokenInfo = tokenRow
+		row.UserInfo = tokenRow.UserInfo
 		rules = append(rules, row)
 	}
 	return rules, nil

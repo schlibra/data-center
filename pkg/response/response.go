@@ -7,6 +7,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Response 通用响应体（用于 Swagger 文档）
+type Response struct {
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+	Data    any    `json:"data"`
+}
+
 func SendJson(c *gin.Context, code int, message string, data any) {
 	if !c.Writer.Written() {
 		c.JSON(http.StatusOK, gin.H{

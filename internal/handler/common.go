@@ -68,3 +68,10 @@ func checkPermission(c *gin.Context, pmsKey string) {
 		sendI18n(c, 403, "user.permission.denied", nil)
 	}
 }
+func checkAdmin(c *gin.Context) models.UserTable {
+	row := parseToken(c)
+	if row.GroupInfo.Admin == 0 {
+		sendI18n(c, 403, "user.admin.no_permission", nil)
+	}
+	return row
+}

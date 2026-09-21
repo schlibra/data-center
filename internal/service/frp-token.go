@@ -41,12 +41,12 @@ func ListFrpTokenService(c *gin.Context, row models.UserTable) {
 	sendI18n(c, 200, "frp.token.got", tokens)
 }
 
-func GetFrpTokenService(c *gin.Context, req request.FrpTokenInfo, row models.UserTable) {
+func GetFrpTokenService(c *gin.Context, row models.UserTable, id int) {
 	frpToken, err := repository.NewFrpToken()
 	if err != nil {
 		sendError(c, err)
 	}
-	token, err := frpToken.SelectById(req.ID)
+	token, err := frpToken.SelectById(id)
 	if err != nil {
 		sendError(c, err)
 	}
@@ -58,12 +58,12 @@ func GetFrpTokenService(c *gin.Context, req request.FrpTokenInfo, row models.Use
 	})
 }
 
-func UpdateFrpTokenService(c *gin.Context, req request.FrpTokenUpdate, row models.UserTable) {
+func UpdateFrpTokenService(c *gin.Context, req request.FrpTokenUpdate, row models.UserTable, id int) {
 	frpToken, err := repository.NewFrpToken()
 	if err != nil {
 		sendError(c, err)
 	}
-	token, err := frpToken.SelectById(req.ID)
+	token, err := frpToken.SelectById(id)
 	if err != nil {
 		sendError(c, err)
 	}
@@ -82,12 +82,12 @@ func UpdateFrpTokenService(c *gin.Context, req request.FrpTokenUpdate, row model
 	}
 }
 
-func DeleteFrpTokenService(c *gin.Context, req request.FrpTokenDelete, row models.UserTable) {
+func DeleteFrpTokenService(c *gin.Context, row models.UserTable, id int) {
 	frpToken, err := repository.NewFrpToken()
 	if err != nil {
 		sendError(c, err)
 	}
-	token, err := frpToken.SelectById(req.ID)
+	token, err := frpToken.SelectById(id)
 	if err != nil {
 		sendError(c, err)
 	}
@@ -103,12 +103,12 @@ func DeleteFrpTokenService(c *gin.Context, req request.FrpTokenDelete, row model
 	}
 }
 
-func GenerateFrpTokenService(c *gin.Context, req request.FrpTokenGenerate, row models.UserTable) {
+func GenerateFrpTokenService(c *gin.Context, row models.UserTable, id int) {
 	frpToken, err := repository.NewFrpToken()
 	if err != nil {
 		sendError(c, err)
 	}
-	token, err := frpToken.SelectById(req.ID)
+	token, err := frpToken.SelectById(id)
 	if err != nil {
 		sendError(c, err)
 	}

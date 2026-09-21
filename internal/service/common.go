@@ -17,3 +17,6 @@ func sendI18n(c *gin.Context, code int, messageId string, data any) {
 func sendError(c *gin.Context, err error) {
 	response.SendError(c, err)
 }
+func nw(c *gin.Context) bool {
+	return !c.Writer.Written()
+}

@@ -120,19 +120,59 @@ func ProxiesFrpApiService(c *gin.Context, row models.UserTable) {
 	}
 	fmt.Println(tokenList)
 	client := resty.New()
-	var clientResult request.FrpApiProxies
+	var proxyResult request.FrpApiProxies
+	_, err = client.R().
+		SetAuthScheme("Basic").
+		SetAuthToken(frpsToken).
+		SetResult(&proxyResult).
+		Get(fmt.Sprintf("http://%s:%d/api/v2/proxies?pageSize=200", frpsHost, frpsPort))
+	if err != nil {
+		sendError(c, err)
+	}
+	if proxyResult.Code != 200 {
+		sendJson(c, proxyResult.Code, proxyResult.Msg, proxyResult.Data)
+	}
+	proxies := make([]request.FrpApiProxiesDataItem, 0)
+	for _, item := range proxyResult.Data.Items {
+		fmt.Println(item.User)
+		if slices.Contains(tokenList, item.User) {
+			proxies = append(proxies, item)
+		}
+	}
+	sendJson(c, 200, "success", proxies)
+}
+func ClientFrpApiService(c *gin.Context, row models.UserTable) {
+	cfg, err := utils.LoadConfig()
+	if err != nil {
+		sendError(c, err)
+	}
+	frpsHost := cfg.FrpsWeb.Host
+	frpsPort := cfg.FrpsWeb.Port
+	frpsToken := cfg.FrpsWeb.Token
+	frpToken, err := repository.NewFrpToken()
+	if err != nil {
+		sendError(c, err)
+	}
+	tokens, err := frpToken.SelectByUser(row.ID)
+	var tokenList []string
+	for _, token := range tokens {
+		tokenList = append(tokenList, token.Name)
+	}
+	fmt.Println(tokenList)
+	client := resty.New()
+	var clientResult request.FrpApiClients
 	_, err = client.R().
 		SetAuthScheme("Basic").
 		SetAuthToken(frpsToken).
 		SetResult(&clientResult).
-		Get(fmt.Sprintf("http://%s:%d/api/v2/proxies?pageSize=200", frpsHost, frpsPort))
+		Get(fmt.Sprintf("http://%s:%d/api/v2/clients?pageSize=200", frpsHost, frpsPort))
 	if err != nil {
 		sendError(c, err)
 	}
 	if clientResult.Code != 200 {
 		sendJson(c, clientResult.Code, clientResult.Msg, clientResult.Data)
 	}
-	clients := make([]request.FrpApiProxiesDataItem, 0)
+	clients := make([]request.FrpApiClientsDataItem, 0)
 	for _, item := range clientResult.Data.Items {
 		fmt.Println(item.User)
 		if slices.Contains(tokenList, item.User) {
@@ -141,4 +181,3 @@ func ProxiesFrpApiService(c *gin.Context, row models.UserTable) {
 	}
 	sendJson(c, 200, "success", clients)
 }
-func ClientFrpApiService(c *gin.Context, row models.UserTable) {}
