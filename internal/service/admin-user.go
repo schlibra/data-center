@@ -14,6 +14,7 @@ func ListAdminUserService(c *gin.Context) {
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(user.DB)
 	users, err := user.SelectAll()
 	if err != nil {
 		sendError(c, err)
@@ -31,6 +32,7 @@ func GetAdminUserService(c *gin.Context, id int) {
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(user.DB)
 	userRow, err := user.SelectById(id)
 	if err != nil {
 		sendI18n(c, 400, "admin.user.not_exist", nil)
@@ -45,10 +47,12 @@ func CreateAdminUserService(c *gin.Context, req request.CreateAdminUser, id int)
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(user.DB)
 	group, err := repository.NewGroup()
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(group.DB)
 	if _, err := group.SelectById(req.Group); err != nil {
 		sendI18n(c, 400, "admin.user.group_not_exist", nil)
 	}
@@ -71,6 +75,7 @@ func UpdateAdminUserService(c *gin.Context, req request.UpdateAdminUser, id int)
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(user.DB)
 	userRow, err := user.SelectById(id)
 	if err != nil {
 		sendI18n(c, 400, "admin.user.not_exist", nil)
@@ -79,6 +84,7 @@ func UpdateAdminUserService(c *gin.Context, req request.UpdateAdminUser, id int)
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(group.DB)
 	if _, err := group.SelectById(req.Group); err != nil {
 		sendI18n(c, 400, "admin.user.group_not_exist", nil)
 	}
@@ -94,6 +100,7 @@ func DeleteAdminUserService(c *gin.Context, row models.UserTable, id int) {
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(user.DB)
 	userRow, err := user.SelectById(id)
 	if err != nil {
 		sendI18n(c, 400, "admin.user.not_exist", nil)
@@ -114,6 +121,7 @@ func PasswordAdminUserService(c *gin.Context, req request.PasswordAdminUser, id 
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(user.DB)
 	userRow, err := user.SelectById(id)
 	if err != nil {
 		sendI18n(c, 400, "admin.user.not_exist", nil)

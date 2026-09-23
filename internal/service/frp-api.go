@@ -23,6 +23,7 @@ func LoginFrpApiService(c *gin.Context, req request.FrpApiLogin) {
 		})
 		return
 	}
+	defer closeDB(frpToken.DB)
 	user := req.Content.User
 	token := req.Content.Metas.Token
 	tokenRow, err := frpToken.SelectByName(user)
@@ -60,6 +61,7 @@ func ProxyFrpApiService(c *gin.Context, req request.FrpApiProxy) {
 		})
 		return
 	}
+	defer closeDB(frpToken.DB)
 	frpRule, err := repository.NewFrpRule()
 	if err != nil {
 		c.JSON(200, gin.H{
@@ -113,6 +115,7 @@ func ProxiesFrpApiService(c *gin.Context, row models.UserTable) {
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(frpToken.DB)
 	tokens, err := frpToken.SelectByUser(row.ID)
 	var tokenList []string
 	for _, token := range tokens {
@@ -153,6 +156,7 @@ func ClientFrpApiService(c *gin.Context, row models.UserTable) {
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(frpToken.DB)
 	tokens, err := frpToken.SelectByUser(row.ID)
 	var tokenList []string
 	for _, token := range tokens {

@@ -14,6 +14,7 @@ func CreateFrpTokenService(c *gin.Context, req request.FrpTokenCreate, row model
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(frpToken.DB)
 	if _, err := frpToken.SelectByName(req.Name); err == nil {
 		sendI18n(c, 400, "frp.token.exist", nil)
 	}
@@ -34,6 +35,7 @@ func ListFrpTokenService(c *gin.Context, row models.UserTable) {
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(frpToken.DB)
 	tokens, err := frpToken.SelectByUser(row.ID)
 	if err != nil {
 		sendError(c, err)
@@ -46,6 +48,7 @@ func GetFrpTokenService(c *gin.Context, row models.UserTable, id int) {
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(frpToken.DB)
 	token, err := frpToken.SelectById(id)
 	if err != nil {
 		sendError(c, err)
@@ -63,6 +66,7 @@ func UpdateFrpTokenService(c *gin.Context, req request.FrpTokenUpdate, row model
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(frpToken.DB)
 	token, err := frpToken.SelectById(id)
 	if err != nil {
 		sendError(c, err)
@@ -87,6 +91,7 @@ func DeleteFrpTokenService(c *gin.Context, row models.UserTable, id int) {
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(frpToken.DB)
 	token, err := frpToken.SelectById(id)
 	if err != nil {
 		sendError(c, err)
@@ -108,6 +113,7 @@ func GenerateFrpTokenService(c *gin.Context, row models.UserTable, id int) {
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(frpToken.DB)
 	token, err := frpToken.SelectById(id)
 	if err != nil {
 		sendError(c, err)

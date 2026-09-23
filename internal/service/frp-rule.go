@@ -13,10 +13,12 @@ func CreateFrpRuleService(c *gin.Context, row models.UserTable, req request.Crea
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(frpRule.DB)
 	frpToken, err := repository.NewFrpToken()
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(frpToken.DB)
 	_, err = frpToken.SelectById(req.Token)
 	if err != nil {
 		sendI18n(c, 400, "frp.rule.token_not_exist", nil)
@@ -34,6 +36,7 @@ func ListFrpRuleService(c *gin.Context, row models.UserTable) {
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(frpRule.DB)
 	rules, err := frpRule.SelectByUser(row.ID)
 	if err != nil {
 		sendError(c, err)
@@ -45,6 +48,7 @@ func GetFrpRuleService(c *gin.Context, row models.UserTable, id int) {
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(frpRule.DB)
 	rule, err := frpRule.SelectById(id)
 	if err != nil {
 		sendI18n(c, 400, "frp.rule.not_exist", nil)
@@ -60,6 +64,7 @@ func UpdateFrpRuleService(c *gin.Context, row models.UserTable, req request.Upda
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(frpRule.DB)
 	rule, err := frpRule.SelectById(id)
 	if err != nil {
 		sendI18n(c, 400, "frp.rule.not_exist", nil)
@@ -80,6 +85,7 @@ func DeleteFrpRuleService(c *gin.Context, row models.UserTable, id int) {
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(frpRule.DB)
 	rule, err := frpRule.SelectById(id)
 	if err != nil {
 		sendI18n(c, 400, "frp.rule.not_exist", nil)

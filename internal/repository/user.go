@@ -65,6 +65,9 @@ func (user User) SelectAll() (users []models.UserTable, err error) {
 		row.GroupInfo = groupInfo
 		users = append(users, row)
 	}
+	if users == nil {
+		users = []models.UserTable{}
+	}
 	return users, nil
 }
 func (user User) DeleteById(id int) (result sql.Result, err error) {

@@ -16,6 +16,7 @@ type Response struct {
 
 func SendJson(c *gin.Context, code int, message string, data any) {
 	if !c.Writer.Written() {
+		c.Header("Connection", "close")
 		c.JSON(http.StatusOK, gin.H{
 			"code":    code,
 			"message": message,

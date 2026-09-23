@@ -1,0 +1,196 @@
+<script setup>
+import { computed, h, ref } from 'vue'
+import { NIcon } from 'naive-ui'
+import {
+  HomeOutline as HomeIcon,
+  PlanetOutline as FrpAuthIcon,
+  KeyOutline as TokenIcon,
+  GlobeOutline as PortIcon,
+  DesktopOutline as ClientIcon,
+  RepeatOutline as ProxyIcon,
+  PersonOutline as UserIcon,
+  SaveOutline as ConfigIcon,
+  PlanetSharp as FrpAdminIcon,
+  SettingsOutline as AdminIcon,
+  PeopleOutline as GroupIcon,
+  LockClosedOutline as PermissionIcon,
+  MailOutline as MailIcon,
+  ListOutline as ListIcon,
+  AlbumsOutline as InfoIcon,
+  MailOpenOutline as OutlookIcon,
+} from '@vicons/ionicons5'
+import { useMenuCollapseStore } from '@/stores/menu-collapse.js'
+import router from '@/router/index.js'
+
+const menuCollapse = useMenuCollapseStore()
+
+const renderIcon = (icon) => () => h(NIcon, null, { default: () => h(icon) })
+
+const menuChange = (key) => {
+  urlPath.value = key
+  router.push(key)
+}
+
+const urlPath = ref(location.pathname)
+const menuOptions = computed(() => [
+  {
+    label: '首页',
+    key: '/',
+    icon: renderIcon(HomeIcon),
+  },
+  {
+    label: 'Frp',
+    icon: renderIcon(FrpAuthIcon),
+    key: '/frp',
+    children: [
+      {
+        label: 'Token管理',
+        icon: renderIcon(TokenIcon),
+        key: '/frp/token',
+      },
+      {
+        label: '端口规则管理',
+        icon: renderIcon(PortIcon),
+        key: '/frp/rule',
+      },
+      {
+        label: '客户端管理',
+        icon: renderIcon(ClientIcon),
+        key: '/frp/client',
+      },
+      {
+        label: '映射管理',
+        icon: renderIcon(ProxyIcon),
+        key: '/frp/proxy',
+      },
+      {
+        label: '配置生成',
+        icon: renderIcon(ConfigIcon),
+        key: '/frp/config',
+      },
+    ],
+  },
+  {
+    label: 'Frp（管理员）',
+    key: '/admin/frp',
+    icon: renderIcon(FrpAdminIcon),
+    children: [
+      {
+        label: 'Token管理',
+        icon: renderIcon(TokenIcon),
+        key: '/admin/frp/token'
+      },
+      {
+        label: '端口规则管理',
+        icon: renderIcon(PortIcon),
+        key: '/admin/frp/rule'
+      },
+      {
+        label: '客户端管理',
+        icon: renderIcon(ClientIcon),
+        key: '/admin/frp/client'
+      },
+      {
+        label: '映射管理',
+        icon: renderIcon(ProxyIcon),
+        key: '/admin/frp/proxy'
+      }
+    ],
+  },
+  {
+    label: '邮箱管理',
+    key: '/mail',
+    icon: renderIcon(MailIcon),
+    children: [
+      {
+        label: '邮箱列表',
+        key: '/mail/list',
+        icon: renderIcon(ListIcon)
+      },
+      {
+        label: '邮件管理',
+        key: '/mail/info',
+        icon: renderIcon(InfoIcon)
+      }
+    ]
+  },
+  {
+    label: 'Outlook管理',
+    key: '/outlook',
+    icon: renderIcon(OutlookIcon),
+    children: [
+      {
+        label: '邮箱列表',
+        key: '/outlook/list',
+        icon: renderIcon(ListIcon)
+      },
+      {
+        label: '邮件管理',
+        key: '/outlook/info',
+        icon: renderIcon(InfoIcon)
+      }
+    ]
+  },
+  {
+    label: '管理员设置',
+    key: '/admin',
+    icon: renderIcon(AdminIcon),
+    children: [
+      {
+        label: '用户管理',
+        key: '/admin/user',
+        icon: renderIcon(UserIcon)
+      },
+      {
+        label: '用户组管理',
+        key: '/admin/group',
+        icon: renderIcon(GroupIcon),
+      },
+      {
+        label: '权限管理',
+        key: '/admin/permission',
+        icon: renderIcon(PermissionIcon)
+      }
+    ],
+  },
+  {
+    label: '用户中心',
+    icon: renderIcon(UserIcon),
+    key: '/user',
+  },
+])
+
+setInterval(() => {
+  urlPath.value = location.pathname
+}, 100)
+</script>
+
+<template>
+  <n-layout-sider
+    bordered
+    :width="240"
+    collapse-mode="width"
+    :collapsed-width="48"
+    :collapsed="menuCollapse.collapse"
+    @collapse="menuCollapse.collapse = true"
+    @expand="menuCollapse.collapse = false"
+    show-trigger
+  >
+    <n-menu
+      :options="menuOptions"
+      class="menu"
+      :value="urlPath"
+      :collapsed="menuCollapse.collapse"
+      :collapsed-width="48"
+      :collapsed-icon-size="20"
+      @update-value="menuChange"
+      accordion
+    ></n-menu>
+  </n-layout-sider>
+</template>
+
+<style scoped>
+.menu {
+  height: calc(100vh - 75px);
+}
+</style>

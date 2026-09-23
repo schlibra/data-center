@@ -58,6 +58,9 @@ func (r *FrpRule) SelectByToken(token int) (rules []models.FrpRuleTable, err err
 		row.UserInfo = tokenRow.UserInfo
 		rules = append(rules, row)
 	}
+	if rules == nil {
+		rules = []models.FrpRuleTable{}
+	}
 	return rules, nil
 }
 func (r *FrpRule) SelectByUser(user int) (rules []models.FrpRuleTable, err error) {
@@ -82,6 +85,9 @@ func (r *FrpRule) SelectByUser(user int) (rules []models.FrpRuleTable, err error
 		row.UserInfo = tokenRow.UserInfo
 		rules = append(rules, row)
 	}
+	if rules == nil {
+		rules = []models.FrpRuleTable{}
+	}
 	return rules, nil
 }
 func (r *FrpRule) SelectAll() (rules []models.FrpRuleTable, err error) {
@@ -105,6 +111,9 @@ func (r *FrpRule) SelectAll() (rules []models.FrpRuleTable, err error) {
 		row.TokenInfo = tokenRow
 		row.UserInfo = tokenRow.UserInfo
 		rules = append(rules, row)
+	}
+	if rules == nil {
+		rules = []models.FrpRuleTable{}
 	}
 	return rules, nil
 }

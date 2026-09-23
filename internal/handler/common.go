@@ -5,6 +5,7 @@ import (
 	"data-center/internal/repository"
 	"data-center/pkg/response"
 	"data-center/pkg/utils"
+	"database/sql"
 	"encoding/json"
 	"slices"
 	"strings"
@@ -22,11 +23,16 @@ func sendError(c *gin.Context, err error) {
 	response.SendError(c, err)
 }
 
+func closeDB(db *sql.DB) {
+	_ = db.Close()
+}
+
 func parseToken(c *gin.Context) models.UserTable {
 	user, err := repository.NewUser()
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(user.DB)
 	token := c.Request.Header.Get("Authorization")
 	if strings.HasPrefix(token, "Bearer ") {
 		token = token[7:]

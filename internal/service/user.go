@@ -18,6 +18,7 @@ func UserLoginService(c *gin.Context, req request.UserLogin) {
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(user.DB)
 	redis, err := utils.NewRedis()
 	if err != nil {
 		sendError(c, err)
@@ -89,6 +90,7 @@ func UserRegisterService(c *gin.Context, req request.UserRegister) {
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(user.DB)
 	if _, err := user.SelectByUsername(req.Username); err == nil {
 		sendJson(c, 400, i18n.MustGetMessage(c, "user.register.exists"), nil)
 	}
@@ -143,6 +145,7 @@ func UserLogoutService(c *gin.Context, row models.UserTable) {
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(user.DB)
 	_, err = user.UpdateById(row.ID, row.Password, row.Nickname, row.Group, row.Enable, "")
 	if err != nil {
 		sendError(c, err)
@@ -154,6 +157,7 @@ func UserInfoService(c *gin.Context, row models.UserTable) {
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(permission.DB)
 	if row.Enable == 1 {
 		var groupPermission []int
 		if err := json.Unmarshal([]byte(row.GroupInfo.Permission), &groupPermission); err != nil {
@@ -186,6 +190,7 @@ func UserUpdateService(c *gin.Context, req request.UserUpdate, row models.UserTa
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(user.DB)
 	if !c.Writer.Written() {
 		_, err = user.UpdateById(row.ID, row.Password, req.Nickname, row.Group, row.Enable, row.TokenID)
 		if err != nil {
@@ -199,6 +204,7 @@ func UserPasswordService(c *gin.Context, req request.UserPassword, row models.Us
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(user.DB)
 	pwd, err := utils.PasswordHash(req.Password)
 	if err != nil {
 		sendError(c, err)

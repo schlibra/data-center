@@ -50,5 +50,8 @@ func (p *Permission) SelectAll() (permissions []models.PermissionTable, err erro
 		}
 		permissions = append(permissions, row)
 	}
+	if permissions == nil {
+		permissions = []models.PermissionTable{}
+	}
 	return permissions, nil
 }

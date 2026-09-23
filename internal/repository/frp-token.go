@@ -71,6 +71,9 @@ func (t *FrpToken) SelectByUser(userId int) (tokens []models.FrpTokenTable, err 
 		row.UserInfo = userInfo
 		tokens = append(tokens, row)
 	}
+	if tokens == nil {
+		tokens = []models.FrpTokenTable{}
+	}
 	return tokens, nil
 }
 func (t *FrpToken) SelectAll() (tokens []models.FrpTokenTable, err error) {
@@ -95,6 +98,9 @@ func (t *FrpToken) SelectAll() (tokens []models.FrpTokenTable, err error) {
 		userInfo.TokenID = "********"
 		row.UserInfo = userInfo
 		tokens = append(tokens, row)
+	}
+	if tokens == nil {
+		tokens = []models.FrpTokenTable{}
 	}
 	return tokens, nil
 }

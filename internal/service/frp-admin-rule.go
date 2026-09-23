@@ -12,6 +12,7 @@ func ListFrpAdminRuleService(c *gin.Context) {
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(frpRule.DB)
 	rules, err := frpRule.SelectAll()
 	if err != nil {
 		sendError(c, err)
@@ -23,6 +24,7 @@ func GetFrpAdminRuleService(c *gin.Context, id int) {
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(frpRule.DB)
 	rule, err := frpRule.SelectById(id)
 	if err != nil {
 		sendError(c, err)
@@ -34,14 +36,17 @@ func CreateFrpAdminRuleService(c *gin.Context, req request.CreateFrpAdminRule) {
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(frpRule.DB)
 	frpToken, err := repository.NewFrpToken()
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(frpToken.DB)
 	user, err := repository.NewUser()
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(user.DB)
 	if _, err := frpToken.SelectById(req.Token); err != nil {
 		sendI18n(c, 400, "frp.rule.token_not_exist", nil)
 	}
@@ -60,14 +65,17 @@ func UpdateFrpAdminRuleService(c *gin.Context, req request.UpdateFrpAdminRule, i
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(frpRule.DB)
 	frpToken, err := repository.NewFrpToken()
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(frpToken.DB)
 	user, err := repository.NewUser()
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(user.DB)
 	if _, err := frpToken.SelectById(req.Token); err != nil {
 		sendI18n(c, 400, "frp.rule.token_not_exist", nil)
 	}
@@ -89,6 +97,7 @@ func DeleteFrpAdminRuleService(c *gin.Context, id int) {
 	if err != nil {
 		sendError(c, err)
 	}
+	defer closeDB(frpRule.DB)
 	if _, err := frpRule.SelectById(id); err != nil {
 		sendI18n(c, 400, "frp.rule.not_exist", nil)
 	}

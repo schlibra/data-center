@@ -40,6 +40,9 @@ func (g *Group) SelectAll() (groups []models.GroupTable, err error) {
 		}
 		groups = append(groups, row)
 	}
+	if groups == nil {
+		groups = []models.GroupTable{}
+	}
 	return groups, nil
 }
 func (g *Group) UpdateById(id int, name string, admin int, permission string) (sql.Result, error) {

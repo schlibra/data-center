@@ -2,6 +2,7 @@ package service
 
 import (
 	"data-center/pkg/response"
+	"database/sql"
 
 	"github.com/gin-gonic/gin"
 )
@@ -19,4 +20,8 @@ func sendError(c *gin.Context, err error) {
 }
 func nw(c *gin.Context) bool {
 	return !c.Writer.Written()
+}
+
+func closeDB(db *sql.DB) {
+	_ = db.Close()
 }
