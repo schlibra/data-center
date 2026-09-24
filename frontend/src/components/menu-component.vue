@@ -18,11 +18,14 @@ import {
   ListOutline as ListIcon,
   AlbumsOutline as InfoIcon,
   MailOpenOutline as OutlookIcon,
+  CodeSlashOutline as DeveloperIcon,
 } from '@vicons/ionicons5'
 import { useMenuCollapseStore } from '@/stores/menu-collapse.js'
 import router from '@/router/index.js'
+import { useUserStore } from '@/stores/user.js'
 
 const menuCollapse = useMenuCollapseStore()
+const user = useUserStore()
 
 const renderIcon = (icon) => () => h(NIcon, null, { default: () => h(icon) })
 
@@ -72,29 +75,30 @@ const menuOptions = computed(() => [
   },
   {
     label: 'Frp（管理员）',
-    key: '/admin/frp',
+    key: '/frp/admin',
+    show: user.isAdmin,
     icon: renderIcon(FrpAdminIcon),
     children: [
       {
         label: 'Token管理',
         icon: renderIcon(TokenIcon),
-        key: '/admin/frp/token'
+        key: '/frp/admin/token',
       },
       {
         label: '端口规则管理',
         icon: renderIcon(PortIcon),
-        key: '/admin/frp/rule'
+        key: '/frp/admin/rule',
       },
       {
         label: '客户端管理',
         icon: renderIcon(ClientIcon),
-        key: '/admin/frp/client'
+        key: '/frp/admin/client',
       },
       {
         label: '映射管理',
         icon: renderIcon(ProxyIcon),
-        key: '/admin/frp/proxy'
-      }
+        key: '/frp/admin/proxy',
+      },
     ],
   },
   {
@@ -105,14 +109,14 @@ const menuOptions = computed(() => [
       {
         label: '邮箱列表',
         key: '/mail/list',
-        icon: renderIcon(ListIcon)
+        icon: renderIcon(ListIcon),
       },
       {
         label: '邮件管理',
         key: '/mail/info',
-        icon: renderIcon(InfoIcon)
-      }
-    ]
+        icon: renderIcon(InfoIcon),
+      },
+    ],
   },
   {
     label: 'Outlook管理',
@@ -122,24 +126,25 @@ const menuOptions = computed(() => [
       {
         label: '邮箱列表',
         key: '/outlook/list',
-        icon: renderIcon(ListIcon)
+        icon: renderIcon(ListIcon),
       },
       {
         label: '邮件管理',
         key: '/outlook/info',
-        icon: renderIcon(InfoIcon)
-      }
-    ]
+        icon: renderIcon(InfoIcon),
+      },
+    ],
   },
   {
     label: '管理员设置',
     key: '/admin',
+    show: user.isAdmin,
     icon: renderIcon(AdminIcon),
     children: [
       {
         label: '用户管理',
         key: '/admin/user',
-        icon: renderIcon(UserIcon)
+        icon: renderIcon(UserIcon),
       },
       {
         label: '用户组管理',
@@ -149,14 +154,20 @@ const menuOptions = computed(() => [
       {
         label: '权限管理',
         key: '/admin/permission',
-        icon: renderIcon(PermissionIcon)
-      }
+        icon: renderIcon(PermissionIcon),
+      },
     ],
   },
   {
     label: '用户中心',
     icon: renderIcon(UserIcon),
     key: '/user',
+  },
+  {
+    label: '开发者功能',
+    icon: renderIcon(DeveloperIcon),
+    key: '/developer',
+    show: user.isAdmin,
   },
 ])
 

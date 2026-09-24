@@ -3,8 +3,11 @@ import { useAdminUserStore } from '@/stores/admin/admin-user.js'
 import { adminGetUserList } from '@/api/admin/admin-user.js'
 import { NButton, NFlex, useDialog } from 'naive-ui'
 import { h, onMounted } from 'vue'
+import { getUserInfo } from '@/api/user.js'
+import { useUserStore } from '@/stores/user.js'
 
 const dialog = useDialog()
+const user = useUserStore()
 const adminUser = useAdminUserStore()
 const columns = [
   {
@@ -53,7 +56,21 @@ const columns = [
     },
   },
 ]
-
+const dialogError = content => {
+  dialog.error({
+    title: "数据获取失败",
+    content,
+    positiveText: "确定"
+  })
+}
+async function loadUserInfo() {
+  let [status, data] = await getUserInfo()
+  if (!status) {
+    return dialogError(data)
+  }
+  user.setUserInfo(data)
+  return true
+}
 async function loadAdminUserList() {
   let [status, data] = await adminGetUserList()
   if (!status) {
@@ -65,8 +82,12 @@ async function loadAdminUserList() {
   }
   adminUser.users = data
 }
-onMounted(async () => {
+async function loadDataList() {
+  if (!await loadUserInfo()) return
   await loadAdminUserList()
+}
+onMounted(async () => {
+  await loadDataList()
 })
 </script>
 

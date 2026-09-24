@@ -4,9 +4,11 @@ import { loginKey, loginUser } from '@/api/user.js'
 import { useDialog, useMessage } from 'naive-ui'
 import router from '@/router/index.js'
 import encrypt from '@/utils/encrypt.js'
+import { useTokenStore } from '@/stores/token.js'
 
 const message = useMessage()
 const dialog = useDialog()
+const token = useTokenStore()
 
 const usernameRef = ref(null)
 const passwordRef = ref(null)
@@ -31,7 +33,7 @@ const doLogin = async () => {
     dialogError(data)
     return
   }
-  ;[status, data] = encrypt(password.value, data)
+  ;[status, data] = encrypt(password.value, data.public_key)
   if (!status) {
     dialogError(data)
     return
@@ -39,6 +41,7 @@ const doLogin = async () => {
   ;[status, data] = await loginUser(username.value, data)
   if (status) {
     message.success('登录成功')
+    token.token = data.token
     setTimeout(() => {
       router.push("/")
     }, 1500)

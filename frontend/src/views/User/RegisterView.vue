@@ -40,7 +40,7 @@ const doRegister = async () => {
       },
     })
   }
-  ;[status, data] = encrypt(password.value, data)
+  ;[status, data] = encrypt(password.value, data.public_key)
   if (!status) {
     return dialog.error({
       title: '注册失败',

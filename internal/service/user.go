@@ -178,9 +178,7 @@ func UserInfoService(c *gin.Context, row models.UserTable) {
 		}
 		row.Password = "********"
 		row.TokenID = "********"
-		sendJson(c, 200, i18n.MustGetMessage(c, "user.login.success"), H{
-			"user": row,
-		})
+		sendJson(c, 200, i18n.MustGetMessage(c, "user.info.success"), row)
 	} else {
 		sendI18n(c, 403, "user.login.disabled", nil)
 	}

@@ -6,14 +6,17 @@ import {
   generateFrpToken,
   getFrpTokenList,
   updateFrpToken,
-} from '@/api/frp-auth/frp-token.js'
+} from '@/api/frp/frp-token.js'
 import { NButton, NFlex, NSwitch, useDialog, useMessage } from 'naive-ui'
-import { useFrpTokenStore } from '@/stores/frp-auth/frp-token.js'
-import { useFrpConfigStore } from '@/stores/frp-auth/frp-config.js'
+import { useFrpTokenStore } from '@/stores/frp/frp-token.js'
+import { useFrpConfigStore } from '@/stores/frp/frp-config.js'
 import router from '@/router/index.js'
+import { getUserInfo } from '@/api/user.js'
+import { useUserStore } from '@/stores/user.js'
 
 const dialog = useDialog()
 const message = useMessage()
+const user = useUserStore()
 const frpToken = useFrpTokenStore()
 const frpConfig = useFrpConfigStore()
 
@@ -103,7 +106,7 @@ const goConfig = (row) => {
   router.push('/frp/config')
 }
 const changeEnable = async (row, value) => {
-  let [status, data] = await updateFrpToken(row.id, row.name, value)
+  let [status, data] = await updateFrpToken(row.id, row.name, value ? 1 : 0)
   if (!status) {
     return dialog.error({
       title: '数据修改失败',
@@ -112,7 +115,7 @@ const changeEnable = async (row, value) => {
     })
   }
   message.success('修改成功')
-  await loadFrpTokenList()
+  await loadDataList()
 }
 
 const dialogError = (msg) => {
@@ -129,6 +132,16 @@ async function loadFrpTokenList() {
     return dialogError(data)
   }
   frpToken.tokens = data
+  return true
+}
+
+async function loadUserInfo() {
+  let [status, data] = await getUserInfo()
+  if (!status) {
+    return dialogError(data)
+  }
+  user.setUserInfo(data)
+  return true
 }
 
 async function generateToken(row) {
@@ -147,7 +160,7 @@ async function generateToken(row) {
         })
       }
       message.success('生成成功')
-      await loadFrpTokenList()
+      await loadDataList()
     },
   })
 }
@@ -168,7 +181,7 @@ async function deleteToken(row) {
         })
       }
       message.success('删除成功')
-      await loadFrpTokenList()
+      await loadDataList()
     },
   })
 }
@@ -216,11 +229,16 @@ async function submitModal() {
     }
     message.success('修改成功')
   }
-  await loadFrpTokenList()
+  await loadDataList()
+}
+
+async function loadDataList() {
+  if (!(await loadFrpTokenList())) return
+  await loadUserInfo()
 }
 
 onMounted(async () => {
-  await loadFrpTokenList()
+  await loadDataList()
 })
 </script>
 

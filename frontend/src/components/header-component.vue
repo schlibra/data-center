@@ -3,16 +3,18 @@ import { computed, ref } from 'vue'
 
 const urlPath = ref(location.pathname)
 const titleList = {
-  "/": "首页",
-  "/login": "登录",
-  "/register": "注册",
-  "/frp/token": "Frp Token管理",
-  "/frp/rule": "Frp 端口规则管理",
-  "/frp/client": "Frp 客户端管理",
-  "/frp/proxy": "Frp 映射管理",
-  "/frp/config": "Frp 配置生成",
-  "/admin/user": "管理员 用户管理",
-  "/user": "用户中心"
+  '/': '首页',
+  '/login': '登录',
+  '/register': '注册',
+  '/developer': '开发者功能',
+  '/frp/token': 'Frp Token管理',
+  '/frp/rule': 'Frp 端口规则管理',
+  '/frp/client': 'Frp 客户端管理',
+  '/frp/proxy': 'Frp 映射管理',
+  '/frp/config': 'Frp 配置生成',
+  '/frp/admin/token': 'Frp Token管理（管理员）',
+  '/admin/user': '管理员 用户管理',
+  '/user': '用户中心',
 }
 const titleText = computed(() => titleList[urlPath.value])
 setInterval(() => {

@@ -1,10 +1,13 @@
 <script setup>
-import { useFrpClientStore } from '@/stores/frp-auth/frp-client.js'
-import { getFrpClientList } from '@/api/frp-auth/frp-api.js'
+import { useFrpClientStore } from '@/stores/frp/frp-client.js'
+import { getFrpClientList } from '@/api/frp/frp-api.js'
 import { NTag, useDialog } from 'naive-ui'
 import { h, onMounted } from 'vue'
+import { getUserInfo } from '@/api/user.js'
+import { useUserStore } from '@/stores/user.js'
 
 const dialog = useDialog()
+const user = useUserStore()
 const frpClient = useFrpClientStore()
 const columns = [
   {
@@ -69,20 +72,35 @@ const columns = [
     },
   },
 ]
-
+const dialogError = content => {
+  dialog.error({
+    title: "数据获取失败",
+    content,
+    positiveText: "确定"
+  })
+}
 async function loadFrpClientList() {
   let [status, data] = await getFrpClientList()
   if (!status) {
-    return dialog.error({
-      title: '数据获取失败',
-      content: data,
-      positiveText: '确定',
-    })
+    return dialogError(data)
   }
   frpClient.client = data
+  return true
+}
+async function loadUserInfo() {
+  let [status, data] = await getUserInfo()
+  if (!status) {
+    return dialogError(data)
+  }
+  user.setUserInfo(data)
+  return true
+}
+async function loadDataList() {
+  if (!await loadUserInfo()) return
+  loadFrpClientList()
 }
 onMounted(async () => {
-  await loadFrpClientList()
+  await loadDataList()
 })
 </script>
 

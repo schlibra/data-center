@@ -1,13 +1,16 @@
 <script setup>
-import { useFrpTokenStore } from '@/stores/frp-auth/frp-token.js'
-import { useFrpRuleStore } from '@/stores/frp-auth/frp-rule.js'
-import { getFrpTokenList } from '@/api/frp-auth/frp-token.js'
-import { createFrpRule, deleteFrpRule, getFrpRuleList, updateFrpRule } from '@/api/frp-auth/frp-rule.js'
+import { useFrpTokenStore } from '@/stores/frp/frp-token.js'
+import { useFrpRuleStore } from '@/stores/frp/frp-rule.js'
+import { getFrpTokenList } from '@/api/frp/frp-token.js'
+import { createFrpRule, deleteFrpRule, getFrpRuleList, updateFrpRule } from '@/api/frp/frp-rule.js'
 import { NButton, NFlex, useDialog, useMessage } from 'naive-ui'
 import { computed, h, onMounted, ref } from 'vue'
+import { getUserInfo } from '@/api/user.js'
+import { useUserStore } from '@/stores/user.js'
 
 const dialog = useDialog()
 const message = useMessage()
+const user = useUserStore()
 const frpToken = useFrpTokenStore()
 const frpRule = useFrpRuleStore()
 
@@ -83,13 +86,21 @@ const dialogError = (content) => {
     positiveText: '确定',
   })
 }
-
+async function loadUserInfo() {
+  let [status, data] = await getUserInfo()
+  if (!status) {
+    return dialogError(data)
+  }
+  user.setUserInfo(data)
+  return true
+}
 async function loadFrpTokenList() {
   let [status, data] = await getFrpTokenList()
   if (!status) {
     return dialogError(data)
   }
   frpToken.tokens = data
+  return true
 }
 
 async function loadFrpRuleList() {
@@ -99,6 +110,12 @@ async function loadFrpRuleList() {
   }
   frpRule.rules = data
   console.log(frpRule.rules)
+  return true
+}
+async function loadDataList() {
+  if (!await loadUserInfo()) return
+  if (!await loadFrpTokenList()) return
+  await loadFrpRuleList()
 }
 async function deleteRule(row) {
   dialog.info({
@@ -116,8 +133,7 @@ async function deleteRule(row) {
         })
       }
       message.success('删除成功')
-      await loadFrpTokenList()
-      await loadFrpRuleList()
+      await loadDataList()
     },
   })
 }
@@ -165,12 +181,10 @@ async function submitModal() {
     }
     message.success('修改成功')
   }
-  await loadFrpTokenList()
-  await loadFrpRuleList()
+  await loadDataList()
 }
 onMounted(async () => {
-  await loadFrpTokenList()
-  await loadFrpRuleList()
+  await loadDataList()
 })
 </script>
 

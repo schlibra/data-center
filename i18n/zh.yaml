@@ -27,6 +27,8 @@ user:
     success: "用户信息修改成功"
   password:
     success: "密码修改成功"
+  info:
+    success: "用户信息获取成功"
 frp:
   token:
     exist: "token已存在"

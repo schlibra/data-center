@@ -49,9 +49,19 @@ const router = createRouter({
       component: () => import("@/views/Admin/AdminUserView.vue")
     },
     {
+      path: '/frp/admin/token',
+      name: 'frp token admin',
+      component: () => import("@/views/Frp-Admin/FrpAdminTokenView.vue")
+    },
+    {
       path: '/user',
       name: 'user',
       component: () => import("@/views/User/UserView.vue")
+    },
+    {
+      path: '/developer',
+      name: 'developer',
+      component: () => import("@/views/DeveloperView.vue")
     }
   ],
 })

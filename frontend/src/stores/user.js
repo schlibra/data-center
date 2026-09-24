@@ -8,6 +8,7 @@ export const useUserStore = defineStore("user", {
     const nickname = ref("")
     const groupId = ref("")
     const groupName = ref("")
+    const isAdmin = ref(false)
 
     const setUserInfo = data => {
       userId.value = data.id
@@ -15,6 +16,7 @@ export const useUserStore = defineStore("user", {
       nickname.value = data.nickname
       groupId.value = data.group
       groupName.value = data.group_info.name
+      isAdmin.value = data.group_info.admin === 1
     }
     return {
       userId,
@@ -22,6 +24,7 @@ export const useUserStore = defineStore("user", {
       nickname,
       groupId,
       groupName,
+      isAdmin,
       setUserInfo,
     }
   },

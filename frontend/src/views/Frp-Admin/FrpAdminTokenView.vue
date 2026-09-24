@@ -1,0 +1,102 @@
+<script setup>
+import { getFrpAdminTokenList } from '@/api/frp-admin/frp-admin-token.js'
+import { NButton, NFlex, NSwitch, useDialog } from 'naive-ui'
+import { useFrpAdminTokenStore } from '@/stores/frp-admin/frp-admin-token.js'
+import { h, onMounted } from 'vue'
+
+const dialog = useDialog()
+const frpAdminToken = useFrpAdminTokenStore()
+
+const columns = [
+  {
+    title: 'ID',
+    key: 'id',
+  },
+  {
+    title: '名称',
+    key: 'name',
+  },
+  {
+    title: 'Token',
+    key: 'token',
+  },
+  {
+    title: '用户',
+    key: 'user',
+    render(row) {
+      return h('span', {}, `${row.user_info.username} ( ${row.user_info.nickname} )`)
+    },
+  },
+  {
+    title: '启用',
+    key: 'enable',
+    render(row) {
+      return h(NSwitch, {
+        value: row.enable === 1
+      })
+    },
+  },
+  {
+    title: '操作',
+    key: 'action',
+    render(row) {
+      return h(NFlex, {}, [
+        h(
+          NButton,
+          {
+            type: 'primary',
+          },
+          '编辑',
+        ),
+        h(
+          NButton,
+          {
+            type: 'warning',
+          },
+          '生成Token',
+        ),
+        h(
+          NButton,
+          {
+            type: 'error',
+          },
+          '删除',
+        ),
+      ])
+    },
+  },
+]
+
+const dialogError = (content) => {
+  dialog.error({
+    title: '数据获取失败',
+    content,
+    positiveText: '确定',
+  })
+}
+
+async function loadFrpAdminTokenList() {
+  let [status, data] = await getFrpAdminTokenList()
+  if (!status) {
+    return dialogError(data)
+  }
+  frpAdminToken.tokens = data
+}
+onMounted(async () => {
+  await loadFrpAdminTokenList()
+})
+</script>
+
+<template>
+  <n-card>
+    <template #header>
+      <h3>Frp Token管理（管理员）</h3>
+    </template>
+    <n-flex>
+      <n-button size="large" type="primary">创建Token</n-button>
+      <n-data-table :data="frpAdminToken.tokens" :columns="columns"></n-data-table>
+    </n-flex>
+  </n-card>
+</template>
+
+<style scoped></style>

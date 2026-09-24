@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useTokenStore } from '@/stores/token.js'
-import router from '@/router/index.js'
+import { apiBack } from '@/utils/api.js'
 
 const token = useTokenStore()
 
@@ -9,11 +9,7 @@ async function loginKey(username) {
     const res = await axios.put("/api/user/login", {
       username
     })
-    if (res.data.code === 200) {
-      return [true, res.data.data.public_key]
-    } else {
-      return [false, res.data.message]
-    }
+    return apiBack(res)
   } catch (e) {
     return [false, e]
   }
@@ -21,15 +17,9 @@ async function loginKey(username) {
 async function loginUser(username, password) {
   try {
     const res = await axios.post("/api/user/login", {
-      username,
-      password
+      username, password
     })
-    if (res.data.code === 200) {
-      token.token = res.data.data.token
-      return [true, res.data.message]
-    } else {
-      return [false, res.data.message]
-    }
+    return apiBack(res)
   } catch (e) {
     return [false, e]
   }
@@ -39,11 +29,7 @@ async function registerKey(username) {
     const res = await axios.put("/api/user/register", {
       username
     })
-    if (res.data.code === 200) {
-      return [true, res.data.data.public_key]
-    } else {
-      return [false, res.data.message]
-    }
+    return apiBack(res)
   } catch (e) {
     return [false, e]
   }
@@ -51,15 +37,9 @@ async function registerKey(username) {
 async function registerUser(username, password, nickname) {
   try {
     const res = await axios.post("/api/user/register", {
-      username,
-      password,
-      nickname
+      username, password, nickname
     })
-    if (res.data.code === 200) {
-      return [true, res.data.message]
-    } else {
-      return [false, res.data.message]
-    }
+    return apiBack(res)
   } catch (e) {
     return [false, e]
   }
@@ -67,14 +47,7 @@ async function registerUser(username, password, nickname) {
 async function getUserInfo() {
   try {
     const res = await axios.get("/api/user", token.config)
-    if (res.data.code === 200) {
-      return [true, res.data.data.user]
-    } else if (res.data.code === 401) {
-      router.push("/login")
-      return [false, res.data.message]
-    } else {
-      return [false, res.data.message]
-    }
+    return apiBack(res)
   } catch (e) {
     return [false, e]
   }
@@ -84,11 +57,7 @@ async function updateUser(nickname) {
     const res = await axios.put("/api/user", {
       nickname
     }, token.config)
-    if (res.data.code === 200) {
-      return [true, res.data.message]
-    } else {
-      return [false, res.data.message]
-    }
+    return apiBack(res)
   } catch (e) {
     return [false, e]
   }
@@ -98,11 +67,7 @@ async function setUserPassword(password) {
     const res = await axios.patch("/api/user", {
       password
     }, token.config)
-    if (res.data.code === 200) {
-      return [true, res.data.message]
-    } else {
-      return [false, res.data.message]
-    }
+    return apiBack(res)
   } catch (e) {
     return [false, e]
   }
@@ -110,13 +75,9 @@ async function setUserPassword(password) {
 async function logoutUser() {
   try {
     const res = await axios.post("/api/user/logout", {}, token.config)
-    if (res.data.code === 200) {
-      return [true, res.data.message]
-    } else {
-      return [false, res.data.message]
-    }
+    return [true, res.data.message]
   } catch (e) {
-    return [false, e]
+    return [true, e]
   }
 }
 export {
