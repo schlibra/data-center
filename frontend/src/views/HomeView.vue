@@ -19,6 +19,8 @@ import { useFrpAdminProxyStore } from '@/stores/frp-admin/frp-admin-proxy.js'
 import { getFrpAdminClientList, getFrpAdminProxyList } from '@/api/frp-admin/frp-admin-api.js'
 import { useAdminUserStore } from '@/stores/admin/admin-user.js'
 import { getAdminUserList } from '@/api/admin/admin-user.js'
+import { getAdminGroupList } from '@/api/admin/admin-group.js'
+import { useAdminGroupStore } from '@/stores/admin/admin-group.js'
 
 const dialog = useDialog()
 const user = useUserStore()
@@ -27,6 +29,7 @@ const frpRule = useFrpRuleStore()
 const frpClient = useFrpClientStore()
 const frpProxy = useFrpProxyStore()
 const adminUser = useAdminUserStore()
+const adminGroup = useAdminGroupStore()
 const frpAdminToken = useFrpAdminTokenStore()
 const frpAdminRule = useFrpAdminRuleStore()
 const frpAdminClient = useFrpAdminClientStore()
@@ -88,6 +91,14 @@ async function loadAdminUserList() {
   adminUser.users = data
   return true
 }
+async function loadAdminGroupList() {
+  let [status, data] = await getAdminGroupList()
+  if (!status) {
+    return dialogError(data)
+  }
+  adminGroup.groups = data
+  return true
+}
 async function loadFrpAdminTokenList() {
   let [status, data] = await getFrpAdminTokenList()
   if (!status) {
@@ -121,23 +132,24 @@ async function loadFrpAdminProxyList() {
   return true
 }
 async function loadBasicData() {
-  if (!(await loadUserInfo())) return
-  if (!(await loadFrpTokenList())) return
-  if (!(await loadFrpRuleList())) return
-  if (!(await loadFrpClientList())) return
-  if (!(await loadFrpProxyList())) return
+  if (!await loadUserInfo()) return
+  if (!await loadFrpTokenList()) return
+  if (!await loadFrpRuleList()) return
+  if (!await loadFrpClientList()) return
+  if (!await loadFrpProxyList()) return
   return true
 }
 async function loadAdminData() {
-  if (!(await loadAdminUserList())) return
-  if (!(await loadFrpAdminTokenList())) return
-  if (!(await loadFrpAdminRuleList())) return
-  if (!(await loadFrpAdminClientList())) return
+  if (!await loadAdminUserList()) return
+  if (!await loadAdminGroupList()) return
+  if (!await loadFrpAdminTokenList()) return
+  if (!await loadFrpAdminRuleList()) return
+  if (!await loadFrpAdminClientList()) return
   await loadFrpAdminProxyList()
 }
 
 onMounted(async () => {
-  if (!(await loadBasicData())) return
+  if (!await loadBasicData()) return
   if (user.isAdmin) {
     await loadAdminData()
   }
@@ -194,6 +206,9 @@ onMounted(async () => {
       <n-flex>
         <n-statistic label="用户数量">
           <n-number-animation :from="0" :to="adminUser.count"></n-number-animation>
+        </n-statistic>
+        <n-statistic label="用户组数量">
+          <n-number-animation :from="0" :to="adminGroup.count"></n-number-animation>
         </n-statistic>
       </n-flex>
     </template>

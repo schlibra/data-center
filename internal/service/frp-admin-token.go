@@ -85,7 +85,7 @@ func UpdateFrpAdminTokenService(c *gin.Context, id int, req request.UpdateFrpAdm
 		})
 		return
 	}
-	if _, err := frpToken.SelectByName(req.Name); err == nil {
+	if _, err := frpToken.SelectByName(req.Name); err == nil && req.Name != tokenRow.Name {
 		sendI18n(c, 400, "frp.token.exist", nil)
 	}
 	if _, err := user.SelectById(req.User); err != nil {

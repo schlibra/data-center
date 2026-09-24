@@ -97,7 +97,7 @@ func UpdateAdminUserHandler(c *gin.Context) {
 // @param request body request.PasswordAdminUser true "用户密码信息"
 // @param id path int true "用户ID"
 // @success 200 {object} response.Response
-// @router /admin/user/{id}/password [patch]
+// @router /admin/user/{id} [patch]
 func PasswordAdminUserHandler(c *gin.Context) {
 	checkAdmin(c)
 	var req request.PasswordAdminUser

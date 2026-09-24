@@ -42,6 +42,7 @@ func GetFrpAdminRuleHandler(c *gin.Context) {
 // @Accept application/json
 // @Produce application/json
 // @Security BearerAuth
+// @Param request body request.CreateFrpAdminRule true "规则信息"
 // @Success 200 {object} response.Response
 // @Router /frp/admin/rule/ [post]
 func CreateFrpAdminRuleHandler(c *gin.Context) {
@@ -61,6 +62,7 @@ func CreateFrpAdminRuleHandler(c *gin.Context) {
 // @Produce application/json
 // @Security BearerAuth
 // @Param id path int true "规则ID"
+// @Param request body request.UpdateFrpAdminRule true "规则信息"
 // @Success 200 {object} response.Response
 // @Router /frp/admin/rule/{id} [put]
 func UpdateFrpAdminRuleHandler(c *gin.Context) {

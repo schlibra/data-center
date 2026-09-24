@@ -15,8 +15,26 @@ func initAdminUserRouter(router *gin.RouterGroup) {
 	user.PATCH("/:id", handler.PasswordAdminUserHandler)
 	user.DELETE("/:id", handler.DeleteAdminUserHandler)
 }
+func initAdminGroupRouter(router *gin.RouterGroup) {
+	group := router.Group("/group")
+	group.GET("/", handler.ListAdminGroupHandler)
+	group.GET("/:id", handler.GetAdminGroupHandler)
+	group.POST("/", handler.CreateAdminGroupHandler)
+	group.PUT("/:id", handler.UpdateAdminGroupHandler)
+	group.DELETE("/:id", handler.DeleteAdminGroupHandler)
+}
+func initAdminPermissionRouter(router *gin.RouterGroup) {
+	permission := router.Group("/permission")
+	permission.GET("/", handler.ListAdminPermissionsHandler)
+	permission.POST("/", handler.CreateAdminPermissionHandler)
+	permission.GET("/:id", handler.GetAdminPermissionHandler)
+	permission.PUT("/:id", handler.UpdateAdminPermissionHandler)
+	permission.DELETE("/:id", handler.DeleteAdminPermissionHandler)
+}
 
 func initAdminRouter(router *gin.RouterGroup) {
 	admin := router.Group("/admin")
 	initAdminUserRouter(admin)
+	initAdminGroupRouter(admin)
+	initAdminPermissionRouter(admin)
 }

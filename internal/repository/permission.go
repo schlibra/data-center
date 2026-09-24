@@ -55,3 +55,6 @@ func (p *Permission) SelectAll() (permissions []models.PermissionTable, err erro
 	}
 	return permissions, nil
 }
+func (p *Permission) DeleteById(id int) (sql.Result, error) {
+	return p.DB.Exec("DELETE FROM `permission` WHERE `id` = ?", id)
+}

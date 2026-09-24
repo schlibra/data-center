@@ -8,7 +8,6 @@ type CreateAdminUser struct {
 	Enable   int    `json:"enable"`
 }
 type UpdateAdminUser struct {
-	Password string `json:"password"`
 	Nickname string `json:"nickname"`
 	Group    int    `json:"group"`
 	Enable   int    `json:"enable"`
