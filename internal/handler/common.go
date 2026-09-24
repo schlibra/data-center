@@ -13,6 +13,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type H map[string]any
+
 func sendJson(c *gin.Context, code int, message string, data any) {
 	response.SendJson(c, code, message, data)
 }
@@ -39,7 +41,10 @@ func parseToken(c *gin.Context) models.UserTable {
 	}
 	data, err := utils.JwtUserCheck(token)
 	if err != nil {
-		sendError(c, err)
+		sendI18n(c, 401, "user.token.invalid", H{
+			"error": err.Error(),
+		})
+		return models.UserTable{}
 	}
 	row, err := user.SelectByUsername(data.Username)
 	if err != nil {

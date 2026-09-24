@@ -121,7 +121,6 @@ func ProxiesFrpApiService(c *gin.Context, row models.UserTable) {
 	for _, token := range tokens {
 		tokenList = append(tokenList, token.Name)
 	}
-	fmt.Println(tokenList)
 	client := resty.New()
 	var proxyResult request.FrpApiProxies
 	_, err = client.R().
@@ -137,7 +136,6 @@ func ProxiesFrpApiService(c *gin.Context, row models.UserTable) {
 	}
 	proxies := make([]request.FrpApiProxiesDataItem, 0)
 	for _, item := range proxyResult.Data.Items {
-		fmt.Println(item.User)
 		if slices.Contains(tokenList, item.User) {
 			proxies = append(proxies, item)
 		}
@@ -162,7 +160,6 @@ func ClientFrpApiService(c *gin.Context, row models.UserTable) {
 	for _, token := range tokens {
 		tokenList = append(tokenList, token.Name)
 	}
-	fmt.Println(tokenList)
 	client := resty.New()
 	var clientResult request.FrpApiClients
 	_, err = client.R().
@@ -178,7 +175,6 @@ func ClientFrpApiService(c *gin.Context, row models.UserTable) {
 	}
 	clients := make([]request.FrpApiClientsDataItem, 0)
 	for _, item := range clientResult.Data.Items {
-		fmt.Println(item.User)
 		if slices.Contains(tokenList, item.User) {
 			clients = append(clients, item)
 		}

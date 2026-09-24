@@ -30,6 +30,7 @@ user:
 frp:
   token:
     exist: "token已存在"
+    not_exist: "token不存在"
     created: "token创建成功"
     got: "token获取成功"
     forbidden: "没有权限"

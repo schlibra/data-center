@@ -69,7 +69,7 @@ func CreateAdminUserHandler(c *gin.Context) {
 // @accept application/json
 // @produce application/json
 // @security BearerAuth
-// @param request body request.CreateAdminUser true "用户信息"
+// @param request body request.UpdateAdminUser true "用户信息"
 // @param id path int true "用户ID"
 // @success 200 {object} response.Response
 // @router /admin/user/{id} [put]
