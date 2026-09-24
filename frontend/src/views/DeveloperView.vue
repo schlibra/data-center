@@ -1,20 +1,19 @@
 <script setup>
-import { useTokenStore } from '@/stores/token.js'
 import { onMounted, ref } from 'vue'
-import { getUserInfo } from '@/api/user.js'
 import { useDialog } from 'naive-ui'
-import { useUserStore } from '@/stores/user.js'
+import { getUserInfo } from '@/api'
+import { useUserStore, useTokenStore } from '@/stores'
 
 const dialog = useDialog()
 const tokenRef = ref(null)
 const user = useUserStore()
 const token = useTokenStore()
 
-const dialogError = content => {
+const dialogError = (content) => {
   dialog.error({
-    title: "数据获取失败",
+    title: '数据获取失败',
     content,
-    positiveText: "确定"
+    positiveText: '确定',
   })
 }
 

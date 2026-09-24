@@ -1,5 +1,5 @@
 <script setup>
-import { useFrpConfigStore } from '@/stores/frp/frp-config.js'
+import { useFrpConfigStore } from '@/stores'
 
 const frpConfig = useFrpConfigStore()
 const selectOptions = [

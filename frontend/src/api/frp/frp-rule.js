@@ -1,6 +1,6 @@
-import { useTokenStore } from '@/stores/token.js'
 import axios from 'axios'
-import { apiBack } from '@/utils/api.js'
+import { useTokenStore } from '@/stores'
+import { apiBack } from '@/utils'
 
 const token = useTokenStore()
 
@@ -14,9 +14,15 @@ async function getFrpRuleList() {
 }
 async function createFrpRule(min, max, tokenId) {
   try {
-    const res = await axios.post('/api/frp/rule', {
-      min, max, token: tokenId
-    }, token.config)
+    const res = await axios.post(
+      '/api/frp/rule',
+      {
+        min,
+        max,
+        token: tokenId,
+      },
+      token.config,
+    )
     return apiBack(res)
   } catch (e) {
     return [false, e]
@@ -24,11 +30,15 @@ async function createFrpRule(min, max, tokenId) {
 }
 async function updateFrpRule(id, min, max, tokenId) {
   try {
-    const res = await axios.put(`/api/frp/rule/${id}`, {
-      min,
-      max,
-      token: tokenId
-    }, token.config)
+    const res = await axios.put(
+      `/api/frp/rule/${id}`,
+      {
+        min,
+        max,
+        token: tokenId,
+      },
+      token.config,
+    )
     return apiBack(res)
   } catch (e) {
     return [false, e]
@@ -42,9 +52,4 @@ async function deleteFrpRule(id) {
     return [false, e]
   }
 }
-export {
-  getFrpRuleList,
-  updateFrpRule,
-  createFrpRule,
-  deleteFrpRule
-}
+export { getFrpRuleList, updateFrpRule, createFrpRule, deleteFrpRule }

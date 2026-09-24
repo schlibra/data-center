@@ -1,9 +1,9 @@
 <script setup>
 import { ref } from 'vue'
-import { registerKey, registerUser } from '@/api/user.js'
 import { useDialog, useMessage } from 'naive-ui'
-import encrypt from '@/utils/encrypt.js'
-import router from '@/router/index.js'
+import { encrypt } from '@/utils'
+import router from '@/router'
+import { registerKey, registerUser } from '@/api'
 
 const dialog = useDialog()
 const message = useMessage()
@@ -62,7 +62,7 @@ const doRegister = async () => {
       },
     })
   }
-  message.success("注册成功")
+  message.success('注册成功')
   setTimeout(() => {
     router.push('/login')
   }, 1500)

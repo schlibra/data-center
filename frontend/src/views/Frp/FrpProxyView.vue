@@ -1,11 +1,9 @@
 <script setup>
-import { calcSize } from '@/utils/size.js'
 import { h, onMounted } from 'vue'
 import { NTag, useDialog } from 'naive-ui'
-import { getFrpProxyList } from '@/api/frp/frp-api.js'
-import { useFrpProxyStore } from '@/stores/frp/frp-proxy.js'
-import { getUserInfo } from '@/api/user.js'
-import { useUserStore } from '@/stores/user.js'
+import { calcSize } from '@/utils'
+import { getFrpProxyList, getUserInfo } from '@/api'
+import { useFrpProxyStore, useUserStore } from '@/stores'
 
 const dialog = useDialog()
 const user = useUserStore()

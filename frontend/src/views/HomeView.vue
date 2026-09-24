@@ -1,26 +1,34 @@
 <script setup>
 import { onMounted } from 'vue'
-import { useUserStore } from '@/stores/user.js'
-import { getUserInfo } from '@/api/user.js'
 import { useDialog } from 'naive-ui'
-import { getFrpTokenList } from '@/api/frp/frp-token.js'
-import { useFrpTokenStore } from '@/stores/frp/frp-token.js'
-import { useFrpRuleStore } from '@/stores/frp/frp-rule.js'
-import { getFrpRuleList } from '@/api/frp/frp-rule.js'
-import { getFrpClientList, getFrpProxyList } from '@/api/frp/frp-api.js'
-import { useFrpClientStore } from '@/stores/frp/frp-client.js'
-import { useFrpProxyStore } from '@/stores/frp/frp-proxy.js'
-import { getFrpAdminTokenList } from '@/api/frp-admin/frp-admin-token.js'
-import { useFrpAdminTokenStore } from '@/stores/frp-admin/frp-admin-token.js'
-import { useFrpAdminRuleStore } from '@/stores/frp-admin/frp-admin-rule.js'
-import { getFrpAdminRuleList } from '@/api/frp-admin/frp-admin-rule.js'
-import { useFrpAdminClientStore } from '@/stores/frp-admin/frp-admin-client.js'
-import { useFrpAdminProxyStore } from '@/stores/frp-admin/frp-admin-proxy.js'
-import { getFrpAdminClientList, getFrpAdminProxyList } from '@/api/frp-admin/frp-admin-api.js'
-import { useAdminUserStore } from '@/stores/admin/admin-user.js'
-import { getAdminUserList } from '@/api/admin/admin-user.js'
-import { getAdminGroupList } from '@/api/admin/admin-group.js'
-import { useAdminGroupStore } from '@/stores/admin/admin-group.js'
+import {
+  useAdminGroupStore,
+  useAdminPermissionStore,
+  useAdminUserStore,
+  useFrpAdminClientStore,
+  useFrpAdminProxyStore,
+  useFrpAdminRuleStore,
+  useFrpAdminTokenStore,
+  useFrpClientStore,
+  useFrpProxyStore,
+  useFrpRuleStore,
+  useFrpTokenStore,
+  useUserStore,
+} from '@/stores'
+import {
+  getAdminGroupList,
+  getAdminPermissionList,
+  getAdminUserList,
+  getFrpAdminClientList,
+  getFrpAdminProxyList,
+  getFrpAdminRuleList,
+  getFrpAdminTokenList,
+  getFrpClientList,
+  getFrpProxyList,
+  getFrpRuleList,
+  getFrpTokenList,
+  getUserInfo,
+} from '@/api'
 
 const dialog = useDialog()
 const user = useUserStore()
@@ -30,6 +38,7 @@ const frpClient = useFrpClientStore()
 const frpProxy = useFrpProxyStore()
 const adminUser = useAdminUserStore()
 const adminGroup = useAdminGroupStore()
+const adminPermission = useAdminPermissionStore()
 const frpAdminToken = useFrpAdminTokenStore()
 const frpAdminRule = useFrpAdminRuleStore()
 const frpAdminClient = useFrpAdminClientStore()
@@ -99,6 +108,14 @@ async function loadAdminGroupList() {
   adminGroup.groups = data
   return true
 }
+async function loadAdminPermissionList() {
+  let [status, data] = await getAdminPermissionList()
+  if (!status) {
+    return dialogError(data)
+  }
+  adminPermission.permissions = data
+  return true
+}
 async function loadFrpAdminTokenList() {
   let [status, data] = await getFrpAdminTokenList()
   if (!status) {
@@ -132,24 +149,25 @@ async function loadFrpAdminProxyList() {
   return true
 }
 async function loadBasicData() {
-  if (!await loadUserInfo()) return
-  if (!await loadFrpTokenList()) return
-  if (!await loadFrpRuleList()) return
-  if (!await loadFrpClientList()) return
-  if (!await loadFrpProxyList()) return
+  if (!(await loadUserInfo())) return
+  if (!(await loadFrpTokenList())) return
+  if (!(await loadFrpRuleList())) return
+  if (!(await loadFrpClientList())) return
+  if (!(await loadFrpProxyList())) return
   return true
 }
 async function loadAdminData() {
-  if (!await loadAdminUserList()) return
-  if (!await loadAdminGroupList()) return
-  if (!await loadFrpAdminTokenList()) return
-  if (!await loadFrpAdminRuleList()) return
-  if (!await loadFrpAdminClientList()) return
+  if (!(await loadAdminUserList())) return
+  if (!(await loadAdminGroupList())) return
+  if (!(await loadAdminPermissionList())) return
+  if (!(await loadFrpAdminTokenList())) return
+  if (!(await loadFrpAdminRuleList())) return
+  if (!(await loadFrpAdminClientList())) return
   await loadFrpAdminProxyList()
 }
 
 onMounted(async () => {
-  if (!await loadBasicData()) return
+  if (!(await loadBasicData())) return
   if (user.isAdmin) {
     await loadAdminData()
   }
@@ -209,6 +227,9 @@ onMounted(async () => {
         </n-statistic>
         <n-statistic label="用户组数量">
           <n-number-animation :from="0" :to="adminGroup.count"></n-number-animation>
+        </n-statistic>
+        <n-statistic label="用户权限数量">
+          <n-number-animation :from="0" :to="adminPermission.count"></n-number-animation>
         </n-statistic>
       </n-flex>
     </template>

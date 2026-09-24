@@ -1,18 +1,16 @@
 <script setup>
 import { h, onMounted, ref } from 'vue'
+import { NButton, NFlex, NSwitch, useDialog, useMessage } from 'naive-ui'
+import router from '@/router'
 import {
   createFrpToken,
   deleteFrpToken,
   generateFrpToken,
   getFrpTokenList,
   updateFrpToken,
-} from '@/api/frp/frp-token.js'
-import { NButton, NFlex, NSwitch, useDialog, useMessage } from 'naive-ui'
-import { useFrpTokenStore } from '@/stores/frp/frp-token.js'
-import { useFrpConfigStore } from '@/stores/frp/frp-config.js'
-import router from '@/router/index.js'
-import { getUserInfo } from '@/api/user.js'
-import { useUserStore } from '@/stores/user.js'
+  getUserInfo
+} from '@/api'
+import { useFrpTokenStore, useFrpConfigStore, useUserStore } from '@/stores'
 
 const dialog = useDialog()
 const message = useMessage()

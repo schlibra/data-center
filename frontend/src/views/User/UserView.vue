@@ -1,10 +1,9 @@
 <script setup>
-import { useUserStore } from '@/stores/user.js'
-import { getUserInfo, logoutUser, setUserPassword, updateUser } from '@/api/user.js'
 import { useDialog, useMessage } from 'naive-ui'
 import { onMounted, ref } from 'vue'
-import router from '@/router/index.js'
-import { useTokenStore } from '@/stores/token.js'
+import router from '@/router'
+import { useTokenStore, useUserStore } from '@/stores'
+import { getUserInfo, logoutUser, setUserPassword, updateUser } from '@/api'
 
 const dialog = useDialog()
 const message = useMessage()

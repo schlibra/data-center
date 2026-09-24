@@ -1,11 +1,12 @@
 <script setup>
-import { getFrpAdminTokenList } from '@/api/frp-admin/frp-admin-token.js'
 import { NButton, NFlex, NSwitch, useDialog } from 'naive-ui'
-import { useFrpAdminTokenStore } from '@/stores/frp-admin/frp-admin-token.js'
+import { getFrpAdminTokenList, getUserInfo } from '@/api'
+import { useFrpAdminTokenStore, useUserStore } from '@/stores/'
 import { h, onMounted } from 'vue'
 
 const dialog = useDialog()
 const frpAdminToken = useFrpAdminTokenStore()
+const user = useUserStore()
 
 const columns = [
   {
@@ -81,9 +82,22 @@ async function loadFrpAdminTokenList() {
     return dialogError(data)
   }
   frpAdminToken.tokens = data
+  return true
+}
+async function loadUserInfo() {
+  let [status, data] = await getUserInfo()
+  if (!status) {
+    return dialogError(data)
+  }
+  user.setUserInfo(data)
+  return true
+}
+async function loadDataList() {
+  if (!await loadFrpAdminTokenList()) return
+  await loadUserInfo()
 }
 onMounted(async () => {
-  await loadFrpAdminTokenList()
+  await loadDataList()
 })
 </script>
 

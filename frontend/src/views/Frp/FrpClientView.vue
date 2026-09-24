@@ -1,10 +1,8 @@
 <script setup>
-import { useFrpClientStore } from '@/stores/frp/frp-client.js'
-import { getFrpClientList } from '@/api/frp/frp-api.js'
-import { NTag, useDialog } from 'naive-ui'
 import { h, onMounted } from 'vue'
-import { getUserInfo } from '@/api/user.js'
-import { useUserStore } from '@/stores/user.js'
+import { NTag, useDialog } from 'naive-ui'
+import { getFrpClientList, getUserInfo } from '@/api'
+import { useFrpClientStore, useUserStore } from '@/stores'
 
 const dialog = useDialog()
 const user = useUserStore()

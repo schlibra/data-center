@@ -14,6 +14,8 @@ const titleList = {
   '/frp/config': 'Frp 配置生成',
   '/frp/admin/token': 'Frp Token管理（管理员）',
   '/admin/user': '管理员 用户管理',
+  '/admin/group': '管理员 用户组管理',
+  '/admin/permission': '管理员 权限管理',
   '/user': '用户中心',
 }
 const titleText = computed(() => titleList[urlPath.value])

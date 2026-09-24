@@ -1,17 +1,15 @@
 <script setup>
-import { useAdminUserStore } from '@/stores/admin/admin-user.js'
+import { computed, h, onMounted, ref } from 'vue'
+import { NButton, NFlex, NSwitch, useDialog, useMessage } from 'naive-ui'
 import {
   createAdminUser,
   deleteAdminUser,
   getAdminUserList, passwordAdminUser,
   updateAdminUser,
-} from '@/api/admin/admin-user.js'
-import { NButton, NFlex, NSwitch, useDialog, useMessage } from 'naive-ui'
-import { computed, h, onMounted, ref } from 'vue'
-import { getUserInfo } from '@/api/user.js'
-import { useUserStore } from '@/stores/user.js'
-import { useAdminGroupStore } from '@/stores/admin/admin-group.js'
-import { getAdminGroupList } from '@/api/admin/admin-group.js'
+  getUserInfo,
+  getAdminGroupList,
+} from '@/api'
+import { useAdminUserStore, useUserStore, useAdminGroupStore } from '@/stores'
 
 const dialog = useDialog()
 const message = useMessage()

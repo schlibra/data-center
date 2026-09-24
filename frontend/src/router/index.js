@@ -49,6 +49,16 @@ const router = createRouter({
       component: () => import("@/views/Admin/AdminUserView.vue")
     },
     {
+      path: '/admin/group',
+      name: 'admin group',
+      component: () => import("@/views/Admin/AdminGroupView.vue")
+    },
+    {
+      path: '/admin/permission',
+      name: 'admin permission',
+      component: () => import("@/views/Admin/AdminPermissionView.vue")
+    },
+    {
       path: '/frp/admin/token',
       name: 'frp token admin',
       component: () => import("@/views/Frp-Admin/FrpAdminTokenView.vue")

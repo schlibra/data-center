@@ -1,6 +1,7 @@
 <script setup>
 import { computed, h, ref } from 'vue'
 import { NIcon } from 'naive-ui'
+import router from '@/router'
 import {
   HomeOutline as HomeIcon,
   PlanetOutline as FrpAuthIcon,
@@ -20,9 +21,7 @@ import {
   MailOpenOutline as OutlookIcon,
   CodeSlashOutline as DeveloperIcon,
 } from '@vicons/ionicons5'
-import { useMenuCollapseStore } from '@/stores/menu-collapse.js'
-import router from '@/router/index.js'
-import { useUserStore } from '@/stores/user.js'
+import { useUserStore, useMenuCollapseStore } from '@/stores'
 
 const menuCollapse = useMenuCollapseStore()
 const user = useUserStore()

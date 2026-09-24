@@ -1,12 +1,12 @@
-import { useTokenStore } from '@/stores/token.js'
 import axios from 'axios'
-import { apiBack } from '@/utils/api.js'
+import { useTokenStore } from '@/stores'
+import { apiBack } from '@/utils'
 
 const token = useTokenStore()
 
 async function getFrpAdminTokenList() {
   try {
-    const res = await axios.get("/api/frp/admin/token", token.config)
+    const res = await axios.get('/api/frp/admin/token', token.config)
     return apiBack(res)
   } catch (e) {
     return [false, e]
@@ -22,9 +22,14 @@ async function getFrpAdminTokenInfo(id) {
 }
 async function createFrpAdminToken(name, user) {
   try {
-    const res = await axios.post("/api/frp/admin/token", {
-      user, name
-    }, token.config)
+    const res = await axios.post(
+      '/api/frp/admin/token',
+      {
+        user,
+        name,
+      },
+      token.config,
+    )
     return apiBack(res)
   } catch (e) {
     return [false, e]
@@ -32,9 +37,15 @@ async function createFrpAdminToken(name, user) {
 }
 async function updateFrpAdminToken(id, name, user, enable) {
   try {
-    const res = await axios.put(`/api/frp/admin/token/${id}`, {
-      name, user, enable
-    }, token.config)
+    const res = await axios.put(
+      `/api/frp/admin/token/${id}`,
+      {
+        name,
+        user,
+        enable,
+      },
+      token.config,
+    )
     return apiBack(res)
   } catch (e) {
     return [false, e]

@@ -1,13 +1,12 @@
 import axios from 'axios'
-import { useTokenStore } from '@/stores/token.js'
-import router from '@/router/index.js'
-import { apiBack } from '@/utils/api.js'
+import { useTokenStore } from '@/stores'
+import { apiBack } from '@/utils'
 
 const token = useTokenStore()
 
 async function getFrpTokenList() {
   try {
-    const res = await axios.get("/api/frp/token", token.config)
+    const res = await axios.get('/api/frp/token', token.config)
     return apiBack(res)
   } catch (e) {
     return [false, e]
@@ -16,9 +15,14 @@ async function getFrpTokenList() {
 
 async function updateFrpToken(id, name, enable) {
   try {
-    const res = await axios.put(`/api/frp/token/${id}`, {
-      enable, name
-    }, token.config)
+    const res = await axios.put(
+      `/api/frp/token/${id}`,
+      {
+        enable,
+        name,
+      },
+      token.config,
+    )
     return apiBack(res)
   } catch (e) {
     return [false, e]
@@ -27,9 +31,13 @@ async function updateFrpToken(id, name, enable) {
 
 async function createFrpToken(name) {
   try {
-    const res = await axios.post("/api/frp/token", {
-      name
-    }, token.config)
+    const res = await axios.post(
+      '/api/frp/token',
+      {
+        name,
+      },
+      token.config,
+    )
     return apiBack(res)
   } catch (e) {
     return [false, e]
@@ -54,10 +62,4 @@ async function deleteFrpToken(id) {
   }
 }
 
-export {
-  getFrpTokenList,
-  updateFrpToken,
-  createFrpToken,
-  generateFrpToken,
-  deleteFrpToken,
-}
+export { getFrpTokenList, updateFrpToken, createFrpToken, generateFrpToken, deleteFrpToken }

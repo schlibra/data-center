@@ -1,10 +1,10 @@
 <script setup>
 import { onMounted, ref } from 'vue'
-import { loginKey, loginUser } from '@/api/user.js'
 import { useDialog, useMessage } from 'naive-ui'
-import router from '@/router/index.js'
-import encrypt from '@/utils/encrypt.js'
-import { useTokenStore } from '@/stores/token.js'
+import { encrypt } from '@/utils'
+import router from '@/router'
+import { loginKey, loginUser } from '@/api'
+import { useTokenStore } from '@/stores'
 
 const message = useMessage()
 const dialog = useDialog()
@@ -16,14 +16,14 @@ const passwordRef = ref(null)
 const username = ref('')
 const password = ref('')
 
-const dialogError = msg => {
+const dialogError = (msg) => {
   dialog.error({
     title: '登录失败',
     content: msg,
-    positiveText: "确定",
+    positiveText: '确定',
     onPositiveClick() {
       usernameRef.value.focus()
-    }
+    },
   })
 }
 
@@ -43,7 +43,7 @@ const doLogin = async () => {
     message.success('登录成功')
     token.token = data.token
     setTimeout(() => {
-      router.push("/")
+      router.push('/')
     }, 1500)
   } else {
     dialogError(data)
@@ -55,16 +55,25 @@ onMounted(() => {
 </script>
 
 <template>
-  <n-card style="max-width: 400px; margin-top: 10%;">
+  <n-card style="max-width: 400px; margin-top: 10%">
     <template #header>
       <h3>登录账号</h3>
     </template>
     <n-form>
       <n-form-item label="用户名">
-        <n-input v-model:value="username" ref="usernameRef" @keydown.enter="passwordRef.focus()"></n-input>
+        <n-input
+          v-model:value="username"
+          ref="usernameRef"
+          @keydown.enter="passwordRef.focus()"
+        ></n-input>
       </n-form-item>
       <n-form-item label="密码">
-        <n-input v-model:value="password" type="password" ref="passwordRef" @keydown.enter="doLogin()"></n-input>
+        <n-input
+          v-model:value="password"
+          type="password"
+          ref="passwordRef"
+          @keydown.enter="doLogin()"
+        ></n-input>
       </n-form-item>
     </n-form>
     <template #footer>

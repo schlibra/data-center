@@ -1,13 +1,13 @@
 import axios from 'axios'
-import { useTokenStore } from '@/stores/token.js'
-import { apiBack } from '@/utils/api.js'
+import { useTokenStore } from '@/stores'
+import { apiBack } from '@/utils'
 
 const token = useTokenStore()
 
 async function loginKey(username) {
   try {
-    const res = await axios.put("/api/user/login", {
-      username
+    const res = await axios.put('/api/user/login', {
+      username,
     })
     return apiBack(res)
   } catch (e) {
@@ -16,8 +16,9 @@ async function loginKey(username) {
 }
 async function loginUser(username, password) {
   try {
-    const res = await axios.post("/api/user/login", {
-      username, password
+    const res = await axios.post('/api/user/login', {
+      username,
+      password,
     })
     return apiBack(res)
   } catch (e) {
@@ -26,8 +27,8 @@ async function loginUser(username, password) {
 }
 async function registerKey(username) {
   try {
-    const res = await axios.put("/api/user/register", {
-      username
+    const res = await axios.put('/api/user/register', {
+      username,
     })
     return apiBack(res)
   } catch (e) {
@@ -36,8 +37,10 @@ async function registerKey(username) {
 }
 async function registerUser(username, password, nickname) {
   try {
-    const res = await axios.post("/api/user/register", {
-      username, password, nickname
+    const res = await axios.post('/api/user/register', {
+      username,
+      password,
+      nickname,
     })
     return apiBack(res)
   } catch (e) {
@@ -46,7 +49,7 @@ async function registerUser(username, password, nickname) {
 }
 async function getUserInfo() {
   try {
-    const res = await axios.get("/api/user", token.config)
+    const res = await axios.get('/api/user', token.config)
     return apiBack(res)
   } catch (e) {
     return [false, e]
@@ -54,9 +57,13 @@ async function getUserInfo() {
 }
 async function updateUser(nickname) {
   try {
-    const res = await axios.put("/api/user", {
-      nickname
-    }, token.config)
+    const res = await axios.put(
+      '/api/user',
+      {
+        nickname,
+      },
+      token.config,
+    )
     return apiBack(res)
   } catch (e) {
     return [false, e]
@@ -64,9 +71,13 @@ async function updateUser(nickname) {
 }
 async function setUserPassword(password) {
   try {
-    const res = await axios.patch("/api/user", {
-      password
-    }, token.config)
+    const res = await axios.patch(
+      '/api/user',
+      {
+        password,
+      },
+      token.config,
+    )
     return apiBack(res)
   } catch (e) {
     return [false, e]
@@ -74,7 +85,7 @@ async function setUserPassword(password) {
 }
 async function logoutUser() {
   try {
-    const res = await axios.post("/api/user/logout", {}, token.config)
+    const res = await axios.post('/api/user/logout', {}, token.config)
     return [true, res.data.message]
   } catch (e) {
     return [true, e]
@@ -88,5 +99,5 @@ export {
   getUserInfo,
   updateUser,
   logoutUser,
-  setUserPassword
+  setUserPassword,
 }

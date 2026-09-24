@@ -1,6 +1,6 @@
 import { JSEncrypt } from 'jsencrypt'
 
-export default function encrypt(data, pubKey) {
+export function encrypt(data, pubKey) {
   const e = new JSEncrypt()
   e.setPublicKey(pubKey)
 
