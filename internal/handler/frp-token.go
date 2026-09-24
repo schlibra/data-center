@@ -23,6 +23,9 @@ func CreateFrpTokenHandler(c *gin.Context) {
 	if err := c.ShouldBind(&req); err != nil {
 		sendError(c, err)
 	}
+	if req.Name == "" {
+		sendI18n(c, 400, "frp.token.name_empty", nil)
+	}
 	service.CreateFrpTokenService(c, req, row)
 }
 
@@ -78,7 +81,9 @@ func UpdateFrpTokenHandler(c *gin.Context) {
 	if err := c.ShouldBindUri(&reqId); err != nil {
 		sendError(c, err)
 	}
-
+	if req.Name == "" {
+		sendI18n(c, 400, "frp.token.name_empty", nil)
+	}
 	service.UpdateFrpTokenService(c, req, row, reqId.Id)
 }
 

@@ -51,6 +51,9 @@ func CreateFrpAdminTokenHandler(c *gin.Context) {
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
 	}
+	if req.Name == "" {
+		sendI18n(c, 400, "frp.token.name_empty", nil)
+	}
 	service.CreateFrpAdminTokenService(c, req)
 }
 
@@ -73,6 +76,9 @@ func UpdateFrpAdminTokenHandler(c *gin.Context) {
 	var req request.UpdateFrpAdminToken
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
+	}
+	if req.Name == "" {
+		sendI18n(c, 400, "frp.token.name_empty", nil)
 	}
 	service.UpdateFrpAdminTokenService(c, reqId.Id, req)
 }

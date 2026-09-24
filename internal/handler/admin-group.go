@@ -53,6 +53,9 @@ func CreateAdminGroupHandler(c *gin.Context) {
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
 	}
+	if req.Name == "" {
+		sendI18n(c, 400, "admin.group.name_empty", nil)
+	}
 	service.CreateAdminGroupService(c, req)
 }
 
@@ -75,6 +78,9 @@ func UpdateAdminGroupHandler(c *gin.Context) {
 	var req request.UpdateAdminGroup
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
+	}
+	if req.Name == "" {
+		sendI18n(c, 400, "admin.group.name_empty", nil)
 	}
 	service.UpdateAdminGroupService(c, reqId.Id, req)
 }

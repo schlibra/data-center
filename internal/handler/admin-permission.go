@@ -53,6 +53,9 @@ func CreateAdminPermissionHandler(c *gin.Context) {
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
 	}
+	if req.Key == "" || req.Name == "" {
+		sendI18n(c, 400, "admin.permission.key_name_empty", nil)
+	}
 	service.CreateAdminPermissionService(c, req)
 }
 
@@ -75,6 +78,9 @@ func UpdateAdminPermissionHandler(c *gin.Context) {
 	var req request.UpdateAdminPermission
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
+	}
+	if req.Key == "" || req.Name == "" {
+		sendI18n(c, 400, "admin.permission.key_name_empty", nil)
 	}
 	service.UpdateAdminPermissionService(c, reqId.Id, req)
 }

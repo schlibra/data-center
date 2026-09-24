@@ -55,6 +55,12 @@ func CreateAdminUserHandler(c *gin.Context) {
 		sendError(c, err)
 		return
 	}
+	if req.Username == "" {
+		sendI18n(c, 400, "admin.user.username_empty", nil)
+	}
+	if req.Password == "" {
+		sendI18n(c, 400, "admin.user.password_empty", nil)
+	}
 	var reqId request.UriId
 	if err := c.ShouldBindUri(&reqId); err != nil {
 		sendError(c, err)
@@ -104,6 +110,9 @@ func PasswordAdminUserHandler(c *gin.Context) {
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
 		return
+	}
+	if req.Password == "" {
+		sendI18n(c, 400, "admin.user.password_empty", nil)
 	}
 	var reqId request.UriId
 	if err := c.ShouldBindUri(&reqId); err != nil {
