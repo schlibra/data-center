@@ -1,5 +1,6 @@
 import {
-  apiBack
+  apiBack,
+  apiError
 } from './api.js'
 import {
   calcSize
@@ -10,6 +11,7 @@ import {
 
 export {
   apiBack,
+  apiError,
   calcSize,
   encrypt
 }

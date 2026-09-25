@@ -1,51 +1,46 @@
 import axios from 'axios'
 import { useTokenStore } from '@/stores'
-import { apiBack } from '@/utils'
+import { apiBack, apiError } from '@/utils'
 
 const token = useTokenStore()
 
 async function getAdminPermissionList() {
   try {
-    const res = await axios.get('/api/admin/permission', token.config)
-    return apiBack(res)
+    return apiBack(await axios.get('/api/admin/permission', token.config))
   } catch (e) {
-    return [false, e]
+    return apiError(e)
   }
 }
 async function getAdminPermissionInfo(id) {
   try {
-    const res = await axios.get(`/api/admin/permission/${id}`, token.config)
-    return apiBack(res)
+    return apiBack(await axios.get(`/api/admin/permission/${id}`, token.config))
   } catch (e) {
-    return [false, e]
+    return apiError(e)
   }
 }
 async function createAdminPermission(key, name, parent) {
   try {
-    const res = await axios.post("/api/admin/permission", {
+    return apiBack(await axios.post("/api/admin/permission", {
       key, name, parent
-    }, token.config)
-    return apiBack(res)
+    }, token.config))
   } catch (e) {
-    return [false, e]
+    return apiError(e)
   }
 }
 async function updateAdminPermission(id, key, name, parent) {
   try {
-    const res = await axios.put(`/api/admin/permission/${id}`, {
+    return apiBack(await axios.put(`/api/admin/permission/${id}`, {
       key, name, parent
-    }, token.config)
-    return apiBack(res)
+    }, token.config))
   } catch (e) {
-    return [false, e]
+    return apiError(e)
   }
 }
 async function deleteAdminPermission(id) {
   try {
-    const res = await axios.delete(`/api/admin/permission/${id}`, token.config)
-    return apiBack(res)
+    return apiBack(await axios.delete(`/api/admin/permission/${id}`, token.config))
   } catch (e) {
-    return [false, e]
+    return apiError(e)
   }
 }
 

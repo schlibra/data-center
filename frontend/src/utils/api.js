@@ -17,3 +17,6 @@ export function apiBack(res) {
     return [false, res.statusText]
   }
 }
+export function apiError(e) {
+  return [false, `${e.name}: ${e.message}`]
+}

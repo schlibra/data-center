@@ -1,94 +1,86 @@
 import axios from 'axios'
 import { useTokenStore } from '@/stores'
-import { apiBack } from '@/utils'
+import { apiBack, apiError } from '@/utils'
 
 const token = useTokenStore()
 
 async function loginKey(username) {
   try {
-    const res = await axios.put('/api/user/login', {
+    return apiBack(await axios.put('/api/user/login', {
       username,
-    })
-    return apiBack(res)
+    }))
   } catch (e) {
-    return [false, e]
+    return apiError(e)
   }
 }
 async function loginUser(username, password) {
   try {
-    const res = await axios.post('/api/user/login', {
+    return apiBack(await axios.post('/api/user/login', {
       username,
       password,
-    })
-    return apiBack(res)
+    }))
   } catch (e) {
-    return [false, e]
+    return apiError(e)
   }
 }
 async function registerKey(username) {
   try {
-    const res = await axios.put('/api/user/register', {
+    return apiBack(await axios.put('/api/user/register', {
       username,
-    })
-    return apiBack(res)
+    }))
   } catch (e) {
-    return [false, e]
+    return apiError(e)
   }
 }
 async function registerUser(username, password, nickname) {
   try {
-    const res = await axios.post('/api/user/register', {
+    return apiBack(await axios.post('/api/user/register', {
       username,
       password,
       nickname,
-    })
-    return apiBack(res)
+    }))
   } catch (e) {
-    return [false, e]
+    return apiError(e)
   }
 }
 async function getUserInfo() {
   try {
-    const res = await axios.get('/api/user', token.config)
-    return apiBack(res)
+    return apiBack(await axios.get('/api/user', token.config))
   } catch (e) {
-    return [false, e]
+    return apiError(e)
   }
 }
 async function updateUser(nickname) {
   try {
-    const res = await axios.put(
+    return apiBack(await axios.put(
       '/api/user',
       {
         nickname,
       },
       token.config,
-    )
-    return apiBack(res)
+    ))
   } catch (e) {
-    return [false, e]
+    return apiError(e)
   }
 }
 async function setUserPassword(password) {
   try {
-    const res = await axios.patch(
+    return apiBack(await axios.patch(
       '/api/user',
       {
         password,
       },
       token.config,
-    )
-    return apiBack(res)
+    ))
   } catch (e) {
-    return [false, e]
+    return apiError(e)
   }
 }
 async function logoutUser() {
   try {
-    const res = await axios.post('/api/user/logout', {}, token.config)
-    return [true, res.data.message]
+    return apiBack(await axios.post('/api/user/logout', {}, token.config))
   } catch (e) {
-    return [true, e]
+    return apiError(e)
   }
 }
 export {

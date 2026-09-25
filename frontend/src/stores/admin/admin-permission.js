@@ -7,7 +7,7 @@ export const useAdminPermissionStore = defineStore("admin-permission", {
     const count = computed(() => permissions.value.length)
     return {
       permissions,
-      count
+      count,
     }
   },
   persist: true

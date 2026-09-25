@@ -1,10 +1,12 @@
 <script setup>
 import { onMounted, ref } from 'vue'
-import { useDialog, useLoadingBar } from 'naive-ui'
+import { useDialog, useLoadingBar, useMessage } from 'naive-ui'
 import { getUserInfo } from '@/api'
 import { useUserStore, useTokenStore } from '@/stores'
+import router from '@/router'
 
 const loadingBar = useLoadingBar()
+const message = useMessage()
 const dialog = useDialog()
 const tokenRef = ref(null)
 const user = useUserStore()
@@ -33,8 +35,24 @@ async function loadUserInfo() {
 }
 async function loadDataList() {
   loadingBar.start()
-  if (!await loadUserInfo()) return
+  if (!(await loadUserInfo())) return
   loadingBar.finish()
+}
+function clearData() {
+  dialog.info({
+    title: '是否清空数据',
+    content: '清空数据后将需要重新登录',
+    positiveText: '确定',
+    negativeText: '取消',
+    positiveButtonProps: {
+      type: 'error'
+    },
+    onPositiveClick() {
+      localStorage.clear()
+      message.success('数据清空成功')
+      router.push('/login')
+    }
+  })
 }
 onMounted(async () => {
   await loadDataList()
@@ -59,6 +77,14 @@ onMounted(async () => {
           ></n-input>
           <n-button size="large" type="primary" @click="copyToken()">复制</n-button>
         </n-flex>
+      </n-form-item>
+      <n-form-item label="清空数据">
+        <n-space vertical>
+          <n-text style="color: gray"
+            >这个操作将会清空该站点在本地存储的所有数据，可能可以解决一些问题，清空后需要重新登录</n-text
+          >
+          <n-button type="error" size="large" @click="clearData()">清空数据</n-button>
+        </n-space>
       </n-form-item>
     </n-form>
   </n-card>
