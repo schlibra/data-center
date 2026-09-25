@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 export const useUserStore = defineStore("user", {
   state() {
@@ -9,6 +9,13 @@ export const useUserStore = defineStore("user", {
     const groupId = ref("")
     const groupName = ref("")
     const isAdmin = ref(false)
+    const permissionList = ref([])
+    const permissionKeys = computed(() => permissionList.value.map(item => {
+      return item.key
+    }))
+    const hasPermission = key => {
+      return permissionKeys.value.indexOf(key) > -1 || isAdmin.value
+    }
 
     const setUserInfo = data => {
       userId.value = data.id
@@ -17,6 +24,7 @@ export const useUserStore = defineStore("user", {
       groupId.value = data.group
       groupName.value = data.group_info.name
       isAdmin.value = data.group_info.admin === 1
+      permissionList.value = data.permissions
     }
     return {
       userId,
@@ -25,7 +33,10 @@ export const useUserStore = defineStore("user", {
       groupId,
       groupName,
       isAdmin,
+      permissionList,
+      permissionKeys,
       setUserInfo,
+      hasPermission
     }
   },
   persist: true

@@ -8,7 +8,7 @@ import {
   generateFrpToken,
   getFrpTokenList,
   updateFrpToken,
-  getUserInfo
+  getUserInfo,
 } from '@/api'
 import { useFrpTokenStore, useFrpConfigStore, useUserStore } from '@/stores'
 
@@ -158,8 +158,9 @@ async function generateToken(row) {
           content: data,
           negativeText: '确定',
         })
+      } else {
+        message.success('生成成功')
       }
-      message.success('生成成功')
       await loadDataList()
     },
   })
@@ -179,8 +180,9 @@ async function deleteToken(row) {
           content: data,
           negativeText: '确定',
         })
+      } else {
+        message.success('删除成功')
       }
-      message.success('删除成功')
       await loadDataList()
     },
   })
@@ -234,7 +236,7 @@ async function submitModal() {
 
 async function loadDataList() {
   loadingBar.start()
-  if (!await loadUserInfo()) return
+  if (!(await loadUserInfo())) return
   if (!(await loadFrpTokenList())) return
   loadingBar.finish()
 }

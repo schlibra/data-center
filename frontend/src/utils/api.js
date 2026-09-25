@@ -8,7 +8,9 @@ export function apiBack(res) {
       router.push('/login')
       return [false, res.data.message]
     } else if (res.data.code === 403) {
-      router.push('/')
+      if (location.pathname.startsWith("/admin")) {
+        router.push('/')
+      }
       return [false, res.data.message]
     } else {
       return [false, res.data.message]

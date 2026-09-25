@@ -31,6 +31,9 @@ func ListAdminPermissionService(c *gin.Context) {
 	}
 	permissionResult := make([]models.PermissionTable, 0)
 	for _, permission := range permissionList {
+		if permission.Children == nil {
+			permission.Children = make([]models.PermissionTable, 0)
+		}
 		permissionResult = append(permissionResult, *permission)
 	}
 	sendI18n(c, 200, "admin.permission.get_success", permissionResult)
@@ -70,7 +73,11 @@ func UpdateAdminPermissionService(c *gin.Context, id int, req request.UpdateAdmi
 		sendError(c, err)
 	}
 	defer closeDB(permission.DB)
-	if _, err := permission.SelectById(id); err == nil {
+	permissionRow, err := permission.SelectById(id)
+	if err != nil {
+		sendI18n(c, 400, "admin.permission.not_exists", nil)
+	}
+	if _, err := permission.SelectByKey(req.Key); err == nil && permissionRow.Key != req.Key {
 		sendI18n(c, 400, "admin.permission.exists", nil)
 	}
 	if nw(c) {
@@ -87,8 +94,8 @@ func DeleteAdminPermissionService(c *gin.Context, id int) {
 		sendError(c, err)
 	}
 	defer closeDB(permission.DB)
-	if _, err := permission.SelectById(id); err == nil {
-		sendI18n(c, 400, "admin.permission.exists", nil)
+	if _, err := permission.SelectById(id); err != nil {
+		sendI18n(c, 400, "admin.permission.not_exists", nil)
 	}
 	if nw(c) {
 		if _, err := permission.DeleteById(id); err != nil {

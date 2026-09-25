@@ -105,6 +105,13 @@ onMounted(async () => {
       <n-form-item label="用户组">
         <n-input :value="user.groupName" readonly disabled></n-input>
       </n-form-item>
+      <n-form-item label="用户权限" v-if="!user.isAdmin">
+        <n-list>
+          <n-list-item v-for="item in user.permissionList">
+            <n-thing :title="item.name" :description="item.key"></n-thing>
+          </n-list-item>
+        </n-list>
+      </n-form-item>
       <n-form-item label="密码">
         <n-flex :wrap="false">
           <n-input v-model:value="password" type="password" placeholder="设置密码" @keydown.enter="updateUserPassword()"></n-input>

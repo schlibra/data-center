@@ -163,7 +163,7 @@ func UserInfoService(c *gin.Context, row models.UserTable) {
 		if err := json.Unmarshal([]byte(row.GroupInfo.Permission), &groupPermission); err != nil {
 			sendError(c, err)
 		}
-		var permissionList []map[string]string
+		permissionList := make([]map[string]string, 0)
 		permissions, err := permission.SelectAll()
 		if err != nil {
 			sendError(c, err)
@@ -178,6 +178,7 @@ func UserInfoService(c *gin.Context, row models.UserTable) {
 		}
 		row.Password = "********"
 		row.TokenID = "********"
+		row.Permissions = permissionList
 		sendJson(c, 200, i18n.MustGetMessage(c, "user.info.success"), row)
 	} else {
 		sendI18n(c, 403, "user.login.disabled", nil)

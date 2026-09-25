@@ -2,7 +2,7 @@
 import { NButton, NFlex, NSwitch, useDialog, useLoadingBar, useMessage } from 'naive-ui'
 import { computed, h, onMounted, ref } from 'vue'
 import {
-  createAdminGroup,
+  createAdminGroup, deleteAdminGroup,
   getAdminGroupList,
   getAdminPermissionList,
   getUserInfo,
@@ -168,7 +168,27 @@ async function submitModal() {
   }
   await loadDataList()
 }
-async function deleteGroup(row) {}
+function deleteGroup(row) {
+  dialog.info({
+    title: '是否删除',
+    content: `是否删除用户组${row.name}？`,
+    positiveText: '确定',
+    negativeText: '取消',
+    async onPositiveClick() {
+      let [status, data] = await deleteAdminGroup(row.id)
+      if (!status) {
+        dialog.error({
+          title: '删除失败',
+          content: data,
+          positiveText: '确定'
+        })
+      } else {
+        message.success('删除成功')
+      }
+      await loadDataList()
+    }
+  })
+}
 async function loadUserInfo() {
   let [status, data] = await getUserInfo()
   if (!status) {

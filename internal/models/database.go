@@ -1,14 +1,15 @@
 package models
 
 type UserTable struct {
-	ID        int        `json:"id"`
-	Username  string     `json:"username"`
-	Password  string     `json:"password"`
-	Nickname  string     `json:"nickname"`
-	Group     int        `json:"group"`
-	Enable    int        `json:"enable"`
-	TokenID   string     `json:"token_id"`
-	GroupInfo GroupTable `json:"group_info"`
+	ID          int                 `json:"id"`
+	Username    string              `json:"username"`
+	Password    string              `json:"password"`
+	Nickname    string              `json:"nickname"`
+	Group       int                 `json:"group"`
+	Enable      int                 `json:"enable"`
+	TokenID     string              `json:"token_id"`
+	GroupInfo   GroupTable          `json:"group_info"`
+	Permissions []map[string]string `json:"permissions"`
 }
 
 type GroupTable struct {

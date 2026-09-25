@@ -44,25 +44,30 @@ const menuOptions = computed(() => [
     label: 'Frp',
     icon: renderIcon(FrpAuthIcon),
     key: '/frp',
+    show: user.hasPermission('menu.frp'),
     children: [
       {
         label: 'Token管理',
         icon: renderIcon(TokenIcon),
+        show: user.hasPermission('frp.token.get'),
         key: '/frp/token',
       },
       {
         label: '端口规则管理',
         icon: renderIcon(PortIcon),
+        show: user.hasPermission('frp.rule.get'),
         key: '/frp/rule',
       },
       {
         label: '客户端管理',
         icon: renderIcon(ClientIcon),
+        show: user.hasPermission('frp.api.client'),
         key: '/frp/client',
       },
       {
         label: '映射管理',
         icon: renderIcon(ProxyIcon),
+        show: user.hasPermission('frp.api.proxy'),
         key: '/frp/proxy',
       },
       {
@@ -103,6 +108,7 @@ const menuOptions = computed(() => [
   {
     label: '邮箱管理',
     key: '/mail',
+    show: user.hasPermission('menu.mail'),
     icon: renderIcon(MailIcon),
     children: [
       {
@@ -120,6 +126,7 @@ const menuOptions = computed(() => [
   {
     label: 'Outlook管理',
     key: '/outlook',
+    show: user.hasPermission('menu.outlook'),
     icon: renderIcon(OutlookIcon),
     children: [
       {
@@ -166,7 +173,7 @@ const menuOptions = computed(() => [
     label: '开发者功能',
     icon: renderIcon(DeveloperIcon),
     key: '/developer',
-    show: user.isAdmin,
+    show: user.hasPermission('menu.developer'),
   },
 ])
 

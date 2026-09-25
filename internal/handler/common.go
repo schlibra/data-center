@@ -73,7 +73,9 @@ func checkPermission(c *gin.Context, pmsKey string) {
 	}
 	p, err := permission.SelectByKey(pmsKey)
 	if err != nil {
-		sendError(c, err)
+		sendI18n(c, 403, "user.permission.denied", H{
+			"error": err.Error(),
+		})
 	}
 	if !slices.Contains(groupPmsList, p.ID) {
 		sendI18n(c, 403, "user.permission.denied", nil)

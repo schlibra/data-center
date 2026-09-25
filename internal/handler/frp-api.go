@@ -61,6 +61,6 @@ func ProxiesFrpApiHandler(c *gin.Context) {
 // @Router /frp/api/client [get]
 func ClientsFrpApiHandler(c *gin.Context) {
 	row := parseToken(c)
-	checkPermission(c, "frp.api.clients")
+	checkPermission(c, "frp.api.client")
 	service.ClientFrpApiService(c, row)
 }

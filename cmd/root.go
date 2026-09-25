@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"embed"
 	"log"
 	"os"
 	"path/filepath"
@@ -9,7 +10,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func Execute() {
+var EmbedFS embed.FS
+
+func Execute(embedFs embed.FS) {
+	EmbedFS = embedFs
 	if !service.Interactive() {
 		RunService()
 		return

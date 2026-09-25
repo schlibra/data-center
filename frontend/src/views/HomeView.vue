@@ -155,10 +155,18 @@ async function loadFrpAdminProxyList() {
 }
 async function loadBasicData() {
   if (!(await loadUserInfo())) return
-  if (!(await loadFrpTokenList())) return
-  if (!(await loadFrpRuleList())) return
-  if (!(await loadFrpClientList())) return
-  if (!(await loadFrpProxyList())) return
+  if (user.hasPermission('frp.token.get')) {
+    if (!(await loadFrpTokenList())) return
+  }
+  if (user.hasPermission('frp.rule.get')) {
+    if (!(await loadFrpRuleList())) return
+  }
+  if (user.hasPermission('frp.api.client')) {
+    if (!(await loadFrpClientList())) return
+  }
+  if (user.hasPermission('frp.api.proxy')) {
+    if (!(await loadFrpProxyList())) return
+  }
   return true
 }
 async function loadAdminData() {
@@ -173,8 +181,8 @@ async function loadAdminData() {
 }
 async function loadDataList() {
   loadingBar.start()
-  if (!await loadBasicData()) return
-  if (user.isAdmin) if (!await loadAdminData()) return;
+  if (!(await loadBasicData())) return
+  if (user.isAdmin) if (!(await loadAdminData())) return
   loadingBar.finish()
 }
 
@@ -192,36 +200,28 @@ onMounted(async () => {
       <n-divider title-placement="left">用户信息</n-divider>
       <n-flex>
         <n-statistic label="用户ID" :value="user.userId"></n-statistic>
-        <n-divider vertical style="height: 64px"></n-divider>
         <n-statistic label="用户名" :value="user.username"></n-statistic>
-        <n-divider vertical style="height: 64px"></n-divider>
         <n-statistic label="昵称" :value="user.nickname"></n-statistic>
-        <n-divider vertical style="height: 64px"></n-divider>
         <n-statistic label="用户组名称" :value="user.groupName"></n-statistic>
-        <n-divider vertical style="height: 64px"></n-divider>
         <n-statistic label="用户组ID" :value="user.groupId"></n-statistic>
-        <n-divider vertical style="height: 64px"></n-divider>
         <n-statistic label="用户中心">
           <n-button @click="goUser()" size="small" type="primary">用户中心</n-button>
         </n-statistic>
       </n-flex>
     </div>
-    <div>
+    <div v-if="user.hasPermission('menu.frp')">
       <n-divider title-placement="left">Frp信息</n-divider>
       <n-flex>
-        <n-statistic label="Token数量">
+        <n-statistic label="Token数量" v-if="user.hasPermission('frp.token.get')">
           <n-number-animation :from="0" :to="frpToken.count"></n-number-animation>
         </n-statistic>
-        <n-divider vertical style="height: 64px"></n-divider>
-        <n-statistic label="端口规则数量">
+        <n-statistic label="端口规则数量" v-if="user.hasPermission('frp.rule.get')">
           <n-number-animation :from="0" :to="frpRule.count"></n-number-animation>
         </n-statistic>
-        <n-divider vertical style="height: 64px"></n-divider>
-        <n-statistic label="客户端数量">
+        <n-statistic label="客户端数量" v-if="user.hasPermission('frp.api.client')">
           <n-number-animation :from="0" :to="frpClient.count"></n-number-animation>
         </n-statistic>
-        <n-divider vertical style="height: 64px"></n-divider>
-        <n-statistic label="映射数量">
+        <n-statistic label="映射数量" v-if="user.hasPermission('frp.api.proxy')">
           <n-number-animation :from="0" :to="frpProxy.count"></n-number-animation>
         </n-statistic>
       </n-flex>
@@ -232,15 +232,12 @@ onMounted(async () => {
         <n-statistic label="Token数量">
           <n-number-animation :from="0" :to="frpAdminToken.count"></n-number-animation>
         </n-statistic>
-        <n-divider vertical style="height: 64px"></n-divider>
         <n-statistic label="端口规则数量">
           <n-number-animation :from="0" :to="frpAdminRule.count"></n-number-animation>
         </n-statistic>
-        <n-divider vertical style="height: 64px"></n-divider>
         <n-statistic label="客户端数量">
           <n-number-animation :from="0" :to="frpAdminClient.count"></n-number-animation>
         </n-statistic>
-        <n-divider vertical style="height: 64px"></n-divider>
         <n-statistic label="映射数量">
           <n-number-animation :from="0" :to="frpAdminProxy.count"></n-number-animation>
         </n-statistic>
@@ -252,11 +249,9 @@ onMounted(async () => {
         <n-statistic label="用户数量">
           <n-number-animation :from="0" :to="adminUser.count"></n-number-animation>
         </n-statistic>
-        <n-divider vertical style="height: 64px"></n-divider>
         <n-statistic label="用户组数量">
           <n-number-animation :from="0" :to="adminGroup.count"></n-number-animation>
         </n-statistic>
-        <n-divider vertical style="height: 64px"></n-divider>
         <n-statistic label="用户权限数量">
           <n-number-animation :from="0" :to="adminPermission.count"></n-number-animation>
         </n-statistic>

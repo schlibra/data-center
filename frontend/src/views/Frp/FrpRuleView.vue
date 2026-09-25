@@ -1,7 +1,14 @@
 <script setup>
 import { computed, h, onMounted, ref } from 'vue'
 import { NButton, NFlex, useDialog, useLoadingBar, useMessage } from 'naive-ui'
-import { getFrpTokenList, createFrpRule, deleteFrpRule, getFrpRuleList, updateFrpRule, getUserInfo } from '@/api'
+import {
+  getFrpTokenList,
+  createFrpRule,
+  deleteFrpRule,
+  getFrpRuleList,
+  updateFrpRule,
+  getUserInfo,
+} from '@/api'
 import { useFrpTokenStore, useFrpRuleStore, useUserStore } from '@/stores'
 
 const dialog = useDialog()
@@ -113,9 +120,9 @@ async function loadFrpRuleList() {
 }
 async function loadDataList() {
   loadingBar.start()
-  if (!await loadUserInfo()) return
-  if (!await loadFrpTokenList()) return
-  if (!await loadFrpRuleList()) return
+  if (!(await loadUserInfo())) return
+  if (!(await loadFrpTokenList())) return
+  if (!(await loadFrpRuleList())) return
   loadingBar.finish()
 }
 async function deleteRule(row) {
@@ -132,8 +139,9 @@ async function deleteRule(row) {
           content: data,
           negativeText: '确定',
         })
+      } else {
+        message.success('删除成功')
       }
-      message.success('删除成功')
       await loadDataList()
     },
   })
@@ -164,8 +172,9 @@ async function submitModal() {
         content: data,
         positiveText: '确定',
       })
+    } else {
+      message.success('创建成功')
     }
-    message.success('创建成功')
   } else {
     let [status, data] = await updateFrpRule(
       ruleId.value,
@@ -179,8 +188,9 @@ async function submitModal() {
         content: data,
         positiveText: '确定',
       })
+    } else {
+      message.success('修改成功')
     }
-    message.success('修改成功')
   }
   await loadDataList()
 }
