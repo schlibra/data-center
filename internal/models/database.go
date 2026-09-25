@@ -19,10 +19,11 @@ type GroupTable struct {
 }
 
 type PermissionTable struct {
-	ID     int    `json:"id"`
-	Key    string `json:"key"`
-	Name   string `json:"name"`
-	Parent int    `json:"parent"`
+	ID       int               `json:"id"`
+	Key      string            `json:"key"`
+	Name     string            `json:"name"`
+	Parent   int               `json:"parent"`
+	Children []PermissionTable `json:"children"`
 }
 
 type FrpRuleTable struct {

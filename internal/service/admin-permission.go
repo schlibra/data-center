@@ -1,6 +1,7 @@
 package service
 
 import (
+	"data-center/internal/models"
 	"data-center/internal/models/request"
 	"data-center/internal/repository"
 
@@ -17,7 +18,22 @@ func ListAdminPermissionService(c *gin.Context) {
 	if err != nil {
 		sendError(c, err)
 	}
-	sendI18n(c, 200, "admin.permission.get_success", permissions)
+	permissionList := make(map[int]*models.PermissionTable)
+	for _, permission := range permissions {
+		if permission.Parent == 0 {
+			permissionList[permission.ID] = &permission
+		}
+	}
+	for _, permission := range permissions {
+		if permission.Parent != 0 {
+			permissionList[permission.Parent].Children = append(permissionList[permission.Parent].Children, permission)
+		}
+	}
+	permissionResult := make([]models.PermissionTable, 0)
+	for _, permission := range permissionList {
+		permissionResult = append(permissionResult, *permission)
+	}
+	sendI18n(c, 200, "admin.permission.get_success", permissionResult)
 }
 func GetAdminPermissionService(c *gin.Context, id int) {
 	permission, err := repository.NewPermission()
