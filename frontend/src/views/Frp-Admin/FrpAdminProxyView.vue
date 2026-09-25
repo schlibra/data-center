@@ -2,7 +2,7 @@
 import { h, onMounted } from 'vue'
 import { NTag, useDialog, useLoadingBar } from 'naive-ui'
 import { calcSize } from '@/utils'
-import { getFrpProxyList, getUserInfo } from '@/api'
+import { getFrpAdminProxyList, getFrpProxyList, getUserInfo } from '@/api'
 import { useFrpProxyStore, useUserStore } from '@/stores'
 
 const dialog = useDialog()
@@ -131,7 +131,7 @@ async function loadUserInfo() {
   return true
 }
 async function loadFrpProxyList() {
-  let [status, data] = await getFrpProxyList()
+  let [status, data] = await getFrpAdminProxyList()
   if (!status) {
     return dialogError(data)
   }
@@ -140,7 +140,7 @@ async function loadFrpProxyList() {
 }
 async function loadDataList() {
   loadingBar.start()
-  if (!await loadUserInfo()) return
+  if (!(await loadUserInfo())) return
   if (!await loadFrpProxyList()) return
   loadingBar.finish()
 }
@@ -152,7 +152,7 @@ onMounted(async () => {
 <template>
   <n-card>
     <template #header>
-      <h3>Frp 映射管理</h3>
+      <h3>Frp 映射管理（管理员）</h3>
     </template>
     <n-data-table :data="frpProxy.proxy" :columns="columns"></n-data-table>
   </n-card>

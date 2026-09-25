@@ -1,6 +1,6 @@
 <script setup>
 import { h, onMounted, ref } from 'vue'
-import { NButton, NFlex, NSwitch, useDialog, useMessage } from 'naive-ui'
+import { NButton, NFlex, NSwitch, useDialog, useLoadingBar, useMessage } from 'naive-ui'
 import router from '@/router'
 import {
   createFrpToken,
@@ -14,6 +14,7 @@ import { useFrpTokenStore, useFrpConfigStore, useUserStore } from '@/stores'
 
 const dialog = useDialog()
 const message = useMessage()
+const loadingBar = useLoadingBar()
 const user = useUserStore()
 const frpToken = useFrpTokenStore()
 const frpConfig = useFrpConfigStore()
@@ -122,6 +123,7 @@ const dialogError = (msg) => {
     content: msg,
     positiveText: '确定',
   })
+  loadingBar.error()
 }
 
 async function loadFrpTokenList() {
@@ -231,8 +233,10 @@ async function submitModal() {
 }
 
 async function loadDataList() {
+  loadingBar.start()
+  if (!await loadUserInfo()) return
   if (!(await loadFrpTokenList())) return
-  await loadUserInfo()
+  loadingBar.finish()
 }
 
 onMounted(async () => {

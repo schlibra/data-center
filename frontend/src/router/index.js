@@ -64,6 +64,21 @@ const router = createRouter({
       component: () => import("@/views/Frp-Admin/FrpAdminTokenView.vue")
     },
     {
+      path: '/frp/admin/rule',
+      name: 'frp rule admin',
+      component: () => import("@/views/Frp-Admin/FrpAdminRuleView.vue")
+    },
+    {
+      path: '/frp/admin/client',
+      name: 'frp client admin',
+      component: () => import('@/views/Frp-Admin/FrpAdminClientView.vue')
+    },
+    {
+      path: '/frp/admin/proxy',
+      name: 'frp proxy admin',
+      component: () => import('@/views/Frp-Admin/FrpAdminProxyView.vue')
+    },
+    {
       path: '/user',
       name: 'user',
       component: () => import("@/views/User/UserView.vue")

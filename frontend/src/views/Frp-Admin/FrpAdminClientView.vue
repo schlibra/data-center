@@ -1,7 +1,7 @@
 <script setup>
 import { h, onMounted } from 'vue'
 import { NTag, useDialog, useLoadingBar } from 'naive-ui'
-import { getFrpClientList, getUserInfo } from '@/api'
+import { getFrpAdminClientList, getFrpClientList, getUserInfo } from '@/api'
 import { useFrpClientStore, useUserStore } from '@/stores'
 
 const dialog = useDialog()
@@ -71,16 +71,16 @@ const columns = [
     },
   },
 ]
-const dialogError = content => {
+const dialogError = (content) => {
   dialog.error({
-    title: "数据获取失败",
+    title: '数据获取失败',
     content,
-    positiveText: "确定"
+    positiveText: '确定',
   })
   loadingBar.error()
 }
 async function loadFrpClientList() {
-  let [status, data] = await getFrpClientList()
+  let [status, data] = await getFrpAdminClientList()
   if (!status) {
     return dialogError(data)
   }
@@ -97,7 +97,7 @@ async function loadUserInfo() {
 }
 async function loadDataList() {
   loadingBar.start()
-  if (!await loadUserInfo()) return
+  if (!(await loadUserInfo())) return
   if (!await loadFrpClientList()) return
   loadingBar.finish()
 }
@@ -109,7 +109,7 @@ onMounted(async () => {
 <template>
   <n-card>
     <template #header>
-      <h3>Frp 客户端管理</h3>
+      <h3>Frp 客户端管理（管理员）</h3>
     </template>
     <n-data-table :data="frpClient.client" :columns="columns"></n-data-table>
   </n-card>

@@ -1,8 +1,16 @@
 import {
-  getAdminGroupList
+  getAdminGroupList,
+  getAdminGroupInfo,
+  updateAdminGroup,
+  createAdminGroup,
+  deleteAdminGroup,
 } from './admin/admin-group.js'
 import {
-  getAdminPermissionList
+  getAdminPermissionList,
+  getAdminPermissionInfo,
+  updateAdminPermission,
+  createAdminPermission,
+  deleteAdminPermission,
 } from './admin/admin-permission.js'
 import {
   getAdminUserList,
@@ -18,6 +26,7 @@ import {
 } from './frp/frp-api.js'
 import {
   getFrpRuleList,
+  getFrpRuleInfo,
   updateFrpRule,
   createFrpRule,
   deleteFrpRule
@@ -61,7 +70,15 @@ import {
 
 export {
   getAdminGroupList,
+  getAdminGroupInfo,
+  updateAdminGroup,
+  createAdminGroup,
+  deleteAdminGroup,
   getAdminPermissionList,
+  getAdminPermissionInfo,
+  updateAdminPermission,
+  createAdminPermission,
+  deleteAdminPermission,
   getAdminUserList,
   getAdminUserInfo,
   createAdminUser,
@@ -71,6 +88,7 @@ export {
   getFrpProxyList,
   getFrpClientList,
   getFrpRuleList,
+  getFrpRuleInfo,
   updateFrpRule,
   createFrpRule,
   deleteFrpRule,

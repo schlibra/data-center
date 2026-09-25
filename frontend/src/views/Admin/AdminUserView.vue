@@ -1,6 +1,6 @@
 <script setup>
 import { computed, h, onMounted, ref } from 'vue'
-import { NButton, NFlex, NSwitch, useDialog, useMessage } from 'naive-ui'
+import { NButton, NFlex, NSwitch, useDialog, useLoadingBar, useMessage } from 'naive-ui'
 import {
   createAdminUser,
   deleteAdminUser,
@@ -13,6 +13,7 @@ import { useAdminUserStore, useUserStore, useAdminGroupStore } from '@/stores'
 
 const dialog = useDialog()
 const message = useMessage()
+const loadingBar = useLoadingBar()
 const user = useUserStore()
 const adminUser = useAdminUserStore()
 const adminGroup = useAdminGroupStore()
@@ -107,6 +108,7 @@ const dialogError = (content) => {
     content,
     positiveText: '确定',
   })
+  loadingBar.error()
 }
 async function loadUserInfo() {
   let [status, data] = await getUserInfo()
@@ -133,9 +135,11 @@ async function loadAdminGroupList() {
   return true
 }
 async function loadDataList() {
+  loadingBar.start()
   if (!(await loadUserInfo())) return
   if (!(await loadAdminGroupList())) return
-  await loadAdminUserList()
+  if (!await loadAdminUserList()) return
+  loadingBar.finish()
 }
 function openPasswordModal(row) {
   userId.value = row.id

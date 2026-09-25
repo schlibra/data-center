@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted } from 'vue'
-import { useDialog } from 'naive-ui'
+import { useDialog, useLoadingBar } from 'naive-ui'
 import {
   useAdminGroupStore,
   useAdminPermissionStore,
@@ -29,7 +29,9 @@ import {
   getFrpTokenList,
   getUserInfo,
 } from '@/api'
+import router from '@/router/index.js'
 
+const loadingBar = useLoadingBar()
 const dialog = useDialog()
 const user = useUserStore()
 const frpToken = useFrpTokenStore()
@@ -50,8 +52,11 @@ const dialogError = (msg) => {
     content: msg,
     positiveText: '确定',
   })
+  loadingBar.error()
 }
-
+function goUser() {
+  router.push('/user')
+}
 async function loadUserInfo() {
   let [status, data] = await getUserInfo()
   if (!status) {
@@ -163,77 +168,105 @@ async function loadAdminData() {
   if (!(await loadFrpAdminTokenList())) return
   if (!(await loadFrpAdminRuleList())) return
   if (!(await loadFrpAdminClientList())) return
-  await loadFrpAdminProxyList()
+  if (!(await loadFrpAdminProxyList())) return
+  return true
+}
+async function loadDataList() {
+  loadingBar.start()
+  if (!await loadBasicData()) return
+  if (user.isAdmin) if (!await loadAdminData()) return;
+  loadingBar.finish()
 }
 
 onMounted(async () => {
-  if (!(await loadBasicData())) return
-  if (user.isAdmin) {
-    await loadAdminData()
-  }
+  await loadDataList()
 })
 </script>
 
 <template>
   <n-card>
     <template #header>
-      <h3>首页</h3>
+      <h3 style="margin-bottom: 0 !important">首页</h3>
     </template>
-    <span>用户信息</span>
-    <n-flex>
-      <n-statistic label="用户ID" :value="user.userId"></n-statistic>
-      <n-statistic label="用户名" :value="user.username"></n-statistic>
-      <n-statistic label="昵称" :value="user.nickname"></n-statistic>
-      <n-statistic label="用户组名称" :value="user.groupName"></n-statistic>
-      <n-statistic label="用户组ID" :value="user.groupId"></n-statistic>
-    </n-flex>
-    <span>Frp信息</span>
-    <n-flex>
-      <n-statistic label="Token数量">
-        <n-number-animation :from="0" :to="frpToken.count"></n-number-animation>
-      </n-statistic>
-      <n-statistic label="端口规则数量">
-        <n-number-animation :from="0" :to="frpRule.count"></n-number-animation>
-      </n-statistic>
-      <n-statistic label="客户端数量">
-        <n-number-animation :from="0" :to="frpClient.count"></n-number-animation>
-      </n-statistic>
-      <n-statistic label="映射数量">
-        <n-number-animation :from="0" :to="frpProxy.count"></n-number-animation>
-      </n-statistic>
-    </n-flex>
-    <template v-if="user.isAdmin">
-      <span>Frp信息（管理员）</span>
+    <div>
+      <n-divider title-placement="left">用户信息</n-divider>
+      <n-flex>
+        <n-statistic label="用户ID" :value="user.userId"></n-statistic>
+        <n-divider vertical style="height: 64px"></n-divider>
+        <n-statistic label="用户名" :value="user.username"></n-statistic>
+        <n-divider vertical style="height: 64px"></n-divider>
+        <n-statistic label="昵称" :value="user.nickname"></n-statistic>
+        <n-divider vertical style="height: 64px"></n-divider>
+        <n-statistic label="用户组名称" :value="user.groupName"></n-statistic>
+        <n-divider vertical style="height: 64px"></n-divider>
+        <n-statistic label="用户组ID" :value="user.groupId"></n-statistic>
+        <n-divider vertical style="height: 64px"></n-divider>
+        <n-statistic label="用户中心">
+          <n-button @click="goUser()" size="small" type="primary">用户中心</n-button>
+        </n-statistic>
+      </n-flex>
+    </div>
+    <div>
+      <n-divider title-placement="left">Frp信息</n-divider>
+      <n-flex>
+        <n-statistic label="Token数量">
+          <n-number-animation :from="0" :to="frpToken.count"></n-number-animation>
+        </n-statistic>
+        <n-divider vertical style="height: 64px"></n-divider>
+        <n-statistic label="端口规则数量">
+          <n-number-animation :from="0" :to="frpRule.count"></n-number-animation>
+        </n-statistic>
+        <n-divider vertical style="height: 64px"></n-divider>
+        <n-statistic label="客户端数量">
+          <n-number-animation :from="0" :to="frpClient.count"></n-number-animation>
+        </n-statistic>
+        <n-divider vertical style="height: 64px"></n-divider>
+        <n-statistic label="映射数量">
+          <n-number-animation :from="0" :to="frpProxy.count"></n-number-animation>
+        </n-statistic>
+      </n-flex>
+    </div>
+    <div v-if="user.isAdmin">
+      <n-divider title-placement="left">Frp信息（管理员）</n-divider>
       <n-flex>
         <n-statistic label="Token数量">
           <n-number-animation :from="0" :to="frpAdminToken.count"></n-number-animation>
         </n-statistic>
+        <n-divider vertical style="height: 64px"></n-divider>
         <n-statistic label="端口规则数量">
           <n-number-animation :from="0" :to="frpAdminRule.count"></n-number-animation>
         </n-statistic>
+        <n-divider vertical style="height: 64px"></n-divider>
         <n-statistic label="客户端数量">
           <n-number-animation :from="0" :to="frpAdminClient.count"></n-number-animation>
         </n-statistic>
+        <n-divider vertical style="height: 64px"></n-divider>
         <n-statistic label="映射数量">
           <n-number-animation :from="0" :to="frpAdminProxy.count"></n-number-animation>
         </n-statistic>
       </n-flex>
-    </template>
-    <template v-if="user.isAdmin">
-      <span>管理员信息</span>
+    </div>
+    <div v-if="user.isAdmin">
+      <n-divider title-placement="left">管理员信息</n-divider>
       <n-flex>
         <n-statistic label="用户数量">
           <n-number-animation :from="0" :to="adminUser.count"></n-number-animation>
         </n-statistic>
+        <n-divider vertical style="height: 64px"></n-divider>
         <n-statistic label="用户组数量">
           <n-number-animation :from="0" :to="adminGroup.count"></n-number-animation>
         </n-statistic>
+        <n-divider vertical style="height: 64px"></n-divider>
         <n-statistic label="用户权限数量">
           <n-number-animation :from="0" :to="adminPermission.count"></n-number-animation>
         </n-statistic>
       </n-flex>
-    </template>
+    </div>
   </n-card>
 </template>
 
-<style scoped></style>
+<style>
+.n-card-header {
+  padding-bottom: 0 !important;
+}
+</style>

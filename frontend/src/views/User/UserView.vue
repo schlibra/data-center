@@ -1,10 +1,11 @@
 <script setup>
-import { useDialog, useMessage } from 'naive-ui'
+import { useDialog, useLoadingBar, useMessage } from 'naive-ui'
 import { onMounted, ref } from 'vue'
 import router from '@/router'
 import { useTokenStore, useUserStore } from '@/stores'
 import { getUserInfo, logoutUser, setUserPassword, updateUser } from '@/api'
 
+const loadingBar = useLoadingBar()
 const dialog = useDialog()
 const message = useMessage()
 const user = useUserStore()
@@ -17,6 +18,7 @@ const dialogError = (data) => {
     content: data,
     positiveText: '确定',
   })
+  loadingBar.error()
 }
 async function updateUserInfo() {
   let [status, data] = await updateUser(user.nickname)
@@ -28,7 +30,7 @@ async function updateUserInfo() {
     })
   }
   message.success("修改成功")
-  await loadUserInfo()
+  await loadDataList()
 }
 async function updateUserPassword() {
   let [status, data] = await setUserPassword(password.value)
@@ -57,6 +59,7 @@ async function loadUserInfo() {
     return dialogError(data)
   }
   user.setUserInfo(data)
+  return true
 }
 async function logout() {
   dialog.info({
@@ -71,8 +74,13 @@ async function logout() {
     }
   })
 }
+async function loadDataList() {
+  loadingBar.start()
+  if (!await loadUserInfo()) return
+  loadingBar.finish()
+}
 onMounted(async () => {
-  await loadUserInfo()
+  await loadDataList()
 })
 </script>
 

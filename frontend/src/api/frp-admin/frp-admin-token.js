@@ -61,7 +61,7 @@ async function deleteFrpAdminToken(id) {
 }
 async function generateFrpAdminToken(id) {
   try {
-    const res = await axios.post(`/api/frp/admin/token/${id}`, token.config)
+    const res = await axios.post(`/api/frp/admin/token/${id}`, {}, token.config)
     return apiBack(res)
   } catch (e) {
     return [false, e]

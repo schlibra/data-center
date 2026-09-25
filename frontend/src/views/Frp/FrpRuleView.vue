@@ -1,11 +1,12 @@
 <script setup>
 import { computed, h, onMounted, ref } from 'vue'
-import { NButton, NFlex, useDialog, useMessage } from 'naive-ui'
+import { NButton, NFlex, useDialog, useLoadingBar, useMessage } from 'naive-ui'
 import { getFrpTokenList, createFrpRule, deleteFrpRule, getFrpRuleList, updateFrpRule, getUserInfo } from '@/api'
 import { useFrpTokenStore, useFrpRuleStore, useUserStore } from '@/stores'
 
 const dialog = useDialog()
 const message = useMessage()
+const loadingBar = useLoadingBar()
 const user = useUserStore()
 const frpToken = useFrpTokenStore()
 const frpRule = useFrpRuleStore()
@@ -16,6 +17,7 @@ const ruleId = ref('')
 const ruleMin = ref('')
 const ruleMax = ref('')
 const ruleToken = ref('')
+const rulePortRange = ref(true)
 const options = computed(() =>
   frpToken.tokens.map((item) => {
     return {
@@ -81,6 +83,7 @@ const dialogError = (content) => {
     content,
     positiveText: '确定',
   })
+  loadingBar.error()
 }
 async function loadUserInfo() {
   let [status, data] = await getUserInfo()
@@ -109,9 +112,11 @@ async function loadFrpRuleList() {
   return true
 }
 async function loadDataList() {
+  loadingBar.start()
   if (!await loadUserInfo()) return
   if (!await loadFrpTokenList()) return
-  await loadFrpRuleList()
+  if (!await loadFrpRuleList()) return
+  loadingBar.finish()
 }
 async function deleteRule(row) {
   dialog.info({
@@ -203,10 +208,16 @@ onMounted(async () => {
         <n-form-item label="ID" v-if="!createRule">
           <n-input :value="ruleId" disabled readonly></n-input>
         </n-form-item>
-        <n-form-item label="最小端口">
+        <n-form-item label="端口类型">
+          <n-radio-group v-model:value="rulePortRange">
+            <n-radio :value="false">单个端口</n-radio>
+            <n-radio :value="true">端口范围</n-radio>
+          </n-radio-group>
+        </n-form-item>
+        <n-form-item :label="(rulePortRange ? '最小' : '') + '端口'">
           <n-input-number v-model:value="ruleMin"></n-input-number>
         </n-form-item>
-        <n-form-item label="最大端口">
+        <n-form-item label="最大端口" v-if="rulePortRange">
           <n-input-number v-model:value="ruleMax"></n-input-number>
         </n-form-item>
         <n-form-item label="Token">

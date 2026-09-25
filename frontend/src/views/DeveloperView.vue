@@ -1,9 +1,10 @@
 <script setup>
 import { onMounted, ref } from 'vue'
-import { useDialog } from 'naive-ui'
+import { useDialog, useLoadingBar } from 'naive-ui'
 import { getUserInfo } from '@/api'
 import { useUserStore, useTokenStore } from '@/stores'
 
+const loadingBar = useLoadingBar()
 const dialog = useDialog()
 const tokenRef = ref(null)
 const user = useUserStore()
@@ -15,6 +16,7 @@ const dialogError = (content) => {
     content,
     positiveText: '确定',
   })
+  loadingBar.error()
 }
 
 const copyToken = () => {
@@ -29,8 +31,13 @@ async function loadUserInfo() {
   user.setUserInfo(data)
   return true
 }
+async function loadDataList() {
+  loadingBar.start()
+  if (!await loadUserInfo()) return
+  loadingBar.finish()
+}
 onMounted(async () => {
-  await loadUserInfo()
+  await loadDataList()
 })
 </script>
 

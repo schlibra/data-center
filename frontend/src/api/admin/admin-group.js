@@ -12,6 +12,46 @@ async function getAdminGroupList() {
     return [false, e]
   }
 }
+async function getAdminGroupInfo(id) {
+  try {
+    const res = await axios.get(`/api/admin/group/${id}`, token.config)
+    return apiBack(res)
+  } catch (e) {
+    return [false, e]
+  }
+}
+async function createAdminGroup(name, admin, permission) {
+  try {
+    const res = await axios.post("/api/admin/group", {
+      name, admin, permission
+    }, token.config)
+    return apiBack(res)
+  } catch (e) {
+    return [false, e]
+  }
+}
+async function updateAdminGroup(id, name, admin, permission) {
+  try {
+    const res = await axios.put(`/api/admin/group/${id}`, {
+      name, admin, permission
+    }, token.config)
+    return apiBack(res)
+  } catch (e) {
+    return [false, e]
+  }
+}
+async function deleteAdminGroup(id) {
+  try {
+    const res = await axios.delete(`/api/admin/group/${id}`, token.config)
+    return apiBack(res)
+  } catch (e) {
+    return [false, e]
+  }
+}
 export {
-  getAdminGroupList
+  getAdminGroupList,
+  getAdminGroupInfo,
+  updateAdminGroup,
+  createAdminGroup,
+  deleteAdminGroup,
 }

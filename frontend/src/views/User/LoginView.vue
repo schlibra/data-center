@@ -9,6 +9,7 @@ import { useTokenStore } from '@/stores'
 const message = useMessage()
 const dialog = useDialog()
 const token = useTokenStore()
+const loading = ref(false)
 
 const usernameRef = ref(null)
 const passwordRef = ref(null)
@@ -28,15 +29,16 @@ const dialogError = (msg) => {
 }
 
 const doLogin = async () => {
+  loading.value = true
   let [status, data] = await loginKey(username.value)
   if (!status) {
-    dialogError(data)
-    return
+    loading.value = false
+    return dialogError(data)
   }
   ;[status, data] = encrypt(password.value, data.public_key)
   if (!status) {
-    dialogError(data)
-    return
+    loading.value = false
+    return dialogError(data)
   }
   ;[status, data] = await loginUser(username.value, data)
   if (status) {
@@ -46,6 +48,7 @@ const doLogin = async () => {
       router.push('/')
     }, 1500)
   } else {
+    loading.value = false
     dialogError(data)
   }
 }

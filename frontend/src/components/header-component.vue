@@ -1,6 +1,11 @@
 <script setup>
 import { computed, ref } from 'vue'
 
+import { MoonOutline as DarkIcon, SunnyOutline as LightIcon } from '@vicons/ionicons5'
+import { useThemeStore } from '@/stores/theme.js'
+
+const theme = useThemeStore()
+
 const urlPath = ref(location.pathname)
 const titleList = {
   '/': '首页',
@@ -13,6 +18,9 @@ const titleList = {
   '/frp/proxy': 'Frp 映射管理',
   '/frp/config': 'Frp 配置生成',
   '/frp/admin/token': 'Frp Token管理（管理员）',
+  '/frp/admin/rule': 'Frp 端口规则管理（管理员）',
+  '/frp/admin/client': 'Frp 客户端管理（管理员）',
+  '/frp/admin/proxy': 'Frp 映射管理（管理员）',
   '/admin/user': '管理员 用户管理',
   '/admin/group': '管理员 用户组管理',
   '/admin/permission': '管理员 权限管理',
@@ -33,11 +41,24 @@ setInterval(() => {
     <template #subtitle>
       <span>{{ titleText }}</span>
     </template>
+    <template #extra>
+      <n-button @click="theme.switchTheme()">
+        <n-icon>
+          <LightIcon v-if="theme.dark"></LightIcon>
+          <DarkIcon v-else></DarkIcon>
+        </n-icon>
+      </n-button>
+    </template>
   </n-page-header>
 </template>
 
 <style scoped>
 .header {
   padding-left: 16px;
+}
+</style>
+<style>
+.n-page-header__extra {
+  padding-right: 16px;
 }
 </style>

@@ -12,6 +12,14 @@ async function getFrpRuleList() {
     return [false, e]
   }
 }
+async function getFrpRuleInfo(id) {
+  try {
+    const res = await axios.get(`/api/frp/rule/${id}`, token.config)
+    return apiBack(res)
+  } catch (e) {
+    return [false, e]
+  }
+}
 async function createFrpRule(min, max, tokenId) {
   try {
     const res = await axios.post(
@@ -52,4 +60,10 @@ async function deleteFrpRule(id) {
     return [false, e]
   }
 }
-export { getFrpRuleList, updateFrpRule, createFrpRule, deleteFrpRule }
+export {
+  getFrpRuleList,
+  getFrpRuleInfo,
+  updateFrpRule,
+  createFrpRule,
+  deleteFrpRule
+}
