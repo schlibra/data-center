@@ -16,7 +16,8 @@ type serverConfig struct {
 }
 
 type jwtConfig struct {
-	Key string `yaml:"key"`
+	Key    string `yaml:"key"`
+	Issuer string `yaml:"issuer"`
 }
 
 type redisConfig struct {

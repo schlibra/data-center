@@ -144,3 +144,17 @@ func UserPasswordHandler(c *gin.Context) {
 	}
 	service.UserPasswordService(c, req, row)
 }
+
+// UserApiKeyHandler 生成用户API密钥
+// @Summary 生成用户API密钥
+// @Tags 用户
+// @Accept application/json
+// @Produce application/json
+// @Security BearerAuth
+// @Success 200 {object} response.Response{data=string}
+// @Router /user/api [post]
+func UserApiKeyHandler(c *gin.Context) {
+	row := parseToken(c)
+	checkPermission(c, "user.api_key")
+	service.UserApiKeyService(c, row)
+}

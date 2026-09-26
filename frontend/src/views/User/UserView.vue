@@ -119,7 +119,7 @@ onMounted(async () => {
         </n-flex>
       </n-form-item>
     </n-form>
-    <template #footer>
+    <template #action>
       <n-button type="error" @click="logout()">退出登录</n-button>
     </template>
   </n-card>

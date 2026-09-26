@@ -33,6 +33,7 @@ func (t *FrpToken) SelectById(id int) (token models.FrpTokenTable, err error) {
 	}
 	userInfo.Password = "********"
 	userInfo.TokenID = "********"
+	userInfo.ApiId = "********"
 	token.UserInfo = userInfo
 	return token, err
 }
@@ -45,6 +46,7 @@ func (t *FrpToken) SelectByName(name string) (token models.FrpTokenTable, err er
 	}
 	userInfo.Password = "********"
 	userInfo.TokenID = "********"
+	userInfo.ApiId = "********"
 	token.UserInfo = userInfo
 	return token, err
 }
@@ -68,6 +70,7 @@ func (t *FrpToken) SelectByUser(userId int) (tokens []models.FrpTokenTable, err 
 		}
 		userInfo.Password = "********"
 		userInfo.TokenID = "********"
+		userInfo.ApiId = "********"
 		row.UserInfo = userInfo
 		tokens = append(tokens, row)
 	}
@@ -96,6 +99,7 @@ func (t *FrpToken) SelectAll() (tokens []models.FrpTokenTable, err error) {
 		}
 		userInfo.Password = "********"
 		userInfo.TokenID = "********"
+		userInfo.ApiId = "********"
 		row.UserInfo = userInfo
 		tokens = append(tokens, row)
 	}

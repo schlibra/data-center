@@ -83,6 +83,13 @@ async function logoutUser() {
     return apiError(e)
   }
 }
+async function getUserApiKey() {
+  try {
+    return apiBack(await axios.post('/api/user/api', {}, token.config))
+  } catch (e) {
+    return apiError(e)
+  }
+}
 export {
   loginKey,
   loginUser,
@@ -92,4 +99,5 @@ export {
   updateUser,
   logoutUser,
   setUserPassword,
+  getUserApiKey,
 }

@@ -65,7 +65,8 @@ import {
   getUserInfo,
   updateUser,
   logoutUser,
-  setUserPassword
+  setUserPassword,
+  getUserApiKey,
 } from './user.js'
 
 export {
@@ -117,5 +118,6 @@ export {
   getUserInfo,
   updateUser,
   logoutUser,
+  getUserApiKey,
   setUserPassword,
 }

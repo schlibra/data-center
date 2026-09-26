@@ -89,7 +89,7 @@ func UpdateAdminUserService(c *gin.Context, req request.UpdateAdminUser, id int)
 		sendI18n(c, 400, "admin.user.group_not_exist", nil)
 	}
 	if nw(c) {
-		if _, err := user.UpdateById(id, userRow.Password, req.Nickname, req.Group, req.Enable, userRow.TokenID); err != nil {
+		if _, err := user.UpdateById(id, userRow.Password, req.Nickname, req.Group, req.Enable, userRow.TokenID, userRow.ApiId); err != nil {
 			sendError(c, err)
 		}
 		sendI18n(c, 200, "admin.user.update_success", nil)
@@ -132,7 +132,7 @@ func PasswordAdminUserService(c *gin.Context, req request.PasswordAdminUser, id 
 		sendError(c, err)
 	}
 	if nw(c) {
-		if _, err := user.UpdateById(id, password, userRow.Nickname, userRow.Group, userRow.Enable, ""); err != nil {
+		if _, err := user.UpdateById(id, password, userRow.Nickname, userRow.Group, userRow.Enable, "", userRow.ApiId); err != nil {
 			sendError(c, err)
 		}
 		sendI18n(c, 200, "admin.user.password_update_success", nil)

@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import { useDialog, useLoadingBar, useMessage } from 'naive-ui'
-import { getUserInfo } from '@/api'
+import { getUserApiKey, getUserInfo } from '@/api'
 import { useUserStore, useTokenStore } from '@/stores'
 import router from '@/router'
 
@@ -9,6 +9,7 @@ const loadingBar = useLoadingBar()
 const message = useMessage()
 const dialog = useDialog()
 const tokenRef = ref(null)
+const apiKeyRef = ref(null)
 const user = useUserStore()
 const token = useTokenStore()
 
@@ -24,6 +25,31 @@ const dialogError = (content) => {
 const copyToken = () => {
   tokenRef.value.select()
   document.execCommand('copy')
+}
+const copyApiKey = () => {
+  apiKeyRef.value.select()
+  document.execCommand('copy')
+}
+function generateApiKey() {
+  dialog.info({
+    title: "是否生成API Key",
+    content: '是否生成API Key，之前生成的API Key将失效',
+    positiveText: '确定',
+    negativeText: '取消',
+    async onPositiveClick() {
+      let [status, data] = await getUserApiKey()
+      if (!status) {
+        dialog.error({
+          title: 'API Key生成失败',
+          content: data,
+          positiveText: '确定'
+        })
+      } else {
+        message.success('API Key生成成功')
+        token.apiKey = data.token
+      }
+    }
+  })
 }
 async function loadUserInfo() {
   let [status, data] = await getUserInfo()
@@ -45,13 +71,13 @@ function clearData() {
     positiveText: '确定',
     negativeText: '取消',
     positiveButtonProps: {
-      type: 'error'
+      type: 'error',
     },
     onPositiveClick() {
       localStorage.clear()
       message.success('数据清空成功')
       router.push('/login')
-    }
+    },
   })
 }
 onMounted(async () => {
@@ -77,6 +103,15 @@ onMounted(async () => {
           ></n-input>
           <n-button size="large" type="primary" @click="copyToken()">复制</n-button>
         </n-flex>
+      </n-form-item>
+      <n-form-item label="API Key">
+        <n-space vertical>
+          <n-input style="min-width: 600px" :rows="5" ref="apiKeyRef" type="textarea" :value="token.apiKey" placeholder="API Key"></n-input>
+          <n-flex>
+            <n-button type="info" size="large" @click="generateApiKey()">生成Key</n-button>
+            <n-button type="primary" size="large" @click="copyApiKey()">复制</n-button>
+          </n-flex>
+        </n-space>
       </n-form-item>
       <n-form-item label="清空数据">
         <n-space vertical>

@@ -303,7 +303,7 @@ onMounted(async () => {
           <n-select v-model:value="userGroup" :options="groupSelectOptions"></n-select>
         </n-form-item>
       </n-form>
-      <template #footer>
+      <template #action>
         <n-flex justify="end">
           <n-button size="large" @click="showModal = false">取消</n-button>
           <n-button size="large" type="primary" @click="submitModal()">确定</n-button>
@@ -327,7 +327,7 @@ onMounted(async () => {
           <n-input v-model:value="password"></n-input>
         </n-form-item>
       </n-form>
-      <template #footer>
+      <template #action>
         <n-flex justify="end">
           <n-button size="large" @click="showPasswordModal = false">取消</n-button>
           <n-button size="large" type="primary" @click="submitPassword()">确定</n-button>

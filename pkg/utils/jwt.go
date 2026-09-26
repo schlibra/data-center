@@ -10,7 +10,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-func JwtUserGenerate(userId int, username string, admin int, enable int, tokenId string) (string, error) {
+func JwtUserGenerate(userId int, username string, admin int, enable int, tokenId string, expireTime time.Duration) (string, error) {
 	now := time.Now()
 	cfg, err := LoadConfig()
 	if err != nil {
@@ -24,10 +24,10 @@ func JwtUserGenerate(userId int, username string, admin int, enable int, tokenId
 		Enable:   enable,
 		TokenID:  tokenId,
 		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(now.Add(24 * time.Hour)),
+			ExpiresAt: jwt.NewNumericDate(now.Add(expireTime)),
 			IssuedAt:  jwt.NewNumericDate(now),
 			NotBefore: jwt.NewNumericDate(now),
-			Issuer:    "frp-auth",
+			Issuer:    cfg.Jwt.Issuer,
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -60,6 +60,9 @@ func JwtUserCheck(tokenStr string) (*models.JwtToken, error) {
 
 	// 提取并校验有效载荷
 	if claims, ok := token.Claims.(*models.JwtToken); ok && token.Valid {
+		if claims.Issuer != cfg.Jwt.Issuer {
+			return nil, errors.New("token 发行人无效")
+		}
 		return claims, nil
 	}
 

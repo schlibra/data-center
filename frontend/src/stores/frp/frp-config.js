@@ -25,11 +25,16 @@ remotePort = "${item.remotePort}"
       })
       return res
     })
+    const clear = () => {
+      preConfig.value = ""
+      mainConfig.value = []
+    }
     return {
       preConfig,
       mainConfig,
       resultConfig,
-      setAuth
+      setAuth,
+      clear,
     }
   },
   persist: true

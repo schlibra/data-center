@@ -7,7 +7,9 @@ import (
 	"data-center/pkg/utils"
 	"encoding/base64"
 	"encoding/json"
+	"math"
 	"slices"
+	"time"
 
 	"github.com/gin-contrib/i18n"
 	"github.com/gin-gonic/gin"
@@ -25,7 +27,9 @@ func UserLoginService(c *gin.Context, req request.UserLogin) {
 	}
 	row, err := user.SelectByUsername(req.Username)
 	if err != nil {
-		sendI18n(c, 400, "user.login.not_exists", nil)
+		sendI18n(c, 400, "user.login.not_exists", H{
+			"error": err.Error(),
+		})
 	}
 	decodeStr, err := base64.StdEncoding.DecodeString(req.Password)
 	if err != nil {
@@ -49,11 +53,11 @@ func UserLoginService(c *gin.Context, req request.UserLogin) {
 			if err != nil {
 				sendError(c, err)
 			}
-			token, err := utils.JwtUserGenerate(row.ID, row.Username, row.Group, row.Enable, tokenId)
+			token, err := utils.JwtUserGenerate(row.ID, row.Username, row.Group, row.Enable, tokenId, 24*time.Hour)
 			if err != nil {
 				sendError(c, err)
 			}
-			_, err = user.UpdateById(row.ID, row.Password, row.Nickname, row.Group, row.Enable, tokenId)
+			_, err = user.UpdateById(row.ID, row.Password, row.Nickname, row.Group, row.Enable, tokenId, row.ApiId)
 			if err != nil {
 				sendError(c, err)
 			}
@@ -151,7 +155,7 @@ func UserLogoutService(c *gin.Context, row models.UserTable) {
 		sendError(c, err)
 	}
 	defer closeDB(user.DB)
-	_, err = user.UpdateById(row.ID, row.Password, row.Nickname, row.Group, row.Enable, "")
+	_, err = user.UpdateById(row.ID, row.Password, row.Nickname, row.Group, row.Enable, "", row.ApiId)
 	if err != nil {
 		sendError(c, err)
 	}
@@ -183,6 +187,7 @@ func UserInfoService(c *gin.Context, row models.UserTable) {
 		}
 		row.Password = "********"
 		row.TokenID = "********"
+		row.ApiId = "********"
 		row.Permissions = permissionList
 		sendJson(c, 200, i18n.MustGetMessage(c, "user.info.success"), row)
 	} else {
@@ -196,7 +201,7 @@ func UserUpdateService(c *gin.Context, req request.UserUpdate, row models.UserTa
 	}
 	defer closeDB(user.DB)
 	if !c.Writer.Written() {
-		_, err = user.UpdateById(row.ID, row.Password, req.Nickname, row.Group, row.Enable, row.TokenID)
+		_, err = user.UpdateById(row.ID, row.Password, req.Nickname, row.Group, row.Enable, row.TokenID, row.ApiId)
 		if err != nil {
 			sendError(c, err)
 		}
@@ -214,10 +219,34 @@ func UserPasswordService(c *gin.Context, req request.UserPassword, row models.Us
 		sendError(c, err)
 	}
 	if !c.Writer.Written() {
-		_, err = user.UpdateById(row.ID, pwd, row.Nickname, row.Group, row.Enable, "")
+		_, err = user.UpdateById(row.ID, pwd, row.Nickname, row.Group, row.Enable, "", row.ApiId)
 		if err != nil {
 			sendError(c, err)
 		}
 		sendI18n(c, 200, "user.password.success", nil)
+	}
+}
+func UserApiKeyService(c *gin.Context, row models.UserTable) {
+	user, err := repository.NewUser()
+	if err != nil {
+		sendError(c, err)
+	}
+	defer closeDB(user.DB)
+	apiId, err := utils.GenerateRandomString(32)
+	if err != nil {
+		sendError(c, err)
+	}
+	token, err := utils.JwtUserGenerate(row.ID, row.Username, row.Group, row.Enable, apiId, time.Duration(math.MaxInt64))
+	if err != nil {
+		sendError(c, err)
+	}
+	if !c.Writer.Written() {
+		if _, err := user.UpdateById(row.ID, row.Password, row.Nickname, row.Group, row.Enable, row.TokenID, apiId); err != nil {
+			sendError(c, err)
+		} else {
+			sendI18n(c, 200, "user.apikey.success", H{
+				"token": token,
+			})
+		}
 	}
 }

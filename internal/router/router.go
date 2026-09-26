@@ -20,6 +20,7 @@ func initUserRouter(router *gin.RouterGroup) {
 	user.GET("/", handler.UserInfoHandler)
 	user.PUT("/", handler.UserUpdateHandler)
 	user.PATCH("/", handler.UserPasswordHandler)
+	user.POST("/api", handler.UserApiKeyHandler)
 }
 
 func InitRouter(router *gin.Engine) {

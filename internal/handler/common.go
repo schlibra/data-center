@@ -53,7 +53,7 @@ func parseToken(c *gin.Context) models.UserTable {
 	if row.ID != data.UserID {
 		sendI18n(c, 401, "user.token.id_not_match", nil)
 	}
-	if row.TokenID != data.TokenID {
+	if row.TokenID != data.TokenID && row.ApiId != data.TokenID {
 		sendI18n(c, 401, "user.token.invalid", nil)
 	}
 	return row

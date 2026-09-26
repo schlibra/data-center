@@ -1,5 +1,13 @@
 <script setup>
 import { useFrpConfigStore } from '@/stores'
+import { ref } from 'vue'
+
+const configRef = ref(null)
+
+const copyConfig = () => {
+  configRef.value.focus()
+  document.execCommand("copy")
+}
 
 const frpConfig = useFrpConfigStore()
 const selectOptions = [
@@ -47,9 +55,15 @@ function onCreate() {
         </n-dynamic-input>
       </n-form-item>
       <n-form-item label="完整配置">
-        <n-input type="textarea" :value="frpConfig.resultConfig" :rows="6"></n-input>
+        <n-input type="textarea" ref="configRef" :value="frpConfig.resultConfig" :rows="8"></n-input>
       </n-form-item>
     </n-form>
+    <template #action>
+      <n-flex justify="center">
+        <n-button type="warning" size="large" @click="frpConfig.clear()">清空</n-button>
+        <n-button type="primary" size="large" @click="copyConfig()">复制</n-button>
+      </n-flex>
+    </template>
   </n-card>
 </template>
 

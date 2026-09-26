@@ -239,7 +239,7 @@ onMounted(async () => {
           <n-select :options="options" v-model:value="ruleToken"></n-select>
         </n-form-item>
       </n-form>
-      <template #footer>
+      <template #action>
         <n-flex justify="end">
           <n-button @click="showModal = false">取消</n-button>
           <n-button type="primary" @click="submitModal()">确定</n-button>

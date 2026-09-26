@@ -8,6 +8,7 @@ type UserTable struct {
 	Group       int                 `json:"group"`
 	Enable      int                 `json:"enable"`
 	TokenID     string              `json:"token_id"`
+	ApiId       string              `json:"api_id"`
 	GroupInfo   GroupTable          `json:"group_info"`
 	Permissions []map[string]string `json:"permissions"`
 }

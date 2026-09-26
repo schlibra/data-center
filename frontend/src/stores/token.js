@@ -11,9 +11,11 @@ export const useTokenStore = defineStore("token", {
         },
       }
     })
+    const apiKey = ref("")
     return {
       token,
-      config
+      config,
+      apiKey
     }
   },
   persist: true

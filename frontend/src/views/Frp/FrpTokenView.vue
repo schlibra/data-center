@@ -277,7 +277,7 @@ onMounted(async () => {
           <n-input :value="createTokenValue" disabled readonly></n-input>
         </n-form-item>
       </n-form>
-      <template #footer>
+      <template #action>
         <n-flex justify="end">
           <n-button @click="showModal = false">取消</n-button>
           <n-button type="primary" @click="submitModal()">确定</n-button>

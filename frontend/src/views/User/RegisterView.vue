@@ -74,13 +74,16 @@ const doRegister = async () => {
     router.push('/login')
   }, 1500)
 }
+function goLogin() {
+  router.push('/login')
+}
 </script>
 
 <template>
   <n-spin :show="loading">
-    <n-card size="large" style="max-width: 600px">
+    <n-card style="min-width: 350px; max-width: 400px; margin-top: 10%">
       <template #header>
-        <span>注册账号</span>
+        <h3>注册账号</h3>
       </template>
       <n-form>
         <n-form-item label="用户名">
@@ -114,8 +117,11 @@ const doRegister = async () => {
           ></n-input>
         </n-form-item>
       </n-form>
-      <template #footer>
-        <n-button @click="doRegister()" size="large" type="primary">注册</n-button>
+      <template #action>
+        <n-flex align="baseline">
+          <n-button @click="doRegister()" size="large" type="primary">注册</n-button>
+          <n-button type="info" size="large" @click="goLogin()">去登录</n-button>
+        </n-flex>
       </template>
     </n-card>
   </n-spin>

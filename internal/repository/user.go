@@ -17,14 +17,14 @@ func NewUser() (*User, error) {
 }
 
 func (user User) Create() (result sql.Result, err error) {
-	return user.DB.Exec("CREATE TABLE `user`  (\n  `id` int NOT NULL AUTO_INCREMENT,\n  `username` varchar(255) NOT NULL,\n  `password` varchar(255) NOT NULL,\n  `nickname` varchar(255) NOT NULL,\n  `group` int NOT NULL,\n  `enable` int NOT NULL,\n  `token_id` varchar(255) NULL DEFAULT '',\n  PRIMARY KEY (`id`)\n);")
+	return user.DB.Exec("CREATE TABLE `user`  (\n  `id` int NOT NULL AUTO_INCREMENT,\n  `username` varchar(255) NOT NULL,\n  `password` varchar(255) NOT NULL,\n  `nickname` varchar(255) NOT NULL,\n  `group` int NOT NULL,\n  `enable` int NOT NULL,\n  `token_id` varchar(255) NULL DEFAULT '',\n `api_id` varchar(255) NULL DEFAULT '',\n  PRIMARY KEY (`id`)\n);")
 }
 func (user User) Insert(username string, password string, nickname string, group int, enable int) (result sql.Result, err error) {
 	return user.DB.Exec("INSERT INTO `user` (`username`, `password`, `nickname`, `group`, `enable`) VALUES (?, ?, ?, ?, ?)", username, password, nickname, group, enable)
 }
 func (user User) SelectById(id int) (result models.UserTable, err error) {
 	group := Group{DB: user.DB}
-	if err := user.DB.QueryRow("SELECT * FROM `user` WHERE `id` = ?", id).Scan(&result.ID, &result.Username, &result.Password, &result.Nickname, &result.Group, &result.Enable, &result.TokenID); err != nil {
+	if err := user.DB.QueryRow("SELECT * FROM `user` WHERE `id` = ?", id).Scan(&result.ID, &result.Username, &result.Password, &result.Nickname, &result.Group, &result.Enable, &result.TokenID, &result.ApiId); err != nil {
 		return result, err
 	}
 	groupInfo, err := group.SelectById(result.Group)
@@ -36,7 +36,9 @@ func (user User) SelectById(id int) (result models.UserTable, err error) {
 }
 func (user User) SelectByUsername(username string) (result models.UserTable, err error) {
 	group := Group{DB: user.DB}
-	err = user.DB.QueryRow("SELECT * FROM `user` WHERE `username` = ?", username).Scan(&result.ID, &result.Username, &result.Password, &result.Nickname, &result.Group, &result.Enable, &result.TokenID)
+	if err := user.DB.QueryRow("SELECT * FROM `user` WHERE `username` = ?", username).Scan(&result.ID, &result.Username, &result.Password, &result.Nickname, &result.Group, &result.Enable, &result.TokenID, &result.ApiId); err != nil {
+		return result, err
+	}
 	groupInfo, err := group.SelectById(result.Group)
 	if err != nil {
 		return result, err
@@ -55,7 +57,7 @@ func (user User) SelectByGroup(groupId int) (users []models.UserTable, err error
 	defer Close(rows)
 	for rows.Next() {
 		var row models.UserTable
-		if err := rows.Scan(&row.ID, &row.Username, &row.Password, &row.Nickname, &row.Group, &row.Enable, &row.TokenID); err != nil {
+		if err := rows.Scan(&row.ID, &row.Username, &row.Password, &row.Nickname, &row.Group, &row.Enable, &row.TokenID, &row.ApiId); err != nil {
 			return nil, err
 		}
 		groupInfo, err := group.SelectById(row.Group)
@@ -81,7 +83,7 @@ func (user User) SelectAll() (users []models.UserTable, err error) {
 	defer Close(rows)
 	for rows.Next() {
 		var row models.UserTable
-		if err := rows.Scan(&row.ID, &row.Username, &row.Password, &row.Nickname, &row.Group, &row.Enable, &row.TokenID); err != nil {
+		if err := rows.Scan(&row.ID, &row.Username, &row.Password, &row.Nickname, &row.Group, &row.Enable, &row.TokenID, &row.ApiId); err != nil {
 			return nil, err
 		}
 		groupInfo, err := group.SelectById(row.Group)
@@ -99,8 +101,8 @@ func (user User) SelectAll() (users []models.UserTable, err error) {
 func (user User) DeleteById(id int) (result sql.Result, err error) {
 	return user.DB.Exec("DELETE FROM `user` WHERE `id` = ?", id)
 }
-func (user User) UpdateById(id int, password string, nickname string, group int, enable int, tokenId string) (result sql.Result, err error) {
-	return user.DB.Exec("UPDATE `user` SET `password` = ?, `nickname` = ?, `group` = ?, `enable` = ?, `token_id` = ? WHERE `id` = ?", password, nickname, group, enable, tokenId, id)
+func (user User) UpdateById(id int, password string, nickname string, group int, enable int, tokenId string, apiId string) (result sql.Result, err error) {
+	return user.DB.Exec("UPDATE `user` SET `password` = ?, `nickname` = ?, `group` = ?, `enable` = ?, `token_id` = ?, `api_id` = ? WHERE `id` = ?", password, nickname, group, enable, tokenId, apiId, id)
 }
 func (user User) Drop() (result sql.Result, err error) {
 	return user.DB.Exec("DROP TABLE IF EXISTS `user`")

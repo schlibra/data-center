@@ -292,7 +292,7 @@ onMounted(async () => {
           <n-switch v-model:value="tokenEnable"></n-switch>
         </n-form-item>
       </n-form>
-      <template #footer>
+      <template #action>
         <n-flex justify="end">
           <n-button size="large" @click="showModal = false">取消</n-button>
           <n-button size="large" type="primary" @click="submitModal()">确定</n-button>

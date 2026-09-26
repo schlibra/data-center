@@ -58,7 +58,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <n-card style="max-width: 400px; margin-top: 10%">
+  <n-card style="min-width: 350px; max-width: 400px; margin-top: 10%">
     <template #header>
       <h3>登录账号</h3>
     </template>
@@ -79,7 +79,7 @@ onMounted(() => {
         ></n-input>
       </n-form-item>
     </n-form>
-    <template #footer>
+    <template #action>
       <n-flex justify="center">
         <n-button size="large" type="primary" @click="doLogin()">登录</n-button>
         <n-button size="large" type="info" @click="router.push('/register')">去注册</n-button>
