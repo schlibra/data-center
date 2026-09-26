@@ -76,6 +76,7 @@ func UpdateAdminPermissionService(c *gin.Context, id int, req request.UpdateAdmi
 	permissionRow, err := permission.SelectById(id)
 	if err != nil {
 		sendI18n(c, 400, "admin.permission.not_exists", nil)
+		return
 	}
 	if _, err := permission.SelectByKey(req.Key); err == nil && permissionRow.Key != req.Key {
 		sendI18n(c, 400, "admin.permission.exists", nil)
@@ -96,6 +97,13 @@ func DeleteAdminPermissionService(c *gin.Context, id int) {
 	defer closeDB(permission.DB)
 	if _, err := permission.SelectById(id); err != nil {
 		sendI18n(c, 400, "admin.permission.not_exists", nil)
+	}
+	childPermissions, err := permission.SelectByParent(id)
+	if err != nil {
+		sendError(c, err)
+	}
+	if len(childPermissions) > 0 {
+		sendI18n(c, 400, "admin.permission.has_child", nil)
 	}
 	if nw(c) {
 		if _, err := permission.DeleteById(id); err != nil {

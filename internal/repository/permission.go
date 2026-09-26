@@ -35,6 +35,26 @@ func (p *Permission) SelectByKey(key string) (permission models.PermissionTable,
 	err = p.DB.QueryRow("SELECT * FROM `permission` WHERE `key` = ?", key).Scan(&permission.ID, &permission.Key, &permission.Name, &permission.Parent)
 	return permission, err
 }
+func (p *Permission) SelectByParent(parent int) (permissions []models.PermissionTable, err error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	rows, err := p.DB.QueryContext(ctx, "SELECT * FROM `permission` WHERE `parent` = ?", parent)
+	if err != nil {
+		return nil, err
+	}
+	defer Close(rows)
+	for rows.Next() {
+		var row models.PermissionTable
+		if err := rows.Scan(&row.ID, &row.Key, &row.Name, &row.Parent); err != nil {
+			return nil, err
+		}
+		permissions = append(permissions, row)
+	}
+	if permissions == nil {
+		permissions = []models.PermissionTable{}
+	}
+	return permissions, nil
+}
 func (p *Permission) SelectAll() (permissions []models.PermissionTable, err error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()

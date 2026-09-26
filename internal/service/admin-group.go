@@ -83,11 +83,23 @@ func DeleteAdminGroupService(c *gin.Context, id int) {
 		sendError(c, err)
 	}
 	defer closeDB(group.DB)
+	user, err := repository.NewUser()
+	if err != nil {
+		sendError(c, err)
+	}
+	defer closeDB(user.DB)
 	if _, err := group.SelectById(id); err != nil {
 		sendI18n(c, 400, "admin.group.not_exist", H{
 			"error": err.Error(),
 		})
 		return
+	}
+	users, err := user.SelectByGroup(id)
+	if err != nil {
+		sendError(c, err)
+	}
+	if len(users) > 0 {
+		sendI18n(c, 400, "admin.group.has_user", nil)
 	}
 	if nw(c) {
 		if _, err := group.DeleteById(id); err != nil {

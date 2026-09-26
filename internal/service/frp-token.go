@@ -92,12 +92,24 @@ func DeleteFrpTokenService(c *gin.Context, row models.UserTable, id int) {
 		sendError(c, err)
 	}
 	defer closeDB(frpToken.DB)
+	frpRule, err := repository.NewFrpRule()
+	if err != nil {
+		sendError(c, err)
+	}
+	defer closeDB(frpRule.DB)
 	token, err := frpToken.SelectById(id)
 	if err != nil {
 		sendError(c, err)
 	}
 	if token.User != row.ID {
 		sendI18n(c, 403, "frp.token.forbidden", nil)
+	}
+	rules, err := frpRule.SelectByToken(id)
+	if err != nil {
+		sendError(c, err)
+	}
+	if len(rules) > 0 {
+		sendI18n(c, 400, "frp.token.has.rule", nil)
 	}
 	if !c.Writer.Written() {
 		_, err := frpToken.DeleteById(token.ID)

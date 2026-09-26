@@ -88,6 +88,7 @@ func ProxyFrpApiService(c *gin.Context, req request.FrpApiProxy) {
 				"reject":   false,
 				"unchange": true,
 			})
+			return
 		}
 		allowPort = append(allowPort, strconv.Itoa(ruleRow.Min)+func() string {
 			if ruleRow.Max == ruleRow.Min {

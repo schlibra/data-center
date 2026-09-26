@@ -82,6 +82,9 @@ func UpdateAdminPermissionHandler(c *gin.Context) {
 	if req.Key == "" || req.Name == "" {
 		sendI18n(c, 400, "admin.permission.key_name_empty", nil)
 	}
+	if req.Parent == reqId.Id {
+		sendI18n(c, 400, "admin.permission.id_equal_parent", nil)
+	}
 	service.UpdateAdminPermissionService(c, reqId.Id, req)
 }
 

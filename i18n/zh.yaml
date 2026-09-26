@@ -40,6 +40,7 @@ frp:
     deleted: "token删除成功"
     generated: "token生成成功"
     name_empty: "token名称不能为空"
+    has_rule: "token有规则，不能删除"
   rule:
     not_exist: "规则不存在"
     token_not_exist: "token不存在"
@@ -72,6 +73,7 @@ admin:
     update_success: "用户组修改成功"
     delete_success: "用户组删除成功"
     name_empty: "用户组名称不能为空"
+    has_user: "用户组有用户，不能删除"
   permission:
     get_success: "权限获取成功"
     not_exists: "权限不存在"
@@ -80,3 +82,5 @@ admin:
     update_success: "权限修改成功"
     delete_success: "权限删除成功"
     key_name_empty: "权限名称不能为空"
+    id_equal_parent: "权限id不能等于父权限id"
+    has_child: "权限有子权限，不能删除"

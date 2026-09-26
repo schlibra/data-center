@@ -44,6 +44,32 @@ func (user User) SelectByUsername(username string) (result models.UserTable, err
 	result.GroupInfo = groupInfo
 	return result, err
 }
+func (user User) SelectByGroup(groupId int) (users []models.UserTable, err error) {
+	group := Group{DB: user.DB}
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	rows, err := user.DB.QueryContext(ctx, "SELECT * FROM `user` WHERE `group` = ?", groupId)
+	if err != nil {
+		return nil, err
+	}
+	defer Close(rows)
+	for rows.Next() {
+		var row models.UserTable
+		if err := rows.Scan(&row.ID, &row.Username, &row.Password, &row.Nickname, &row.Group, &row.Enable, &row.TokenID); err != nil {
+			return nil, err
+		}
+		groupInfo, err := group.SelectById(row.Group)
+		if err != nil {
+			return users, err
+		}
+		row.GroupInfo = groupInfo
+		users = append(users, row)
+	}
+	if users == nil {
+		users = []models.UserTable{}
+	}
+	return users, nil
+}
 func (user User) SelectAll() (users []models.UserTable, err error) {
 	group := Group{DB: user.DB}
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)

@@ -86,6 +86,11 @@ func UserLoginKeyService(c *gin.Context, req request.UserLoginKey) {
 	})
 }
 func UserRegisterService(c *gin.Context, req request.UserRegister) {
+	cfg, err := utils.LoadConfig()
+	if err != nil {
+		sendError(c, err)
+	}
+	defaultGroup := cfg.Server.DefaultGroup
 	user, err := repository.NewUser()
 	if err != nil {
 		sendError(c, err)
@@ -116,7 +121,7 @@ func UserRegisterService(c *gin.Context, req request.UserRegister) {
 		sendError(c, err)
 	}
 	if !c.Writer.Written() {
-		_, err = user.Insert(req.Username, password, req.Nickname, 1, 0)
+		_, err = user.Insert(req.Username, password, req.Nickname, defaultGroup, 0)
 		if err != nil {
 			sendError(c, err)
 		}

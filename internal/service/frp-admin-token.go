@@ -107,11 +107,23 @@ func DeleteFrpAdminTokenService(c *gin.Context, id int) {
 		sendError(c, err)
 	}
 	defer closeDB(frpToken.DB)
+	frpRule, err := repository.NewFrpRule()
+	if err != nil {
+		sendError(c, err)
+	}
+	defer closeDB(frpRule.DB)
 	if _, err := frpToken.SelectById(id); err != nil {
 		sendI18n(c, 400, "frp.token.not_exist", H{
 			"error": err.Error(),
 		})
 		return
+	}
+	rules, err := frpRule.SelectByToken(id)
+	if err != nil {
+		sendError(c, err)
+	}
+	if len(rules) > 0 {
+		sendI18n(c, 400, "frp.token.has_rules", nil)
 	}
 	if nw(c) {
 		if _, err := frpToken.DeleteById(id); err != nil {

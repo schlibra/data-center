@@ -12,7 +12,7 @@ import {
   useFrpClientStore,
   useFrpProxyStore,
   useFrpRuleStore,
-  useFrpTokenStore,
+  useFrpTokenStore, useTokenStore,
   useUserStore,
 } from '@/stores'
 import {
@@ -34,6 +34,7 @@ import router from '@/router/index.js'
 const loadingBar = useLoadingBar()
 const dialog = useDialog()
 const user = useUserStore()
+const token = useTokenStore()
 const frpToken = useFrpTokenStore()
 const frpRule = useFrpRuleStore()
 const frpClient = useFrpClientStore()
@@ -181,6 +182,11 @@ async function loadAdminData() {
 }
 async function loadDataList() {
   loadingBar.start()
+  if (!token.token) {
+    router.push("/login")
+    loadingBar.error()
+    return
+  }
   if (!(await loadBasicData())) return
   if (user.isAdmin) if (!(await loadAdminData())) return
   loadingBar.finish()

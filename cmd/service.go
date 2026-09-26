@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	serviceName        = "Data-Center"
+	serviceName        = "data-center"
 	serviceDisplayName = "Data-Center Service"
 	serviceDescription = "Data-Center Service"
 )
@@ -33,7 +33,7 @@ func (ss *SystemService) Stop(_ service.Service) error {
 
 func (ss *SystemService) run() {
 	log.Println("Data-Center Service run...")
-	server.Run(EmbedFS)
+	server.Run(EmbedFS, I18nFS)
 }
 
 func newService() (service.Service, error) {

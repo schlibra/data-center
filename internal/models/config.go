@@ -9,8 +9,10 @@ type mysqlConfig struct {
 }
 
 type serverConfig struct {
-	Host string `yaml:"host"`
-	Port int    `yaml:"port"`
+	Host         string `yaml:"host"`
+	Port         int    `yaml:"port"`
+	Debug        bool   `yaml:"debug"`
+	DefaultGroup int    `yaml:"default-group"`
 }
 
 type jwtConfig struct {

@@ -25,12 +25,18 @@ import (
 
 func initMiddlewares(router *gin.Engine) {
 	router.Use(cors.Default())
+
+}
+func initI18nMiddlewares(router *gin.Engine, i18nFS embed.FS) {
 	router.Use(ginI18n.Localize(ginI18n.WithBundle(&ginI18n.BundleCfg{
-		RootPath:         "./i18n",
 		AcceptLanguage:   []language.Tag{language.English, language.Chinese},
 		DefaultLanguage:  language.Chinese,
 		UnmarshalFunc:    yaml.Unmarshal,
 		FormatBundleFile: "yaml",
+		RootPath:         "i18n",
+		Loader: &ginI18n.EmbedLoader{
+			FS: i18nFS,
+		},
 	})))
 }
 func initStaticMiddlewares(router *gin.Engine, embedFS embed.FS) {
@@ -84,17 +90,29 @@ func initFrontendRouter(router *gin.Engine, embedFS embed.FS) {
 		c.Data(200, "text/html; charset=utf-8", data)
 	})
 }
-func Run(embedFS embed.FS) {
+func Run(embedFS embed.FS, i18nFS embed.FS) {
 	config, err := utils.LoadConfig()
 	if err != nil {
 		log.Fatal(err)
 	}
+	host := config.Server.Host
+	port := config.Server.Port
+	debug := config.Server.Debug
+	if debug {
+		gin.SetMode(gin.DebugMode)
+	} else {
+		gin.SetMode(gin.ReleaseMode)
+	}
 	server := gin.Default()
 	initMiddlewares(server)
+	initI18nMiddlewares(server, i18nFS)
 	initStaticMiddlewares(server, embedFS)
 	initFrontendRouter(server, embedFS)
 	router.InitRouter(server)
-	err = server.Run(fmt.Sprintf("%s:%d", config.Server.Host, config.Server.Port))
+	if !debug {
+		fmt.Printf("[GIN] Listening and serving HTTP on %s:%d\n", host, port)
+	}
+	err = server.Run(fmt.Sprintf("%s:%d", host, port))
 	if err != nil {
 		log.Fatal(err)
 	}

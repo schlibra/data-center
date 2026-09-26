@@ -11,9 +11,12 @@ import (
 )
 
 var EmbedFS embed.FS
+var I18nFS embed.FS
 
-func Execute(embedFs embed.FS) {
+func Execute(embedFs embed.FS, i18nFS embed.FS) {
 	EmbedFS = embedFs
+	I18nFS = i18nFS
+
 	if !service.Interactive() {
 		RunService()
 		return
