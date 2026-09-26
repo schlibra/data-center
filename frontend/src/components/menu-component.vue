@@ -20,6 +20,7 @@ import {
   AlbumsOutline as InfoIcon,
   MailOpenOutline as OutlookIcon,
   CodeSlashOutline as DeveloperIcon,
+  RocketOutline as OpenVPNIcon,
 } from '@vicons/ionicons5'
 import { useUserStore, useMenuCollapseStore } from '@/stores'
 
@@ -104,6 +105,24 @@ const menuOptions = computed(() => [
         key: '/frp/admin/proxy',
       },
     ],
+  },
+  {
+    label: 'OpenVPN管理',
+    key: '/openvpn',
+    show: user.hasPermission('menu.openvpn'),
+    icon: renderIcon(OpenVPNIcon),
+    children: [
+      {
+        label: '账号管理',
+        key: '/openvpn/user',
+        icon: renderIcon(UserIcon),
+      },
+      {
+        label: '客户端管理',
+        key: '/openvpn/client',
+        icon: renderIcon(ClientIcon)
+      }
+    ]
   },
   {
     label: '邮箱管理',

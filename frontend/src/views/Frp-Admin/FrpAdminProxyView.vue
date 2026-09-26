@@ -91,7 +91,7 @@ const columns = [
   {
     title: '上次连接时间',
     key: 'status.lastStartAt',
-    width: 150,
+    width: 200,
     render(row) {
       const time = new Date()
       time.setTime(row.status.lastStartAt * 1000)
@@ -101,7 +101,7 @@ const columns = [
   {
     title: '上次断开时间',
     key: 'status.lastCloseAt',
-    width: 150,
+    width: 200,
     render(row) {
       const _t = row.status.lastCloseAt
       if (_t) {

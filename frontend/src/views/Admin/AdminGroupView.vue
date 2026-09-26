@@ -51,14 +51,17 @@ const columns = [
   {
     title: 'ID',
     key: 'id',
+    width: 60,
   },
   {
     title: '用户组名',
     key: 'name',
+    width: 100,
   },
   {
     title: '管理员',
     key: 'admin',
+    width: 100,
     render(row) {
       return h(NSwitch, {
         value: row.admin === 1,
@@ -68,6 +71,7 @@ const columns = [
   {
     title: '权限数量',
     key: 'permission',
+    width: 100,
     render(row) {
       try {
         let permissionList = JSON.parse(row.permission)
@@ -80,6 +84,7 @@ const columns = [
   {
     title: '操作',
     key: 'action',
+    width: 150,
     render(row) {
       return h(NFlex, {}, [
         h(

@@ -54,18 +54,22 @@ const columns = [
   {
     title: 'ID',
     key: 'id',
+    width: 60,
   },
   {
     title: '最小端口',
     key: 'min',
+    width: 100,
   },
   {
     title: '最大端口',
     key: 'max',
+    width: 100,
   },
   {
     title: 'Token',
     key: 'token',
+    width: 200,
     render(row) {
       return h('span', {}, `${row.token_info.name}(${row.token})`)
     },
@@ -73,6 +77,7 @@ const columns = [
   {
     title: '用户',
     key: 'user',
+    width: 150,
     render(row) {
       return h('span', {}, `${row.user_info.nickname}(${row.user_info.username})`)
     },
@@ -80,6 +85,7 @@ const columns = [
   {
     title: '操作',
     key: 'action',
+    width: 150,
     render(row) {
       return h(NFlex, {}, [
         h(

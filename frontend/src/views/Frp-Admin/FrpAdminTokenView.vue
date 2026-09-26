@@ -39,18 +39,22 @@ const columns = [
   {
     title: 'ID',
     key: 'id',
+    width: 60,
   },
   {
     title: '名称',
     key: 'name',
+    width: 200,
   },
   {
     title: 'Token',
     key: 'token',
+    width: 200,
   },
   {
     title: '用户',
     key: 'user',
+    width: 150,
     render(row) {
       return h('span', {}, `${row.user_info.username} ( ${row.user_info.nickname} )`)
     },
@@ -58,6 +62,7 @@ const columns = [
   {
     title: '启用',
     key: 'enable',
+    width: 100,
     render(row) {
       return h(NSwitch, {
         value: row.enable === 1,
@@ -70,6 +75,7 @@ const columns = [
   {
     title: '操作',
     key: 'action',
+    width: 260,
     render(row) {
       return h(NFlex, {}, [
         h(

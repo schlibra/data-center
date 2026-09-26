@@ -53,7 +53,7 @@ const columns = [
   {
     title: '首次连接时间',
     key: 'firstConnectedAt',
-    width: 150,
+    width: 200,
     render(row) {
       const time = new Date()
       time.setTime(row.firstConnectedAt * 1000)
@@ -63,7 +63,7 @@ const columns = [
   {
     title: '上次连接时间',
     key: 'lastConnectedAt',
-    width: 150,
+    width: 200,
     render(row) {
       const time = new Date()
       time.setTime(row.lastConnectedAt * 1000)

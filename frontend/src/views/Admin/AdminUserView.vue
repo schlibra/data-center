@@ -38,22 +38,27 @@ const columns = [
   {
     title: 'ID',
     key: 'id',
+    width: 60,
   },
   {
     title: '用户名',
     key: 'username',
+    width: 100
   },
   {
     title: '昵称',
     key: 'nickname',
+    width: 100
   },
   {
     title: '用户组',
     key: 'group_info.name',
+    width: 100,
   },
   {
     title: '启用',
     key: 'enable',
+    width: 100,
     render(row) {
       return h(NSwitch, {
         value: row.enable === 1,
@@ -66,6 +71,7 @@ const columns = [
   {
     title: '操作',
     key: 'action',
+    width: 250,
     render(row) {
       return h(NFlex, {}, [
         h(
