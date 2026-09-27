@@ -47,8 +47,7 @@ func ProxyFrpApiHandler(c *gin.Context) {
 // @Success 200 {object} response.Response{data=[]request.FrpApiProxiesDataItem}
 // @Router /frp/api/proxy [get]
 func ProxiesFrpApiHandler(c *gin.Context) {
-	row := parseToken(c)
-	checkPermission(c, "frp.api.proxy")
+	row := checkPermission(c, "frp.api.proxy")
 	service.ProxiesFrpApiService(c, row)
 }
 
@@ -60,7 +59,6 @@ func ProxiesFrpApiHandler(c *gin.Context) {
 // @Success 200 {object} response.Response{data=[]request.FrpApiClientsDataItem}
 // @Router /frp/api/client [get]
 func ClientsFrpApiHandler(c *gin.Context) {
-	row := parseToken(c)
-	checkPermission(c, "frp.api.client")
+	row := checkPermission(c, "frp.api.client")
 	service.ClientFrpApiService(c, row)
 }

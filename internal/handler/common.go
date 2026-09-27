@@ -58,10 +58,10 @@ func parseToken(c *gin.Context) models.UserTable {
 	}
 	return row
 }
-func checkPermission(c *gin.Context, pmsKey string) {
+func checkPermission(c *gin.Context, pmsKey string) models.UserTable {
 	row := parseToken(c)
 	if row.GroupInfo.Admin == 1 {
-		return
+		return row
 	}
 	var groupPmsList []int
 	if err := json.Unmarshal([]byte(row.GroupInfo.Permission), &groupPmsList); err != nil {
@@ -80,6 +80,7 @@ func checkPermission(c *gin.Context, pmsKey string) {
 	if !slices.Contains(groupPmsList, p.ID) {
 		sendI18n(c, 403, "user.permission.denied", nil)
 	}
+	return row
 }
 func checkAdmin(c *gin.Context) models.UserTable {
 	row := parseToken(c)

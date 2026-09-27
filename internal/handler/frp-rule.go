@@ -23,8 +23,7 @@ func portCheck(c *gin.Context, min int, max int) {
 // @Success 200 {object} response.Response
 // @Router /frp/rule/ [post]
 func CreateFrpRuleHandler(c *gin.Context) {
-	row := parseToken(c)
-	checkPermission(c, "frp.rule.create")
+	row := checkPermission(c, "frp.rule.create")
 	var req request.CreateFrpRule
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
@@ -42,8 +41,7 @@ func CreateFrpRuleHandler(c *gin.Context) {
 // @Success 200 {object} response.Response{data=[]models.FrpRuleTable}
 // @Router /frp/rule/ [get]
 func ListFrpRuleHandler(c *gin.Context) {
-	row := parseToken(c)
-	checkPermission(c, "frp.rule.get")
+	row := checkPermission(c, "frp.rule.get")
 	service.ListFrpRuleService(c, row)
 }
 
@@ -56,8 +54,7 @@ func ListFrpRuleHandler(c *gin.Context) {
 // @Success 200 {object} response.Response{data=models.FrpRuleTable}
 // @Router /frp/rule/{id} [get]
 func GetFrpRuleHandler(c *gin.Context) {
-	row := parseToken(c)
-	checkPermission(c, "frp.rule.get")
+	row := checkPermission(c, "frp.rule.get")
 	var req request.UriId
 	if err := c.ShouldBindUri(&req); err != nil {
 		sendError(c, err)
@@ -76,8 +73,7 @@ func GetFrpRuleHandler(c *gin.Context) {
 // @Success 200 {object} response.Response
 // @Router /frp/rule/{id} [put]
 func UpdateFrpRuleHandler(c *gin.Context) {
-	row := parseToken(c)
-	checkPermission(c, "frp.rule.update")
+	row := checkPermission(c, "frp.rule.update")
 	var req request.UpdateFrpRule
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
@@ -99,8 +95,7 @@ func UpdateFrpRuleHandler(c *gin.Context) {
 // @Success 200 {object} response.Response
 // @Router /frp/rule/{id} [delete]
 func DeleteFrpRuleHandler(c *gin.Context) {
-	row := parseToken(c)
-	checkPermission(c, "frp.rule.delete")
+	row := checkPermission(c, "frp.rule.delete")
 	var reqId request.UriId
 	if err := c.ShouldBindUri(&reqId); err != nil {
 		sendError(c, err)

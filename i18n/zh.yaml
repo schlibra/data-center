@@ -84,3 +84,6 @@ admin:
     key_name_empty: "权限名称不能为空"
     id_equal_parent: "权限id不能等于父权限id"
     has_child: "权限有子权限，不能删除"
+openvpn:
+  group:
+    get_success: "IP组获取成功"

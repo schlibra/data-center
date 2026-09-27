@@ -32,11 +32,15 @@ type frpsWebConfig struct {
 	Port  int    `yaml:"port"`
 	Token string `yaml:"token"`
 }
-
+type ikuaiConfig struct {
+	Address string `yaml:"address"`
+	Key     string `yaml:"key"`
+}
 type Config struct {
 	MySQL   mysqlConfig   `yaml:"mysql"`
 	Server  serverConfig  `yaml:"server"`
 	Jwt     jwtConfig     `yaml:"jwt"`
 	Redis   redisConfig   `yaml:"redis"`
 	FrpsWeb frpsWebConfig `yaml:"frps-web"`
+	IKuai   ikuaiConfig   `yaml:"ikuai"`
 }

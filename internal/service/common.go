@@ -19,7 +19,7 @@ func sendError(c *gin.Context, err error) {
 	response.SendError(c, err)
 }
 func nw(c *gin.Context) bool {
-	return !c.Writer.Written()
+	return response.NW(c)
 }
 
 func closeDB(db *sql.DB) {

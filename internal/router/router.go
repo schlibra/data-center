@@ -32,4 +32,5 @@ func InitRouter(router *gin.Engine) {
 	initUserRouter(api)
 	initFrpRouter(api)
 	initAdminRouter(api)
+	initOpenVPNRouter(api)
 }

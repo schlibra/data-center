@@ -17,8 +17,7 @@ import (
 // @Success 200 {object} response.Response
 // @Router /frp/token/ [post]
 func CreateFrpTokenHandler(c *gin.Context) {
-	row := parseToken(c)
-	checkPermission(c, "frp.token.create")
+	row := checkPermission(c, "frp.token.create")
 	var req request.FrpTokenCreate
 	if err := c.ShouldBind(&req); err != nil {
 		sendError(c, err)
@@ -37,8 +36,7 @@ func CreateFrpTokenHandler(c *gin.Context) {
 // @Success 200 {object} response.Response
 // @Router /frp/token/ [get]
 func ListFrpTokenHandler(c *gin.Context) {
-	row := parseToken(c)
-	checkPermission(c, "frp.token.get")
+	row := checkPermission(c, "frp.token.get")
 	service.ListFrpTokenService(c, row)
 }
 
@@ -51,8 +49,7 @@ func ListFrpTokenHandler(c *gin.Context) {
 // @Success 200 {object} response.Response
 // @Router /frp/token/{id} [get]
 func GetFrpTokenHandler(c *gin.Context) {
-	row := parseToken(c)
-	checkPermission(c, "frp.token.get")
+	row := checkPermission(c, "frp.token.get")
 	var req request.UriId
 	if err := c.ShouldBindUri(&req); err != nil {
 		sendError(c, err)
@@ -71,8 +68,7 @@ func GetFrpTokenHandler(c *gin.Context) {
 // @Success 200 {object} response.Response
 // @Router /frp/token/{id} [put]
 func UpdateFrpTokenHandler(c *gin.Context) {
-	row := parseToken(c)
-	checkPermission(c, "frp.token.update")
+	row := checkPermission(c, "frp.token.update")
 	var req request.FrpTokenUpdate
 	if err := c.ShouldBind(&req); err != nil {
 		sendError(c, err)
@@ -96,8 +92,7 @@ func UpdateFrpTokenHandler(c *gin.Context) {
 // @Success 200 {object} response.Response
 // @Router /frp/token/{id} [delete]
 func DeleteFrpTokenHandler(c *gin.Context) {
-	row := parseToken(c)
-	checkPermission(c, "frp.token.delete")
+	row := checkPermission(c, "frp.token.delete")
 	var req request.UriId
 	if err := c.ShouldBindUri(&req); err != nil {
 		sendError(c, err)
@@ -114,8 +109,7 @@ func DeleteFrpTokenHandler(c *gin.Context) {
 // @Success 200 {object} response.Response
 // @Router /frp/token/{id} [post]
 func GenerateFrpTokenHandler(c *gin.Context) {
-	row := parseToken(c)
-	checkPermission(c, "frp.token.generate")
+	row := checkPermission(c, "frp.token.generate")
 	var req request.UriId
 	if err := c.ShouldBindUri(&req); err != nil {
 		sendError(c, err)

@@ -15,7 +15,7 @@ type Response struct {
 }
 
 func SendJson(c *gin.Context, code int, message string, data any) {
-	if !c.Writer.Written() {
+	if NW(c) {
 		c.Header("Connection", "close")
 		c.JSON(http.StatusOK, gin.H{
 			"code":    code,
@@ -29,4 +29,7 @@ func SendI18n(c *gin.Context, code int, messageId string, data any) {
 }
 func SendError(c *gin.Context, err error) {
 	SendJson(c, 500, err.Error(), nil)
+}
+func NW(c *gin.Context) bool {
+	return !c.Writer.Written()
 }
