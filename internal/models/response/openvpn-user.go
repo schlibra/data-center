@@ -12,7 +12,7 @@ type openVPNUserResultsData struct {
 	LastOfftime   int                           `json:"last_offtime"`
 	CardID        string                        `json:"cardid"`
 	ID            int                           `json:"id"`
-	Enable        string                        `json:"enable"`
+	Enabled        string                        `json:"enabled"`
 	Comment       string                        `json:"comment"`
 	Username      string                        `json:"username"`
 	Duration      int                           `json:"duration"`

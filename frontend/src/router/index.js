@@ -79,6 +79,21 @@ const router = createRouter({
       component: () => import('@/views/Frp-Admin/FrpAdminProxyView.vue')
     },
     {
+      path: '/openvpn/user',
+      name: 'openvpn user',
+      component: () => import('@/views/OpenVPN/OpenVPNUser.vue')
+    },
+    {
+      path: '/openvpn/client',
+      name: 'openvpn client',
+      component: () => import('@/views/OpenVPN/OpenVPNClient.vue')
+    },
+    {
+      path: '/openvpn/group',
+      name: 'openvpn group',
+      component: () => import('@/views/OpenVPN/OpenVPNGroup.vue')
+    },
+    {
       path: '/user',
       name: 'user',
       component: () => import("@/views/User/UserView.vue")

@@ -68,6 +68,25 @@ import {
   setUserPassword,
   getUserApiKey,
 } from './user.js'
+import {
+  getOpenVPNClientInfo,
+  getOpenVPNClientList,
+  kickOpenVPNClient,
+} from './openvpn/openvpn-client.js'
+import {
+  getOpenVPNUserInfo,
+  getOpenVPNUserList,
+  createOpenVPNUser,
+  updateOpenVPNUser,
+  deleteOpenVPNUser,
+} from './openvpn/openvpn-user.js'
+import {
+  getOpenVPNGroupInfo,
+  getOpenVPNGroupList,
+  createOpenVPNGroup,
+  updateOpenVPNGroup,
+  deleteOpenVPNGroup,
+} from './openvpn/openvpn-group.js'
 
 export {
   getAdminGroupList,
@@ -120,4 +139,17 @@ export {
   logoutUser,
   getUserApiKey,
   setUserPassword,
+  getOpenVPNClientInfo,
+  getOpenVPNClientList,
+  kickOpenVPNClient,
+  getOpenVPNUserInfo,
+  getOpenVPNUserList,
+  createOpenVPNUser,
+  updateOpenVPNUser,
+  deleteOpenVPNUser,
+  getOpenVPNGroupInfo,
+  getOpenVPNGroupList,
+  createOpenVPNGroup,
+  updateOpenVPNGroup,
+  deleteOpenVPNGroup,
 }

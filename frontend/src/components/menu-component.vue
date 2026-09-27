@@ -21,6 +21,7 @@ import {
   MailOpenOutline as OutlookIcon,
   CodeSlashOutline as DeveloperIcon,
   RocketOutline as OpenVPNIcon,
+  FolderOpenOutline as IPGroupIcon,
 } from '@vicons/ionicons5'
 import { useUserStore, useMenuCollapseStore } from '@/stores'
 
@@ -113,9 +114,14 @@ const menuOptions = computed(() => [
     icon: renderIcon(OpenVPNIcon),
     children: [
       {
-        label: '账号管理',
+        label: '用户管理',
         key: '/openvpn/user',
         icon: renderIcon(UserIcon),
+      },
+      {
+        label: 'IP组管理',
+        key: '/openvpn/group',
+        icon: renderIcon(IPGroupIcon)
       },
       {
         label: '客户端管理',

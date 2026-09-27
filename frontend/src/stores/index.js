@@ -13,6 +13,9 @@ import {useFrpAdminRuleStore} from '@/stores/frp-admin/frp-admin-rule.js'
 import {useFrpRuleStore} from '@/stores/frp/frp-rule.js'
 import {useFrpAdminTokenStore} from '@/stores/frp-admin/frp-admin-token.js'
 import {useFrpTokenStore} from '@/stores/frp/frp-token.js'
+import {useOpenVPNUserStore} from '@/stores/openvpn/openvpn-user.js'
+import {useOpenVPNClientStore} from '@/stores/openvpn/openvpn-client.js'
+import {useOpenVPNGroupStore} from '@/stores/openvpn/openvpn-group.js'
 
 export {
   useTokenStore,
@@ -30,4 +33,7 @@ export {
   useAdminUserStore,
   useAdminPermissionStore,
   useAdminGroupStore,
+  useOpenVPNClientStore,
+  useOpenVPNGroupStore,
+  useOpenVPNUserStore
 }
