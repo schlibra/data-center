@@ -253,7 +253,7 @@ func GenerateUserApiKeyService(c *gin.Context, row models.UserTable) {
 
 func GetUserApiKeyService(c *gin.Context, row models.UserTable) {
 	if row.ApiId == "" {
-		sendI18n(c, 400, "user.apikey.not_exists", nil)
+		sendI18n(c, 400, "user.apikey.not_exist", nil)
 	}
 	token, err := utils.JwtUserGenerate(row.ID, row.Username, row.Group, row.Enable, row.ApiId, time.Duration(math.MaxInt64))
 	if err != nil {
