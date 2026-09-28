@@ -107,7 +107,7 @@ const permissionTree = computed(() =>
         }
       }),
     }
-  }),
+  }).sort((a, b) => a.key - b.key),
 )
 
 const dialogError = (content) => {
