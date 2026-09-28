@@ -95,7 +95,7 @@ onMounted(async () => {
         <n-flex>
           <n-input
             ref="tokenRef"
-            :value="token.token"
+            v-model:value="token.token"
             type="textarea"
             :rows="5"
             style="min-width: 600px"
