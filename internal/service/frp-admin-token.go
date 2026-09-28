@@ -123,7 +123,7 @@ func DeleteFrpAdminTokenService(c *gin.Context, id int) {
 		sendError(c, err)
 	}
 	if len(rules) > 0 {
-		sendI18n(c, 400, "frp.token.has_rules", nil)
+		sendI18n(c, 400, "frp.token.has_rule", nil)
 	}
 	if nw(c) {
 		if _, err := frpToken.DeleteById(id); err != nil {

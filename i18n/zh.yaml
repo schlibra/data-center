@@ -29,6 +29,9 @@ user:
     success: "密码修改成功"
   info:
     success: "用户信息获取成功"
+  apikey:
+    success: "API Key获取成功"
+    not_exist: "API Key不存在"
 frp:
   token:
     exist: "token已存在"
@@ -44,19 +47,20 @@ frp:
   rule:
     not_exist: "规则不存在"
     token_not_exist: "token不存在"
-    user_not_exists: "用户不存在"
+    user_not_exist: "用户不存在"
     get_success: "规则获取成功"
     create_success: "规则创建成功"
     update_success: "规则更新成功"
     delete_success: "规则删除成功"
     port_not_valid: "端口无效"
     forbidden: "没有权限"
+    create_failed: "规则创建失败"
 admin:
   user:
     get_success: "用户获取成功"
-    not_exists: "用户不存在"
-    exists: "用户已存在"
-    group_not_exists: "用户组不存在"
+    not_exist: "用户不存在"
+    exist: "用户已存在"
+    group_not_exist: "用户组不存在"
     create_success: "用户创建成功"
     update_success: "用户修改成功"
     delete_success: "用户删除成功"
@@ -67,8 +71,8 @@ admin:
     empty: "用户名或密码不能为空"
   group:
     get_success: "用户组获取成功"
-    not_exists: "用户组不存在"
-    exists: "用户组已存在"
+    not_exist: "用户组不存在"
+    exist: "用户组已存在"
     create_success: "用户组创建成功"
     update_success: "用户组修改成功"
     delete_success: "用户组删除成功"
@@ -77,7 +81,7 @@ admin:
   permission:
     get_success: "权限获取成功"
     not_exists: "权限不存在"
-    exists: "权限已存在"
+    exist: "权限已存在"
     create_success: "权限创建成功"
     update_success: "权限修改成功"
     delete_success: "权限删除成功"
@@ -87,3 +91,14 @@ admin:
 openvpn:
   group:
     get_success: "IP组获取成功"
+    create_success: "IP组创建成功"
+    update_success: "IP组更新成功"
+    delete_success: "IP组删除成功"
+  user:
+    get_success: "用户获取成功"
+    create_success: "用户创建成功"
+    update_success: "用户更新成功"
+    delete_success: "用户删除成功"
+  client:
+    get_success: "客户端获取成功"
+    kick_success: "客户端踢出成功"

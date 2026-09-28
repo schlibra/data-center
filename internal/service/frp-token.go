@@ -109,7 +109,7 @@ func DeleteFrpTokenService(c *gin.Context, row models.UserTable, id int) {
 		sendError(c, err)
 	}
 	if len(rules) > 0 {
-		sendI18n(c, 400, "frp.token.has.rule", nil)
+		sendI18n(c, 400, "frp.token.has_rule", nil)
 	}
 	if !c.Writer.Written() {
 		_, err := frpToken.DeleteById(token.ID)

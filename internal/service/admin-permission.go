@@ -57,7 +57,7 @@ func CreateAdminPermissionService(c *gin.Context, req request.CreateAdminPermiss
 	}
 	defer closeDB(permission.DB)
 	if _, err := permission.SelectByKey(req.Key); err == nil {
-		sendI18n(c, 400, "admin.permission.key_exists", req.Key)
+		sendI18n(c, 400, "admin.permission.exist", req.Key)
 	}
 	if nw(c) {
 		if _, err := permission.Insert(req.Key, req.Name, req.Parent); err != nil {
@@ -79,7 +79,7 @@ func UpdateAdminPermissionService(c *gin.Context, id int, req request.UpdateAdmi
 		return
 	}
 	if _, err := permission.SelectByKey(req.Key); err == nil && permissionRow.Key != req.Key {
-		sendI18n(c, 400, "admin.permission.exists", nil)
+		sendI18n(c, 400, "admin.permission.exist", nil)
 	}
 	if nw(c) {
 		if _, err := permission.UpdateByID(id, req.Key, req.Name, req.Parent); err != nil {
