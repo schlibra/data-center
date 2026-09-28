@@ -5,6 +5,7 @@ import { encrypt } from '@/utils'
 import router from '@/router'
 import { loginKey, loginUser } from '@/api'
 import { useTokenStore } from '@/stores'
+import logo from '@/assets/logo.svg'
 
 const message = useMessage()
 const dialog = useDialog()
@@ -58,9 +59,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <n-card style="min-width: 350px; max-width: 400px; margin-top: 10%">
+  <n-card size="large" style="min-width: 350px; max-width: 400px; margin-top: 10%">
     <template #header>
-      <h3>登录账号</h3>
+      <n-h1 type="info" prefix="bar">登录账号</n-h1>
     </template>
     <n-form>
       <n-form-item label="用户名">
@@ -73,6 +74,7 @@ onMounted(() => {
       <n-form-item label="密码">
         <n-input
           v-model:value="password"
+          show-password-on="click"
           type="password"
           ref="passwordRef"
           @keydown.enter="doLogin()"

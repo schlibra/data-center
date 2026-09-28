@@ -81,9 +81,9 @@ function goLogin() {
 
 <template>
   <n-spin :show="loading">
-    <n-card style="min-width: 350px; max-width: 400px; margin-top: 10%">
+    <n-card size="large" style="min-width: 350px; max-width: 400px; margin-top: 10%">
       <template #header>
-        <h3>注册账号</h3>
+        <n-h1 prefix="bar" type="info">注册账号</n-h1>
       </template>
       <n-form>
         <n-form-item label="用户名">
@@ -97,6 +97,7 @@ function goLogin() {
           <n-input
             ref="passwordRef"
             type="password"
+            show-password-on="click"
             v-model:value="password"
             @keydown.enter="confirmPasswordRef.focus()"
           ></n-input>
@@ -105,6 +106,7 @@ function goLogin() {
           <n-input
             ref="confirmPasswordRef"
             type="password"
+            show-password-on="click"
             v-model:value="confirmPassword"
             @keydown.enter="nicknameRef.focus()"
           ></n-input>

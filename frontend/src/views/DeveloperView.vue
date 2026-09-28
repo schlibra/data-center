@@ -86,9 +86,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <n-card>
+  <n-card size="large">
     <template #header>
-      <h3>开发者功能</h3>
+      <n-h1 prefix="bar">开发者功能</n-h1>
     </template>
     <n-form>
       <n-form-item label="用户Token">

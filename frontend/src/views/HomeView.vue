@@ -198,9 +198,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <n-card>
+  <n-card size="large">
     <template #header>
-      <h3 style="margin-bottom: 0 !important">首页</h3>
+      <n-h1 prefix="bar">首页</n-h1>
     </template>
     <div>
       <n-divider title-placement="left">用户信息</n-divider>

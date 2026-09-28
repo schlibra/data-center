@@ -107,9 +107,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <n-card>
+  <n-card size="large">
     <template #header>
-      <h3>Frp 客户端管理（管理员）</h3>
+      <n-h1 prefix="bar">Frp 客户端管理（管理员）</n-h1>
     </template>
     <n-data-table :data="frpClient.client" :columns="columns"></n-data-table>
   </n-card>

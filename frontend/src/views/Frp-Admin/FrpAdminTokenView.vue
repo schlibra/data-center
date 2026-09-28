@@ -261,9 +261,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <n-card>
+  <n-card size="large">
     <template #header>
-      <h3>Frp Token管理（管理员）</h3>
+      <n-h1 prefix="bar">Frp Token管理（管理员）</n-h1>
     </template>
     <n-flex>
       <n-button @click="openCreateModal()" size="large" type="primary">创建Token</n-button>
@@ -271,9 +271,9 @@ onMounted(async () => {
     </n-flex>
   </n-card>
   <n-modal v-model:show="showModal">
-    <n-card style="max-width: 400px">
+    <n-card size="large" style="max-width: 400px">
       <template #header>
-        <h3>{{ createToken ? '创建' : '编辑' }}Token</h3>
+        <n-h1>{{ createToken ? '创建' : '编辑' }}Token</n-h1>
       </template>
       <n-form>
         <n-form-item label="ID" v-if="!createToken">

@@ -32,9 +32,9 @@ function onCreate() {
 </script>
 
 <template>
-  <n-card>
+  <n-card size="large">
     <template #header>
-      <h3>配置生成</h3>
+      <n-h1 prefix="bar">配置生成</n-h1>
     </template>
     <n-form>
       <n-form-item label="前置配置">

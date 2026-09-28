@@ -104,9 +104,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <n-card>
+  <n-card size="large">
     <template #header>
-      <h3>OpenVPN 客户端管理</h3>
+      <n-h1 prefix="bar">OpenVPN 客户端管理</n-h1>
     </template>
     <n-data-table :data="openVPNClient.clients" :columns="columns"></n-data-table>
   </n-card>

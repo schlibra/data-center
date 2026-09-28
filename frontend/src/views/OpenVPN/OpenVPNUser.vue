@@ -276,9 +276,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <n-card>
+  <n-card size="large">
     <template #header>
-      <h3>OpenVPN 用户管理</h3>
+      <n-h1 prefix="bar">OpenVPN 用户管理</n-h1>
     </template>
     <n-flex>
       <n-button size="large" type="primary" @click="openCreateModal()">创建用户</n-button>

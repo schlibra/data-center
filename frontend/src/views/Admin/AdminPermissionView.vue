@@ -235,9 +235,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <n-card>
+  <n-card size="large">
     <template #header>
-      <h3>管理员 权限管理</h3>
+      <n-h1 prefix="bar">管理员 权限管理</n-h1>
     </template>
     <n-space vertical>
       <n-button @click="openCreateModal()" size="large" type="primary">创建权限</n-button>
@@ -251,9 +251,9 @@ onMounted(async () => {
     </n-space>
   </n-card>
   <n-modal v-model:show="showModal">
-    <n-card style="max-width: 400px">
+    <n-card size="large" style="max-width: 400px">
       <template #header>
-        <h3>{{ createPermission ? '创建' : '编辑' }}权限</h3>
+        <n-h1 prefix="bar">{{ createPermission ? '创建' : '编辑' }}权限</n-h1>
       </template>
       <n-form>
         <n-form-item label="ID" v-if="!createPermission">
