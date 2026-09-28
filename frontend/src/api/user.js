@@ -83,9 +83,16 @@ async function logoutUser() {
     return apiError(e)
   }
 }
-async function getUserApiKey() {
+async function generateUserApiKey() {
   try {
     return apiBack(await axios.post('/api/user/api', {}, token.config))
+  } catch (e) {
+    return apiError(e)
+  }
+}
+async function getUserApiKey() {
+  try {
+    return apiBack(await axios.get('/api/user/api', token.config))
   } catch (e) {
     return apiError(e)
   }
@@ -99,5 +106,6 @@ export {
   updateUser,
   logoutUser,
   setUserPassword,
-  getUserApiKey,
+  generateUserApiKey,
+  getUserApiKey
 }

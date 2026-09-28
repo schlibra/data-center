@@ -117,8 +117,7 @@ func UserInfoHandler(c *gin.Context) {
 // @Success 200 {object} response.Response
 // @Router /user/ [put]
 func UserUpdateHandler(c *gin.Context) {
-	row := parseToken(c)
-	checkPermission(c, "user.update")
+	row := checkPermission(c, "user.update")
 	var req request.UserUpdate
 	if err := c.ShouldBind(&req); err != nil {
 		sendError(c, err)
@@ -136,8 +135,7 @@ func UserUpdateHandler(c *gin.Context) {
 // @Success 200 {object} response.Response
 // @Router /user/ [patch]
 func UserPasswordHandler(c *gin.Context) {
-	row := parseToken(c)
-	checkPermission(c, "user.password")
+	row := checkPermission(c, "user.password")
 	var req request.UserPassword
 	if err := c.ShouldBind(&req); err != nil {
 		sendError(c, err)
@@ -145,7 +143,7 @@ func UserPasswordHandler(c *gin.Context) {
 	service.UserPasswordService(c, req, row)
 }
 
-// UserApiKeyHandler 生成用户API密钥
+// GenerateUserApiKeyHandler 生成用户API密钥
 // @Summary 生成用户API密钥
 // @Tags 用户
 // @Accept application/json
@@ -153,8 +151,12 @@ func UserPasswordHandler(c *gin.Context) {
 // @Security BearerAuth
 // @Success 200 {object} response.Response{data=string}
 // @Router /user/api [post]
-func UserApiKeyHandler(c *gin.Context) {
-	row := parseToken(c)
-	checkPermission(c, "user.api_key")
-	service.UserApiKeyService(c, row)
+func GenerateUserApiKeyHandler(c *gin.Context) {
+	row := checkPermission(c, "user.api_key")
+	service.GenerateUserApiKeyService(c, row)
+}
+
+func GetUserApiKeyHandler(c *gin.Context) {
+	row := checkPermission(c, "user.api_key")
+	service.GetUserApiKeyService(c, row)
 }
