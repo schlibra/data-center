@@ -13,7 +13,7 @@ export default defineConfig({
     VitePWA({
       injectRegister: 'auto',
       manifest: {
-        name: 'Date Center',
+        name: 'Data Center',
         short_name: 'Data Center',
         description: 'Data Center manage service',
         theme_color: '#0b2f53',
