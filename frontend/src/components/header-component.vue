@@ -1,5 +1,6 @@
 <script setup>
 import { computed, ref } from 'vue'
+import logo from '@/assets/logo.svg'
 
 import { MoonOutline as DarkIcon, SunnyOutline as LightIcon } from '@vicons/ionicons5'
 import { useThemeStore } from '@/stores/theme.js'
@@ -38,6 +39,9 @@ setInterval(() => {
 
 <template>
   <n-page-header class="header">
+    <template #avatar>
+      <n-avatar size="large" color="#0000" :src="logo"></n-avatar>
+    </template>
     <template #title>
       <h3>Data-Center</h3>
     </template>

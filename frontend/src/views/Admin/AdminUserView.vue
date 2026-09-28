@@ -265,9 +265,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <n-card>
+  <n-card size="large">
     <template #header>
-      <h3>管理员 用户管理</h3>
+      <n-h1 prefix="bar">管理员 用户管理</n-h1>
     </template>
     <n-flex>
       <n-button type="primary" size="large" @click="openCreateModal()">创建用户</n-button>
@@ -275,9 +275,9 @@ onMounted(async () => {
     </n-flex>
   </n-card>
   <n-modal v-model:show="showModal">
-    <n-card style="max-width: 400px">
+    <n-card size="large" style="max-width: 400px">
       <template #header>
-        <h3>{{ createUser ? '创建' : '编辑' }}用户</h3>
+        <n-h1>{{ createUser ? '创建' : '编辑' }}用户</n-h1>
       </template>
       <n-form>
         <n-form-item label="ID" v-if="!createUser">
@@ -312,9 +312,9 @@ onMounted(async () => {
     </n-card>
   </n-modal>
   <n-modal v-model:show="showPasswordModal">
-    <n-card style="max-width: 400px">
+    <n-card size="large" style="max-width: 400px">
       <template #header>
-        <h3>设置密码</h3>
+        <n-h1>设置密码</n-h1>
       </template>
       <n-form>
         <n-form-item label="用户ID">

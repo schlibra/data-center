@@ -1,1 +1,53 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 261.76 226.69"><path d="M161.096.001l-30.225 52.351L100.647.001H-.005l130.877 226.688L261.749.001z" fill="#41b883"/><path d="M161.096.001l-30.225 52.351L100.647.001H52.346l78.526 136.01L209.398.001z" fill="#34495e"/></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_图层_2" data-name="图层 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 2048">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #0cf1dd;
+      }
+
+      .cls-2 {
+        fill: #0b2f53;
+      }
+
+      .cls-3 {
+        fill: #01c9eb;
+      }
+
+      .cls-4 {
+        fill: #194d7c;
+      }
+
+      .cls-5 {
+        fill: #022a4e;
+      }
+    </style>
+  </defs>
+  <rect id="_背景" data-name="背景" class="cls-2" x="28.35" y="28.35" width="1991.42" height="1991.42" rx="358.43" ry="358.43"/>
+  <g id="_3横条" data-name="3横条">
+    <rect id="_横条" data-name="横条" class="cls-4" x="277.95" y="374.17" width="1492.23" height="332.15" rx="135.94" ry="135.94"/>
+    <rect id="_横条-2" data-name="横条" class="cls-4" x="278.11" y="1303.5" width="1492.23" height="332.15" rx="135.94" ry="135.94"/>
+    <rect id="_横条-3" data-name="横条" class="cls-4" x="278.11" y="838.84" width="1492.23" height="332.15" rx="135.94" ry="135.94"/>
+  </g>
+  <g id="_图层_4" data-name="图层 4">
+    <circle class="cls-3" cx="446.91" cy="1469.86" r="86.47"/>
+    <circle class="cls-3" cx="446.91" cy="540.12" r="86.47"/>
+  </g>
+  <g id="_图层_7" data-name="图层 7">
+    <g id="_图层_6" data-name="图层 6">
+      <rect class="cls-1" x="1118.66" y="904.38" width="277.41" height="56.47" rx="23.11" ry="23.11" transform="translate(1702.6854 2433.4274) rotate(-143.0915)"/>
+      <rect class="cls-1" x="1118.66" y="1049.13" width="277.41" height="56.47" rx="23.11" ry="23.11" transform="translate(-395.02 971.01) rotate(-36.91)"/>
+    </g>
+    <g id="_图层_5" data-name="图层 5">
+      <rect class="cls-1" x="676.59" y="1050.13" width="277.41" height="56.47" rx="23.11" ry="23.11" transform="translate(819.61 2430.2382) rotate(-143.0915)"/>
+      <rect class="cls-1" x="676.59" y="905.37" width="277.41" height="56.47" rx="23.11" ry="23.11" transform="translate(-397.28 676.72) rotate(-36.91)"/>
+    </g>
+    <rect class="cls-1" x="467.59" y="977.82" width="1138.65" height="58.46"/>
+    <circle class="cls-1" cx="1605.11" cy="1004.99" r="86.47"/>
+    <circle class="cls-1" cx="446.91" cy="1004.99" r="86.47"/>
+  </g>
+  <g id="_图层_8" data-name="图层 8">
+    <rect class="cls-5" x="622.25" y="511.48" width="622.63" height="60.09" rx="24.59" ry="24.59"/>
+    <rect class="cls-5" x="622.25" y="1443.66" width="622.63" height="60.09" rx="24.59" ry="24.59"/>
+  </g>
+</svg>

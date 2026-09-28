@@ -231,9 +231,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <n-card>
+  <n-card size="large">
     <template #header>
-      <h3>管理员 用户组管理</h3>
+      <n-h1 prefix="bar">管理员 用户组管理</n-h1>
     </template>
     <n-flex>
       <n-button size="large" type="primary" @click="openCreateModal()">创建用户组</n-button>
@@ -241,9 +241,9 @@ onMounted(async () => {
     </n-flex>
   </n-card>
   <n-modal v-model:show="showModal">
-    <n-card style="max-width: 400px">
+    <n-card size="large" style="max-width: 400px">
       <template #header>
-        <h3>{{ createGroup ? '创建' : '编辑' }}用户组</h3>
+        <n-h1>{{ createGroup ? '创建' : '编辑' }}用户组</n-h1>
       </template>
       <n-form>
         <n-form-item label="ID" v-if="!createGroup">

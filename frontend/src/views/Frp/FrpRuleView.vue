@@ -205,9 +205,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <n-card>
+  <n-card size="large">
     <template #header>
-      <h3>Frp 端口规则管理</h3>
+      <n-h1 prefix="bar">Frp 端口规则管理</n-h1>
     </template>
     <n-flex>
       <n-button type="primary" size="large" @click="openCreateModal()">创建端口规则</n-button>
@@ -215,9 +215,9 @@ onMounted(async () => {
     </n-flex>
   </n-card>
   <n-modal v-model:show="showModal">
-    <n-card style="max-width: 400px">
+    <n-card size="large" style="max-width: 400px">
       <template #header>
-        <h3>{{ createRule ? '创建' : '编辑' }}端口规则</h3>
+        <n-h1>{{ createRule ? '创建' : '编辑' }}端口规则</n-h1>
       </template>
       <n-form>
         <n-form-item label="ID" v-if="!createRule">

@@ -150,9 +150,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <n-card>
+  <n-card size="large">
     <template #header>
-      <h3>Frp 映射管理（管理员）</h3>
+      <n-h1 prefix="bar">Frp 映射管理（管理员）</n-h1>
     </template>
     <n-data-table :data="frpProxy.proxy" :columns="columns"></n-data-table>
   </n-card>
