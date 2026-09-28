@@ -4,7 +4,6 @@ import (
 	"data-center/internal/router"
 	"data-center/pkg/utils"
 	"embed"
-	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -38,8 +37,6 @@ func Run(embedFS embed.FS, i18nFS embed.FS) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	host := config.Server.Host
-	port := config.Server.Port
 	debug := config.Server.Debug
 	if debug {
 		gin.SetMode(gin.DebugMode)
@@ -52,13 +49,7 @@ func Run(embedFS embed.FS, i18nFS embed.FS) {
 	initStaticMiddlewares(server, embedFS)
 	initFrontendRouter(server, embedFS)
 	router.InitRouter(server)
-	if !debug {
-		fmt.Printf("[GIN] Listening and serving HTTP on %s:%d\n", host, port)
-	}
-	err = server.Run(fmt.Sprintf("%s:%d", host, port))
-	if err != nil {
-		log.Fatal(err)
-	}
+	listenServer(server, config)
 }
 func Shutdown() {
 	quit := make(chan os.Signal, 1)

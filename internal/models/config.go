@@ -8,11 +8,18 @@ type mysqlConfig struct {
 	Database string `yaml:"name"`
 }
 
+type serverSSLConfig struct {
+	Enable   bool   `yaml:"enable"`
+	CertFile string `yaml:"cert"`
+	KeyFile  string `yaml:"key"`
+}
+
 type serverConfig struct {
-	Host         string `yaml:"host"`
-	Port         int    `yaml:"port"`
-	Debug        bool   `yaml:"debug"`
-	DefaultGroup int    `yaml:"default-group"`
+	Host         string          `yaml:"host"`
+	Port         int             `yaml:"port"`
+	Debug        bool            `yaml:"debug"`
+	DefaultGroup int             `yaml:"default-group"`
+	SSL          serverSSLConfig `yaml:"ssl"`
 }
 
 type jwtConfig struct {
