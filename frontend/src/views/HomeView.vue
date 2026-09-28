@@ -205,88 +205,96 @@ onMounted(async () => {
     </template>
     <n-timeline>
       <n-timeline-item title="用户信息" type="info">
-        <n-table>
-          <n-thead>
-            <n-tr>
-              <n-th>用户ID</n-th>
-              <n-th>用户名</n-th>
-              <n-th>昵称</n-th>
-              <n-th>用户组名称</n-th>
-              <n-th>用户组ID</n-th>
-              <n-th>用户中心</n-th>
-            </n-tr>
-          </n-thead>
-          <n-tbody>
-            <n-tr>
-              <n-td>{{ user.userId }}</n-td>
-              <n-td>{{ user.username }}</n-td>
-              <n-td>{{ user.nickname }}</n-td>
-              <n-td>{{ user.groupName }}</n-td>
-              <n-td>{{ user.groupId }}</n-td>
-              <n-td>
-                <n-button @click="goUser()" size="small" type="primary">用户中心</n-button>
-              </n-td>
-            </n-tr>
-          </n-tbody>
-        </n-table>
+        <n-scrollbar>
+          <n-table>
+            <n-thead>
+              <n-tr>
+                <n-th>用户ID</n-th>
+                <n-th>用户名</n-th>
+                <n-th>昵称</n-th>
+                <n-th>用户组名称</n-th>
+                <n-th>用户组ID</n-th>
+                <n-th>用户中心</n-th>
+              </n-tr>
+            </n-thead>
+            <n-tbody>
+              <n-tr>
+                <n-td>{{ user.userId }}</n-td>
+                <n-td>{{ user.username }}</n-td>
+                <n-td>{{ user.nickname }}</n-td>
+                <n-td>{{ user.groupName }}</n-td>
+                <n-td>{{ user.groupId }}</n-td>
+                <n-td>
+                  <n-button @click="goUser()" size="small" type="primary">用户中心</n-button>
+                </n-td>
+              </n-tr>
+            </n-tbody>
+          </n-table>
+        </n-scrollbar>
       </n-timeline-item>
       <n-timeline-item title="Frp信息" type="success" v-if="user.hasPermission('menu.frp')">
-        <n-table>
-          <n-thead>
-            <n-tr>
-              <n-th>Token数量</n-th>
-              <n-th>端口规则数量</n-th>
-              <n-th>客户端数量</n-th>
-              <n-th>映射数量</n-th>
-            </n-tr>
-          </n-thead>
-          <n-tbody>
-            <n-tr>
-              <n-td><n-number-animation :from="0" :to="frpToken.count"></n-number-animation></n-td>
-              <n-td><n-number-animation :from="0" :to="frpRule.count"></n-number-animation></n-td>
-              <n-td><n-number-animation :from="0" :to="frpClient.count"></n-number-animation></n-td>
-              <n-td><n-number-animation :from="0" :to="frpProxy.count"></n-number-animation></n-td>
-            </n-tr>
-          </n-tbody>
-        </n-table>
+        <n-scrollbar>
+          <n-table>
+            <n-thead>
+              <n-tr>
+                <n-th>Token数量</n-th>
+                <n-th>端口规则数量</n-th>
+                <n-th>客户端数量</n-th>
+                <n-th>映射数量</n-th>
+              </n-tr>
+            </n-thead>
+            <n-tbody>
+              <n-tr>
+                <n-td><n-number-animation :from="0" :to="frpToken.count"></n-number-animation></n-td>
+                <n-td><n-number-animation :from="0" :to="frpRule.count"></n-number-animation></n-td>
+                <n-td><n-number-animation :from="0" :to="frpClient.count"></n-number-animation></n-td>
+                <n-td><n-number-animation :from="0" :to="frpProxy.count"></n-number-animation></n-td>
+              </n-tr>
+            </n-tbody>
+          </n-table>
+        </n-scrollbar>
       </n-timeline-item>
       <n-timeline-item title="Frp信息（管理员）" type="success" v-if="user.isAdmin">
-        <n-table>
-          <n-thead>
-            <n-tr>
-              <n-th>Token数量</n-th>
-              <n-th>端口规则数量</n-th>
-              <n-th>客户端数量</n-th>
-              <n-th>映射数量</n-th>
-            </n-tr>
-          </n-thead>
-          <n-tbody>
-            <n-tr>
-              <n-td><n-number-animation :from="0" :to="frpAdminToken.count"></n-number-animation></n-td>
-              <n-td><n-number-animation :from="0" :to="frpAdminRule.count"></n-number-animation></n-td>
-              <n-td><n-number-animation :from="0" :to="frpAdminClient.count"></n-number-animation></n-td>
-              <n-td><n-number-animation :from="0" :to="frpAdminProxy.count"></n-number-animation></n-td>
-            </n-tr>
-          </n-tbody>
-        </n-table>
+        <n-scrollbar>
+          <n-table>
+            <n-thead>
+              <n-tr>
+                <n-th>Token数量</n-th>
+                <n-th>端口规则数量</n-th>
+                <n-th>客户端数量</n-th>
+                <n-th>映射数量</n-th>
+              </n-tr>
+            </n-thead>
+            <n-tbody>
+              <n-tr>
+                <n-td><n-number-animation :from="0" :to="frpAdminToken.count"></n-number-animation></n-td>
+                <n-td><n-number-animation :from="0" :to="frpAdminRule.count"></n-number-animation></n-td>
+                <n-td><n-number-animation :from="0" :to="frpAdminClient.count"></n-number-animation></n-td>
+                <n-td><n-number-animation :from="0" :to="frpAdminProxy.count"></n-number-animation></n-td>
+              </n-tr>
+            </n-tbody>
+          </n-table>
+        </n-scrollbar>
       </n-timeline-item>
       <n-timeline-item title="管理员信息" type="success" v-if="user.isAdmin">
-        <n-table>
-          <n-thead>
-            <n-tr>
-              <n-th>用户数量</n-th>
-              <n-th>用户组数量</n-th>
-              <n-th>用户权限数量</n-th>
-            </n-tr>
-          </n-thead>
-          <n-tbody>
-            <n-tr>
-              <n-td><n-number-animation :from="0" :to="adminUser.count"></n-number-animation></n-td>
-              <n-td><n-number-animation :from="0" :to="adminGroup.count"></n-number-animation></n-td>
-              <n-td><n-number-animation :from="0" :to="adminPermission.count"></n-number-animation></n-td>
-            </n-tr>
-          </n-tbody>
-        </n-table>
+        <n-scrollbar>
+          <n-table>
+            <n-thead>
+              <n-tr>
+                <n-th>用户数量</n-th>
+                <n-th>用户组数量</n-th>
+                <n-th>用户权限数量</n-th>
+              </n-tr>
+            </n-thead>
+            <n-tbody>
+              <n-tr>
+                <n-td><n-number-animation :from="0" :to="adminUser.count"></n-number-animation></n-td>
+                <n-td><n-number-animation :from="0" :to="adminGroup.count"></n-number-animation></n-td>
+                <n-td><n-number-animation :from="0" :to="adminPermission.count"></n-number-animation></n-td>
+              </n-tr>
+            </n-tbody>
+          </n-table>
+        </n-scrollbar>
       </n-timeline-item>
     </n-timeline>
   </n-card>
