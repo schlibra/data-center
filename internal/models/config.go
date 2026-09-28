@@ -10,6 +10,7 @@ type mysqlConfig struct {
 
 type serverSSLConfig struct {
 	Enable   bool   `yaml:"enable"`
+	Port     int    `yaml:"port"`
 	CertFile string `yaml:"cert"`
 	KeyFile  string `yaml:"key"`
 }

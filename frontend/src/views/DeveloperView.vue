@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import { useDialog, useLoadingBar, useMessage } from 'naive-ui'
-import { getUserApiKey, getUserInfo } from '@/api'
+import {generateUserApiKey, getUserApiKey, getUserInfo} from '@/api'
 import { useUserStore, useTokenStore } from '@/stores'
 import router from '@/router'
 
@@ -37,7 +37,7 @@ function generateApiKey() {
     positiveText: '确定',
     negativeText: '取消',
     async onPositiveClick() {
-      let [status, data] = await getUserApiKey()
+      let [status, data] = await generateUserApiKey()
       if (!status) {
         dialog.error({
           title: 'API Key生成失败',
@@ -50,6 +50,15 @@ function generateApiKey() {
       }
     }
   })
+}
+async function getApiKey() {
+  let [status, data] = await getUserApiKey()
+  if (!status) {
+    dialogError(data)
+  } else {
+    message.success('API Key获取成功')
+    token.apiKey = data.token
+  }
 }
 async function loadUserInfo() {
   let [status, data] = await getUserInfo()
@@ -108,7 +117,8 @@ onMounted(async () => {
         <n-space vertical>
           <n-input style="min-width: 600px" :rows="5" ref="apiKeyRef" type="textarea" :value="token.apiKey" placeholder="API Key"></n-input>
           <n-flex>
-            <n-button type="info" size="large" @click="generateApiKey()">生成Key</n-button>
+            <n-button type="warning" size="large" @click="generateApiKey()">生成Key</n-button>
+            <n-button type="info" size="large" @click="getApiKey()">获取Key</n-button>
             <n-button type="primary" size="large" @click="copyApiKey()">复制</n-button>
           </n-flex>
         </n-space>

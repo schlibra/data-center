@@ -226,7 +226,7 @@ func UserPasswordService(c *gin.Context, req request.UserPassword, row models.Us
 		sendI18n(c, 200, "user.password.success", nil)
 	}
 }
-func UserApiKeyService(c *gin.Context, row models.UserTable) {
+func GenerateUserApiKeyService(c *gin.Context, row models.UserTable) {
 	user, err := repository.NewUser()
 	if err != nil {
 		sendError(c, err)
@@ -249,4 +249,17 @@ func UserApiKeyService(c *gin.Context, row models.UserTable) {
 			})
 		}
 	}
+}
+
+func GetUserApiKeyService(c *gin.Context, row models.UserTable) {
+	if row.ApiId == "" {
+		sendI18n(c, 400, "user.apikey.not_exists", nil)
+	}
+	token, err := utils.JwtUserGenerate(row.ID, row.Username, row.Group, row.Enable, row.ApiId, time.Duration(math.MaxInt64))
+	if err != nil {
+		sendError(c, err)
+	}
+	sendI18n(c, 200, "user.apikey.success", H{
+		"token": token,
+	})
 }

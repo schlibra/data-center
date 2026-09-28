@@ -66,6 +66,7 @@ import {
   updateUser,
   logoutUser,
   setUserPassword,
+  generateUserApiKey,
   getUserApiKey,
 } from './user.js'
 import {
@@ -137,6 +138,7 @@ export {
   getUserInfo,
   updateUser,
   logoutUser,
+  generateUserApiKey,
   getUserApiKey,
   setUserPassword,
   getOpenVPNClientInfo,
