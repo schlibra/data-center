@@ -89,6 +89,15 @@ function clearData() {
     },
   })
 }
+function clearCache() {
+  caches.keys().then(
+      keys => keys.forEach(item => {
+        caches.delete(item)
+      })
+  )
+  message.success('缓存清空成功')
+  location.reload()
+}
 onMounted(async () => {
   await loadDataList()
 })
@@ -121,6 +130,12 @@ onMounted(async () => {
             <n-button type="info" size="large" @click="getApiKey()">获取Key</n-button>
             <n-button type="primary" size="large" @click="copyApiKey()">复制</n-button>
           </n-flex>
+        </n-space>
+      </n-form-item>
+      <n-form-item label="清空缓存">
+        <n-space vertical>
+          <n-text>用于在网站更新时清理缓存以同步最新版本页面</n-text>
+          <n-button type="warning" size="large" @click="clearCache()">清空缓存</n-button>
         </n-space>
       </n-form-item>
       <n-form-item label="清空数据">
