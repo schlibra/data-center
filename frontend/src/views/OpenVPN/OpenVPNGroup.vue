@@ -21,18 +21,22 @@ const columns = [
   {
     title: 'ID',
     key: 'id',
+    width: 50,
   },
   {
     title: 'IP组名称',
     key: 'group_name',
+    width: 100,
   },
   {
     title: '引用次数',
     key: 'ref_count',
+    width: 100,
   },
   {
     title: 'IP规则',
     key: 'group_value',
+    width: 250,
     render(row) {
       return row.group_value
         .map((item) => {
@@ -44,6 +48,7 @@ const columns = [
   {
     title: '操作',
     key: 'action',
+    width: 200,
     render(row) {
       return h(NFlex, {}, [
         h(
