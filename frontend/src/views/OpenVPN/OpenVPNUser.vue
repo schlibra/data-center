@@ -32,14 +32,17 @@ const columns = [
   {
     title: 'ID',
     key: 'id',
+    width: 50,
   },
   {
     title: '用户名',
     key: 'username',
+    width: 120,
   },
   {
     title: '密码',
     key: 'passwd',
+    width: 150,
     render(row) {
       return h(
         'span',
@@ -53,10 +56,12 @@ const columns = [
   {
     title: '共享数量',
     key: 'share',
+    width: 100,
   },
   {
     title: '可用IP',
     key: 'ip',
+    width: 100,
     render(row) {
       const obj = row.src_addr.object
       if (obj) {
@@ -78,6 +83,7 @@ const columns = [
   {
     title: '连接时间',
     key: 'start_time',
+    width: 200,
     render(row) {
       if (row.start_time === 0) {
         return '-'
@@ -89,6 +95,7 @@ const columns = [
   {
     title: '断开时间',
     key: 'last_offtime',
+    width: 200,
     render(row) {
       if (row.last_offtime === 0) {
         return '-'
@@ -100,6 +107,7 @@ const columns = [
   {
     title: '启用',
     key: 'enabled',
+    width: 50,
     render(row) {
       return h(NSwitch, {
         value: row.enabled === 'yes',
@@ -109,6 +117,7 @@ const columns = [
   {
     title: '操作',
     key: 'action',
+    width: 200,
     render(row) {
       return h(NFlex, {}, [
         h(

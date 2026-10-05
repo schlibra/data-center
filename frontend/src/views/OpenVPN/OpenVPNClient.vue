@@ -15,18 +15,22 @@ const columns = [
   {
     title: 'ID',
     key: 'id',
+    width: 50,
   },
   {
     title: '用户名',
     key: 'username',
+    width: 100,
   },
   {
     title: 'IP地址',
     key: 'ip_addr',
+    width: 150,
   },
   {
     title: '认证时间',
     key: 'auth_time',
+    width: 200,
     render(row) {
       const date = new Date(row.auth_time * 1000)
       return date.toLocaleString()
@@ -35,6 +39,7 @@ const columns = [
   {
     title: '操作',
     key: 'action',
+    width: 150,
     render(row) {
       return h(NButton, {
         type: 'error',
