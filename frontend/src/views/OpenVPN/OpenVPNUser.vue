@@ -175,7 +175,6 @@ function openUpdateModal(row) {
   userGroup.value = row.src_addr.object.map((item) => {
     return parseInt(item.gid.replace('IPGP', ''))
   })
-  console.log(userGroup.value)
   showModal.value = true
 }
 async function submitModal() {

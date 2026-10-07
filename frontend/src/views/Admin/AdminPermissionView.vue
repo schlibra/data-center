@@ -219,7 +219,6 @@ async function loadAdminPermissionList() {
     return dialogError(data)
   }
   adminPermission.permissions = data
-  console.log(JSON.stringify(adminPermission.tree))
   return true
 }
 
