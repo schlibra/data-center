@@ -6,6 +6,7 @@ import (
 	"data-center/internal/repository"
 	"data-center/pkg/utils"
 	"fmt"
+	"log"
 	"slices"
 	"strconv"
 	"strings"
@@ -21,6 +22,7 @@ func LoginFrpApiService(c *gin.Context, req request.FrpApiLogin) {
 			"reject":        true,
 			"reject_reason": err.Error(),
 		})
+		log.Printf("Login error: %s", err.Error())
 		return
 	}
 	defer closeDB(frpToken.DB)
@@ -28,6 +30,7 @@ func LoginFrpApiService(c *gin.Context, req request.FrpApiLogin) {
 	token := req.Content.Metas.Token
 	tokenRow, err := frpToken.SelectByName(user)
 	if err != nil {
+		log.Printf("Token not exist, user: %s", user)
 		c.JSON(200, H{
 			"reject":        true,
 			"reject_reason": "token not exist",
@@ -42,11 +45,14 @@ func LoginFrpApiService(c *gin.Context, req request.FrpApiLogin) {
 		return
 	}
 	if tokenRow.Enable == 0 {
+		log.Printf("Token not enable, user: %s", user)
 		c.JSON(200, H{
 			"reject":        true,
 			"reject_reason": "token not enable",
 		})
+		return
 	}
+	log.Printf("Token not match, user: %s", user)
 	c.JSON(200, H{
 		"reject":        true,
 		"reject_reason": "token not match",

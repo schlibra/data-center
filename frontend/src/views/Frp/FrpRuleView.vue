@@ -120,7 +120,6 @@ async function loadFrpRuleList() {
     return dialogError(data)
   }
   frpRule.rules = data
-  console.log(frpRule.rules)
   return true
 }
 async function loadDataList() {
