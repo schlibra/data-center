@@ -62,3 +62,15 @@ func ClientsFrpApiHandler(c *gin.Context) {
 	row := checkPermission(c, "frp.api.client")
 	service.ClientFrpApiService(c, row)
 }
+
+// InfoFrpApiHandler 获取Frp信息
+// @Summary 获取Frp信息
+// @Tags FRP接口
+// @Produce application/json
+// @Security BearerAuth
+// @Success 200 {object} response.Response{data=models.FrpsConfig}
+// @Router /frp/api/info [get]
+func InfoFrpApiHandler(c *gin.Context) {
+	checkPermission(c, "frp.api.info")
+	service.InfoFrpApiService(c)
+}

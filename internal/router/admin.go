@@ -31,10 +31,19 @@ func initAdminPermissionRouter(router *gin.RouterGroup) {
 	permission.PUT("/:id", handler.UpdateAdminPermissionHandler)
 	permission.DELETE("/:id", handler.DeleteAdminPermissionHandler)
 }
-
+func initAdminSettingsRouter(router *gin.RouterGroup) {
+	settings := router.Group("/settings")
+	settings.GET("/", handler.ListAdminSettingsHandler)
+	settings.GET("/:id", handler.GetAdminSettingsHandler)
+	settings.POST("/", handler.CreateAdminSettingsHandler)
+	settings.PUT("/", handler.SetAdminSettingsHandler)
+	settings.PUT("/:id", handler.UpdateAdminSettingsHandler)
+	settings.DELETE("/:id", handler.DeleteAdminSettingsHandler)
+}
 func initAdminRouter(router *gin.RouterGroup) {
 	admin := router.Group("/admin")
 	initAdminUserRouter(admin)
 	initAdminGroupRouter(admin)
 	initAdminPermissionRouter(admin)
+	initAdminSettingsRouter(admin)
 }

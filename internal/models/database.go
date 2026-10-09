@@ -46,3 +46,9 @@ type FrpTokenTable struct {
 	Enable   int       `json:"enable"`
 	UserInfo UserTable `json:"user_info"`
 }
+type SettingsTable struct {
+	ID    int    `json:"id"`
+	Key   string `json:"key"`
+	Name  string `json:"name"`
+	Value string `json:"value"`
+}

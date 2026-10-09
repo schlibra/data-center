@@ -16,6 +16,7 @@ import {useFrpTokenStore} from '@/stores/frp/frp-token.js'
 import {useOpenVPNUserStore} from '@/stores/openvpn/openvpn-user.js'
 import {useOpenVPNClientStore} from '@/stores/openvpn/openvpn-client.js'
 import {useOpenVPNGroupStore} from '@/stores/openvpn/openvpn-group.js'
+import {useAdminSettingsStore} from "@/stores/admin/admin-settings.js";
 
 export {
   useTokenStore,
@@ -35,5 +36,6 @@ export {
   useAdminGroupStore,
   useOpenVPNClientStore,
   useOpenVPNGroupStore,
-  useOpenVPNUserStore
+  useOpenVPNUserStore,
+  useAdminSettingsStore
 }

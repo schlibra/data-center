@@ -28,6 +28,8 @@ const titleList = {
   '/admin/user': '管理员 用户管理',
   '/admin/group': '管理员 用户组管理',
   '/admin/permission': '管理员 权限管理',
+  '/admin/system': '管理员 系统设置',
+  '/admin/settings': '管理员 所有设置',
   '/user': '用户中心',
 }
 const titleText = computed(() => titleList[urlPath.value])

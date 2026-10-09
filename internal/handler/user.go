@@ -156,6 +156,13 @@ func GenerateUserApiKeyHandler(c *gin.Context) {
 	service.GenerateUserApiKeyService(c, row)
 }
 
+// GetUserApiKeyHandler 获取用户API密钥
+// @Summary 获取用户API密钥
+// @Tags 用户
+// @Accept application/json
+// @Produce application/json
+// @Security BearerAuth
+// @Success 200 {object} response.Response{data=map[string]string}
 func GetUserApiKeyHandler(c *gin.Context) {
 	row := checkPermission(c, "user.api_key")
 	service.GetUserApiKeyService(c, row)

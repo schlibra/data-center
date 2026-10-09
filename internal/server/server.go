@@ -5,6 +5,7 @@ import (
 	"data-center/pkg/utils"
 	"embed"
 	"log"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
@@ -12,6 +13,8 @@ import (
 	"github.com/gin-contrib/cors"
 	ginI18n "github.com/gin-contrib/i18n"
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"golang.org/x/text/language"
 	"gopkg.in/yaml.v3"
 )
@@ -32,6 +35,12 @@ func initI18nMiddlewares(router *gin.Engine, i18nFS embed.FS) {
 		},
 	})))
 }
+func initSwagger(router *gin.Engine) {
+	router.GET("/swagger", func(c *gin.Context) {
+		c.Redirect(http.StatusMovedPermanently, "/swagger/index.html")
+	})
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+}
 func Run(embedFS embed.FS, i18nFS embed.FS) {
 	config, err := utils.LoadConfig()
 	if err != nil {
@@ -44,6 +53,7 @@ func Run(embedFS embed.FS, i18nFS embed.FS) {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	server := gin.Default()
+	initSwagger(server)
 	initMiddlewares(server)
 	initI18nMiddlewares(server, i18nFS)
 	initStaticMiddlewares(server, embedFS)
