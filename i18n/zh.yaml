@@ -55,6 +55,8 @@ frp:
     port_not_valid: "端口无效"
     forbidden: "没有权限"
     create_failed: "规则创建失败"
+  info:
+    success: "信息获取成功"
 admin:
   user:
     get_success: "用户获取成功"
@@ -102,3 +104,11 @@ openvpn:
   client:
     get_success: "客户端获取成功"
     kick_success: "客户端踢出成功"
+settings:
+  get_success: "设置获取成功"
+  exist: "设置已存在"
+  not_exist: "设置不存在"
+  create_success: "设置创建成功"
+  update_success: "设置修改成功"
+  delete_success: "设置删除成功"
+  key_empty: "设置Key不能为空"

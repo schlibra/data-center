@@ -1,7 +1,10 @@
 <script setup>
 import { useFrpConfigStore } from '@/stores'
-import { ref } from 'vue'
+import {onMounted, ref} from 'vue'
+import { getFrpInfo } from "@/api";
+import {useDialog} from "naive-ui";
 
+const dialog = useDialog()
 const configRef = ref(null)
 
 const copyConfig = () => {

@@ -188,3 +188,15 @@ func ClientFrpApiService(c *gin.Context, row models.UserTable) {
 	}
 	sendJson(c, 200, "success", clients)
 }
+func InfoFrpApiService(c *gin.Context) {
+	cfg, err := utils.LoadConfig()
+	if err != nil {
+		sendError(c, err)
+	}
+	frpsHost := cfg.Frps.Host
+	frpsPort := cfg.Frps.Port
+	sendI18n(c, 200, "frp.info.success", H{
+		"host": frpsHost,
+		"port": frpsPort,
+	})
+}

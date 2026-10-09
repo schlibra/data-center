@@ -1,5 +1,5 @@
 <script setup>
-import { NButton, NFlex, NSwitch, useDialog, useLoadingBar, useMessage } from 'naive-ui'
+import { NButton, NForm, NFormItem, NCard, NModal, NH1, NInput, NDataTable, NSelect, NFlex, NSwitch, useDialog, useLoadingBar, useMessage } from 'naive-ui'
 import {
   createFrpAdminToken,
   deleteFrpAdminToken,
@@ -10,7 +10,7 @@ import {
   updateFrpAdminToken,
 } from '@/api'
 import { useAdminUserStore, useFrpAdminTokenStore, useUserStore } from '@/stores/'
-import { computed, h, onMounted, ref, useId } from 'vue'
+import { computed, h, onMounted, ref } from 'vue'
 
 const dialog = useDialog()
 const message = useMessage()
@@ -35,11 +35,19 @@ const userSelectOption = computed(() =>
     }
   }),
 )
-const columns = [
+const columns = computed(() => [
   {
     title: 'ID',
     key: 'id',
     width: 60,
+    sorter(row1, row2) {
+      return row1.id - row2.id
+    },
+    defaultSortOrder: 'ascend',
+    customNextSortOrder(order) {
+      if (order === 'ascend') return 'descend'
+      return 'ascend'
+    }
   },
   {
     title: '名称',
@@ -58,6 +66,15 @@ const columns = [
     render(row) {
       return h('span', {}, `${row.user_info.username} ( ${row.user_info.nickname} )`)
     },
+    filterOptions: adminUser.users.map(item => {
+      return {
+        label: `${item.username}(${item.nickname})`,
+        value: item.id,
+      }
+    }),
+    filter(value, row) {
+      return row.user_info.id === value;
+    }
   },
   {
     title: '启用',
@@ -71,6 +88,9 @@ const columns = [
         }
       })
     },
+    sorter(row1, row2) {
+      return row1.enable - row2.enable;
+    }
   },
   {
     title: '操作',
@@ -111,7 +131,7 @@ const columns = [
       ])
     },
   },
-]
+])
 
 const dialogError = (content) => {
   dialog.error({
@@ -267,7 +287,7 @@ onMounted(async () => {
     </template>
     <n-flex>
       <n-button @click="openCreateModal()" size="large" type="primary">创建Token</n-button>
-      <n-data-table :data="frpAdminToken.tokens" :columns="columns"></n-data-table>
+      <n-data-table striped :data="frpAdminToken.tokens" :columns="columns"></n-data-table>
     </n-flex>
   </n-card>
   <n-modal v-model:show="showModal">

@@ -8,7 +8,7 @@ import {
   generateFrpToken,
   getFrpTokenList,
   updateFrpToken,
-  getUserInfo,
+  getUserInfo, getFrpInfo,
 } from '@/api'
 import { useFrpTokenStore, useFrpConfigStore, useUserStore } from '@/stores'
 
@@ -148,7 +148,15 @@ async function loadUserInfo() {
   user.setUserInfo(data)
   return true
 }
-
+async function loadFrpInfo() {
+  const [status, data] = await getFrpInfo()
+  if (status) {
+    frpConfig.info = data
+    return true
+  } else {
+    return dialogError(data)
+  }
+}
 async function generateToken(row) {
   dialog.info({
     title: '是否生成Token',
@@ -243,6 +251,7 @@ async function loadDataList() {
   loadingBar.start()
   if (!(await loadUserInfo())) return
   if (!(await loadFrpTokenList())) return
+  if (!await loadFrpInfo()) return
   loadingBar.finish()
 }
 

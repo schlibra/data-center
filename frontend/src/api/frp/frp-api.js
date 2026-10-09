@@ -19,4 +19,11 @@ async function getFrpProxyList() {
     return apiError(e)
   }
 }
-export { getFrpProxyList, getFrpClientList }
+async function getFrpInfo() {
+  try {
+    return apiBack(await axios.get('/api/frp/api/info', token.config))
+  } catch (e) {
+    return apiError(e)
+  }
+}
+export { getFrpProxyList, getFrpClientList, getFrpInfo }

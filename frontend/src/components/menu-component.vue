@@ -1,6 +1,6 @@
 <script setup>
-import { computed, h, ref } from 'vue'
-import { NIcon } from 'naive-ui'
+import {computed, h, onMounted, ref} from 'vue'
+import {NIcon, useMessage} from 'naive-ui'
 import router from '@/router'
 import {
   HomeOutline as HomeIcon,
@@ -22,11 +22,25 @@ import {
   CodeSlashOutline as DeveloperIcon,
   RocketOutline as OpenVPNIcon,
   FolderOpenOutline as IPGroupIcon,
+  AppsOutline as AppsIcon,
 } from '@vicons/ionicons5'
 import { useUserStore, useMenuCollapseStore } from '@/stores'
+import {getConfig} from "@/api/config.js";
+import {defineStore} from "pinia";
 
+const config = defineStore("config", {
+  state() {
+    const config = ref({})
+    return {
+      config
+    }
+  },
+  persist: true
+})()
 const menuCollapse = useMenuCollapseStore()
 const user = useUserStore()
+const message = useMessage()
+
 
 const renderIcon = (icon) => () => h(NIcon, null, { default: () => h(icon) })
 
@@ -46,7 +60,7 @@ const menuOptions = computed(() => [
     label: 'Frp',
     icon: renderIcon(FrpAuthIcon),
     key: '/frp',
-    show: user.hasPermission('menu.frp'),
+    show: user.hasPermission('menu.frp') && !!config.config["frp.enable"],
     children: [
       {
         label: 'Token管理',
@@ -82,7 +96,7 @@ const menuOptions = computed(() => [
   {
     label: 'Frp（管理员）',
     key: '/frp/admin',
-    show: user.isAdmin,
+    show: user.isAdmin && !!config.config["frp.enable"],
     icon: renderIcon(FrpAdminIcon),
     children: [
       {
@@ -110,7 +124,7 @@ const menuOptions = computed(() => [
   {
     label: 'OpenVPN管理',
     key: '/openvpn',
-    show: user.hasPermission('menu.openvpn'),
+    show: user.hasPermission('menu.openvpn') && !!config.config["openvpn.enable"],
     icon: renderIcon(OpenVPNIcon),
     children: [
       {
@@ -133,7 +147,7 @@ const menuOptions = computed(() => [
   {
     label: '邮箱管理',
     key: '/mail',
-    show: user.hasPermission('menu.mail'),
+    show: user.hasPermission('menu.mail') && !!config.config["mail.enable"],
     icon: renderIcon(MailIcon),
     children: [
       {
@@ -151,7 +165,7 @@ const menuOptions = computed(() => [
   {
     label: 'Outlook管理',
     key: '/outlook',
-    show: user.hasPermission('menu.outlook'),
+    show: user.hasPermission('menu.outlook') && !!config.config["outlook.enable"],
     icon: renderIcon(OutlookIcon),
     children: [
       {
@@ -187,6 +201,16 @@ const menuOptions = computed(() => [
         key: '/admin/permission',
         icon: renderIcon(PermissionIcon),
       },
+      {
+        label: '系统设置',
+        key: '/admin/system',
+        icon: renderIcon(AppsIcon)
+      },
+      {
+        label: '所有设置',
+        key: '/admin/settings',
+        icon: renderIcon(ListIcon)
+      }
     ],
   },
   {
@@ -205,6 +229,28 @@ const menuOptions = computed(() => [
 setInterval(() => {
   urlPath.value = location.pathname
 }, 100)
+async function loadConfig(key) {
+  let [status, data] = await getConfig(key)
+  if (!status) {
+    message.error(`加载配置失败：${data}`)
+  } else {
+    try {
+      config.config[key] = parseInt(data)
+    } catch (e) {
+      config.config[key] = data
+    }
+  }
+}
+async function loadDataList() {
+  await loadConfig("frp.enable")
+  await loadConfig("openvpn.enable")
+  await loadConfig("mail.enable")
+  await loadConfig("outlook.enable")
+}
+
+onMounted(() => {
+  loadDataList()
+})
 </script>
 
 <template>

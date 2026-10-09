@@ -22,7 +22,8 @@ import {
 } from './admin/admin-user.js'
 import {
   getFrpProxyList,
-  getFrpClientList
+  getFrpClientList,
+  getFrpInfo
 } from './frp/frp-api.js'
 import {
   getFrpRuleList,
@@ -88,6 +89,14 @@ import {
   updateOpenVPNGroup,
   deleteOpenVPNGroup,
 } from './openvpn/openvpn-group.js'
+import {
+  listAdminSettings,
+  getAdminSettings,
+  setAdminSettings,
+  createAdminSettings,
+  updateAdminSettings,
+  deleteAdminSettings,
+} from './admin/admin-settings.js'
 
 export {
   getAdminGroupList,
@@ -108,6 +117,7 @@ export {
   updateAdminUser,
   getFrpProxyList,
   getFrpClientList,
+  getFrpInfo,
   getFrpRuleList,
   getFrpRuleInfo,
   updateFrpRule,
@@ -154,4 +164,10 @@ export {
   createOpenVPNGroup,
   updateOpenVPNGroup,
   deleteOpenVPNGroup,
+  listAdminSettings,
+  getAdminSettings,
+  setAdminSettings,
+  createAdminSettings,
+  updateAdminSettings,
+  deleteAdminSettings,
 }

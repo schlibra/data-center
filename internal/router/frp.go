@@ -43,6 +43,7 @@ func initFrpApiRouter(router *gin.RouterGroup) {
 	api.POST("/proxy", handler.ProxyFrpApiHandler)
 	api.GET("/proxy", handler.ProxiesFrpApiHandler)
 	api.GET("/client", handler.ClientsFrpApiHandler)
+	api.GET("/info", handler.InfoFrpApiHandler)
 }
 
 func initFrpTokenRouter(router *gin.RouterGroup) {
