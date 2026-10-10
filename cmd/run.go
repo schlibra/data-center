@@ -10,6 +10,6 @@ var runCmd = &cobra.Command{
 	Use:   "run",
 	Short: "Run the server",
 	Run: func(cmd *cobra.Command, args []string) {
-		server.Run(EmbedFS, I18nFS)
+		server.Run(EmbedFS, I18nFS, Version, Commit, BuildTime)
 	},
 }

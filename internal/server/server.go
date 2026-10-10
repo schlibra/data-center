@@ -41,7 +41,7 @@ func initSwagger(router *gin.Engine) {
 	})
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 }
-func Run(embedFS embed.FS, i18nFS embed.FS) {
+func Run(embedFS embed.FS, i18nFS embed.FS, version string, commit string, buildTime string) {
 	config, err := utils.LoadConfig()
 	if err != nil {
 		log.Fatal(err)
@@ -58,7 +58,7 @@ func Run(embedFS embed.FS, i18nFS embed.FS) {
 	initI18nMiddlewares(server, i18nFS)
 	initStaticMiddlewares(server, embedFS)
 	initFrontendRouter(server, embedFS)
-	router.InitRouter(server)
+	router.InitRouter(server, version, commit, buildTime)
 	listenServer(server, config)
 }
 func Shutdown() {

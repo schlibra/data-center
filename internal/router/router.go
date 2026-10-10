@@ -6,7 +6,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func InitRouter(router *gin.Engine) {
+var (
+	Version   string
+	Commit    string
+	BuildTime string
+)
+
+func InitRouter(router *gin.Engine, version string, commit string, buildTime string) {
+	Version = version
+	Commit = commit
+	BuildTime = buildTime
 	api := router.Group("/api")
 	initUserRouter(api)
 	initFrpRouter(api)
