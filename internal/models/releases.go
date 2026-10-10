@@ -1,6 +1,6 @@
 package models
 
-type GithubReleases []struct {
+type GithubRelease struct {
 	Url             string `json:"url"`
 	AssetsUrl       string `json:"assets_url"`
 	UploadUrl       string `json:"upload_url"`

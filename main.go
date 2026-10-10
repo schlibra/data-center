@@ -8,9 +8,9 @@ import (
 )
 
 var (
-	Version   string
-	GitCommit string
-	BuildTime string
+	Version   = "dev"
+	GitCommit = "6f589bb"
+	BuildTime = "2026-09-24_15:12:00"
 )
 
 //go:embed dist

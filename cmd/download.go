@@ -16,20 +16,17 @@ var downloadCmd = &cobra.Command{
 	Use:   "download",
 	Short: "Download latest version",
 	Run: func(cmd *cobra.Command, args []string) {
-		type Result models.GithubReleases
+		type Result models.GithubRelease
 		var result Result
 		_, err := resty.
 			New().
 			R().
 			SetResult(&result).
-			Get("https://api.github.com/repos/schlibra/data-center/releases")
+			Get("https://api.github.com/repos/schlibra/data-center/releases/latest")
 		if err != nil {
 			log.Fatal(err)
 		}
-		if len(result) == 0 {
-			log.Fatal("No releases found")
-		}
-		if result[0].TagName == Version {
+		if result.TagName == Version {
 			log.Println("Already up to date")
 		}
 		fileExt := func() string {
@@ -38,7 +35,7 @@ var downloadCmd = &cobra.Command{
 			}
 			return ""
 		}()
-		for _, item := range result[0].Assets {
+		for _, item := range result.Assets {
 			if item.Name == fmt.Sprintf("data-center-%s-%s%s", runtime.GOOS, runtime.GOARCH, fileExt) {
 				log.Printf("Downloading %s\n", item.Name)
 				err = utils.DownloadWithProgressBar(item.BrowserDownloadUrl, item.Name)
