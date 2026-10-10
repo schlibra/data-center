@@ -28,7 +28,9 @@ func sendError(c *gin.Context, err error) {
 func closeDB(db *sql.DB) {
 	_ = db.Close()
 }
-
+func ParseToken(c *gin.Context) models.UserTable {
+	return parseToken(c)
+}
 func parseToken(c *gin.Context) models.UserTable {
 	user, err := repository.NewUser()
 	if err != nil {
@@ -58,6 +60,9 @@ func parseToken(c *gin.Context) models.UserTable {
 	}
 	return row
 }
+func CheckPermission(c *gin.Context, pmsKey string) models.UserTable {
+	return checkPermission(c, pmsKey)
+}
 func checkPermission(c *gin.Context, pmsKey string) models.UserTable {
 	row := parseToken(c)
 	if row.GroupInfo.Admin == 1 {
@@ -82,10 +87,21 @@ func checkPermission(c *gin.Context, pmsKey string) models.UserTable {
 	}
 	return row
 }
+func CheckAdmin(c *gin.Context) models.UserTable {
+	return checkAdmin(c)
+}
 func checkAdmin(c *gin.Context) models.UserTable {
 	row := parseToken(c)
 	if row.GroupInfo.Admin == 0 {
 		sendI18n(c, 403, "user.admin.no_permission", nil)
 	}
 	return row
+}
+func PortCheck(c *gin.Context, min int, max int) {
+	portCheck(c, min, max)
+}
+func portCheck(c *gin.Context, min int, max int) {
+	if min < 1 || max < 1 || min > 65535 || max > 65535 || min > max {
+		sendI18n(c, 400, "frp.rule.port_not_valid", nil)
+	}
 }
