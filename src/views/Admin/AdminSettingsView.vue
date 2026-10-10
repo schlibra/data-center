@@ -181,7 +181,7 @@ onMounted(() => {
       </template>
       <n-form>
         <n-form-item label="ID" v-if="!createSettings">
-          <n-input v-model:value="settingsId"></n-input>
+          <n-input v-model:value="settingsId" readonly disabled></n-input>
         </n-form-item>
         <n-form-item label="设置键名">
           <n-input v-model:value="settingsKey" :disabled="!createSettings" :readonly="!createSettings"></n-input>

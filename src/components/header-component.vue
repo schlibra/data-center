@@ -1,11 +1,13 @@
 <script setup>
-import { computed, ref } from 'vue'
+import {computed, onMounted, ref} from 'vue'
 import logo from '@/assets/logo.svg'
 
 import { MoonOutline as DarkIcon, SunnyOutline as LightIcon } from '@vicons/ionicons5'
 import { useThemeStore } from '@/stores/theme.js'
+import {getConfig} from "@/api/config.js";
 
 const theme = useThemeStore()
+const siteName = ref('')
 
 const urlPath = ref(location.pathname)
 const titleList = {
@@ -38,6 +40,19 @@ setInterval(() => {
   urlPath.value = location.pathname
   document.title = titleText.value
 }, 100)
+
+async function loadSiteName() {
+  let [status, data] = await getConfig("site.name")
+  siteName.value = status && data ? data : 'Data-Center'
+}
+
+async function loadDataList() {
+  await loadSiteName()
+}
+
+onMounted(() => {
+  loadDataList()
+})
 </script>
 
 <template>
@@ -46,7 +61,7 @@ setInterval(() => {
       <n-avatar size="large" color="#0000" :src="logo"></n-avatar>
     </template>
     <template #title>
-      <h3>Data-Center</h3>
+      <h3>{{ siteName }}</h3>
     </template>
     <template #subtitle>
       <span>{{ titleText }}</span>

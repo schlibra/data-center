@@ -12,7 +12,8 @@ user:
     not_exists: "用户不存在"
   register:
     exist: "用户名已存在"
-    success: "注册成功，请等待管理员确认"
+    success_confirm: "注册成功，请等待管理员确认"
+    success: "注册成功，请登录"
     username_empty: "用户名不能为空"
     empty: "用户名或密码不能为空"
   token:

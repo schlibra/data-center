@@ -76,6 +76,9 @@ onMounted(() => {
       <n-descriptions-item label="构建时间">
         <n-text>{{ adminVersion.buildTime }}</n-text>
       </n-descriptions-item>
+      <n-descriptions-item label="最新版本">
+        <n-text :type="adminVersion.version === adminVersion.latestVersion ? 'default' : 'success'">{{ adminVersion.latestVersion }}</n-text>
+      </n-descriptions-item>
     </n-descriptions>
     <template #action>
       <n-flex>
