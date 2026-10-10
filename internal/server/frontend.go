@@ -14,14 +14,14 @@ import (
 )
 
 func initStaticMiddlewares(router *gin.Engine, embedFS embed.FS) {
-	staticFS, err := static.EmbedFolder(embedFS, "frontend/dist")
+	staticFS, err := static.EmbedFolder(embedFS, "dist")
 	if err != nil {
 		log.Fatal(err)
 	}
 	router.Use(static.Serve("/", staticFS))
 }
 func initFrontendRouter(router *gin.Engine, embedFS embed.FS) {
-	subFS, err := fs.Sub(embedFS, "frontend/dist")
+	subFS, err := fs.Sub(embedFS, "dist")
 	if err != nil {
 		log.Fatal(err)
 	}
