@@ -12,10 +12,18 @@ import (
 
 var EmbedFS embed.FS
 var I18nFS embed.FS
+var (
+	Version   string
+	Commit    string
+	BuildTime string
+)
 
-func Execute(embedFs embed.FS, i18nFS embed.FS) {
+func Execute(embedFs embed.FS, i18nFS embed.FS, version string, commit string, buildTime string) {
 	EmbedFS = embedFs
 	I18nFS = i18nFS
+	Version = version
+	Commit = commit
+	BuildTime = buildTime
 
 	if !service.Interactive() {
 		RunService()
@@ -31,6 +39,8 @@ func Execute(embedFs embed.FS, i18nFS embed.FS) {
 	rootCmd.AddCommand(serviceCmd)
 	rootCmd.AddCommand(testCmd)
 	rootCmd.AddCommand(initCmd)
+	rootCmd.AddCommand(versionCmd)
+	rootCmd.AddCommand(downloadCmd)
 	err := rootCmd.Execute()
 	if err != nil {
 		log.Fatal(err)

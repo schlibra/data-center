@@ -6,7 +6,8 @@
 /docs
 /data-center*
 /install.lock
-
+/build
+/.*.old
 # Logs
 logs
 *.log

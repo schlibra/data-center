@@ -40,10 +40,20 @@ func initAdminSettingsRouter(router *gin.RouterGroup) {
 	settings.PUT("/:id", handler.UpdateAdminSettingsHandler)
 	settings.DELETE("/:id", handler.DeleteAdminSettingsHandler)
 }
+
+func initAdminVersionRouter(router *gin.RouterGroup) {
+	version := router.Group("/version")
+	version.GET("/", func(c *gin.Context) {
+		handler.GetAdminVersionHandler(c, Version, Commit, BuildTime)
+	})
+	version.POST("/", handler.UpgradeAdminVersionHandler)
+}
+
 func initAdminRouter(router *gin.RouterGroup) {
 	admin := router.Group("/admin")
 	initAdminUserRouter(admin)
 	initAdminGroupRouter(admin)
 	initAdminPermissionRouter(admin)
 	initAdminSettingsRouter(admin)
+	initAdminVersionRouter(admin)
 }

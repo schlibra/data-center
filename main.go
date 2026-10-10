@@ -7,6 +7,12 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
+var (
+	Version   string
+	GitCommit string
+	BuildTime string
+)
+
 //go:embed dist
 var embedFS embed.FS
 
@@ -22,5 +28,5 @@ var i18nFS embed.FS
 // @name Authorization
 // @description 格式：Bearer {token}
 func main() {
-	cmd.Execute(embedFS, i18nFS)
+	cmd.Execute(embedFS, i18nFS, Version, GitCommit, BuildTime)
 }

@@ -33,7 +33,7 @@ func (ss *SystemService) Stop(_ service.Service) error {
 
 func (ss *SystemService) run() {
 	log.Println("Data-Center Service run...")
-	server.Run(EmbedFS, I18nFS)
+	server.Run(EmbedFS, I18nFS, Version, Commit, BuildTime)
 }
 
 func newService() (service.Service, error) {
