@@ -1,33 +1,34 @@
 package router
 
 import (
-	"data-center/internal/handler"
+	"data-center/internal/handler/frp"
+	"data-center/internal/handler/frp_admin"
 
 	"github.com/gin-gonic/gin"
 )
 
 func initFrpAdminRuleRouter(router *gin.RouterGroup) {
 	rule := router.Group("/rule")
-	rule.GET("/", handler.ListFrpAdminRuleHandler)
-	rule.GET("/:id", handler.GetFrpAdminRuleHandler)
-	rule.POST("/", handler.CreateFrpAdminRuleHandler)
-	rule.PUT("/:id", handler.UpdateFrpAdminRuleHandler)
-	rule.DELETE("/:id", handler.DeleteFrpAdminRuleHandler)
+	rule.GET("/", frp_admin.ListFrpAdminRuleHandler)
+	rule.GET("/:id", frp_admin.GetFrpAdminRuleHandler)
+	rule.POST("/", frp_admin.CreateFrpAdminRuleHandler)
+	rule.PUT("/:id", frp_admin.UpdateFrpAdminRuleHandler)
+	rule.DELETE("/:id", frp_admin.DeleteFrpAdminRuleHandler)
 }
 
 func initFrpAdminTokenRouter(router *gin.RouterGroup) {
 	token := router.Group("/token")
-	token.GET("/", handler.ListFrpAdminTokenHandler)
-	token.GET("/:id", handler.GetFrpAdminTokenHandler)
-	token.PUT("/:id", handler.UpdateFrpAdminTokenHandler)
-	token.DELETE("/:id", handler.DeleteFrpAdminTokenHandler)
-	token.POST("/", handler.CreateFrpAdminTokenHandler)
-	token.POST("/:id", handler.GenerateFrpAdminTokenHandler)
+	token.GET("/", frp_admin.ListFrpAdminTokenHandler)
+	token.GET("/:id", frp_admin.GetFrpAdminTokenHandler)
+	token.PUT("/:id", frp_admin.UpdateFrpAdminTokenHandler)
+	token.DELETE("/:id", frp_admin.DeleteFrpAdminTokenHandler)
+	token.POST("/", frp_admin.CreateFrpAdminTokenHandler)
+	token.POST("/:id", frp_admin.GenerateFrpAdminTokenHandler)
 }
 func initFrpAdminApiRouter(router *gin.RouterGroup) {
 	api := router.Group("/api")
-	api.GET("/proxy", handler.ProxiesFrpAdminApiHandler)
-	api.GET("/client", handler.ClientsFrpAdminApiHandler)
+	api.GET("/proxy", frp_admin.ProxiesFrpAdminApiHandler)
+	api.GET("/client", frp_admin.ClientsFrpAdminApiHandler)
 }
 
 func initFrpAdminRouter(router *gin.RouterGroup) {
@@ -39,30 +40,30 @@ func initFrpAdminRouter(router *gin.RouterGroup) {
 
 func initFrpApiRouter(router *gin.RouterGroup) {
 	api := router.Group("/api")
-	api.POST("/login", handler.LoginFrpApiHandler)
-	api.POST("/proxy", handler.ProxyFrpApiHandler)
-	api.GET("/proxy", handler.ProxiesFrpApiHandler)
-	api.GET("/client", handler.ClientsFrpApiHandler)
-	api.GET("/info", handler.InfoFrpApiHandler)
+	api.POST("/login", frp.LoginFrpApiHandler)
+	api.POST("/proxy", frp.ProxyFrpApiHandler)
+	api.GET("/proxy", frp.ProxiesFrpApiHandler)
+	api.GET("/client", frp.ClientsFrpApiHandler)
+	api.GET("/info", frp.InfoFrpApiHandler)
 }
 
 func initFrpTokenRouter(router *gin.RouterGroup) {
 	token := router.Group("/token")
-	token.POST("/", handler.CreateFrpTokenHandler)
-	token.GET("/", handler.ListFrpTokenHandler)
-	token.GET("/:id", handler.GetFrpTokenHandler)
-	token.PUT("/:id", handler.UpdateFrpTokenHandler)
-	token.DELETE("/:id", handler.DeleteFrpTokenHandler)
-	token.POST("/:id", handler.GenerateFrpTokenHandler)
+	token.POST("/", frp.CreateFrpTokenHandler)
+	token.GET("/", frp.ListFrpTokenHandler)
+	token.GET("/:id", frp.GetFrpTokenHandler)
+	token.PUT("/:id", frp.UpdateFrpTokenHandler)
+	token.DELETE("/:id", frp.DeleteFrpTokenHandler)
+	token.POST("/:id", frp.GenerateFrpTokenHandler)
 }
 
 func initFrpRuleRouter(router *gin.RouterGroup) {
 	rule := router.Group("/rule")
-	rule.POST("/", handler.CreateFrpRuleHandler)
-	rule.GET("/", handler.ListFrpRuleHandler)
-	rule.GET("/:id", handler.GetFrpRuleHandler)
-	rule.PUT("/:id", handler.UpdateFrpRuleHandler)
-	rule.DELETE("/:id", handler.DeleteFrpRuleHandler)
+	rule.POST("/", frp.CreateFrpRuleHandler)
+	rule.GET("/", frp.ListFrpRuleHandler)
+	rule.GET("/:id", frp.GetFrpRuleHandler)
+	rule.PUT("/:id", frp.UpdateFrpRuleHandler)
+	rule.DELETE("/:id", frp.DeleteFrpRuleHandler)
 }
 
 func initFrpRouter(router *gin.RouterGroup) {

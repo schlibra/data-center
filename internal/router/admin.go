@@ -1,59 +1,59 @@
 package router
 
 import (
-	"data-center/internal/handler"
+	"data-center/internal/handler/admin"
 
 	"github.com/gin-gonic/gin"
 )
 
 func initAdminUserRouter(router *gin.RouterGroup) {
 	user := router.Group("/user")
-	user.GET("/", handler.ListAdminUserHandler)
-	user.GET("/:id", handler.GetAdminUserHandler)
-	user.POST("/", handler.CreateAdminUserHandler)
-	user.PUT("/:id", handler.UpdateAdminUserHandler)
-	user.PATCH("/:id", handler.PasswordAdminUserHandler)
-	user.DELETE("/:id", handler.DeleteAdminUserHandler)
+	user.GET("/", admin.ListAdminUserHandler)
+	user.GET("/:id", admin.GetAdminUserHandler)
+	user.POST("/", admin.CreateAdminUserHandler)
+	user.PUT("/:id", admin.UpdateAdminUserHandler)
+	user.PATCH("/:id", admin.PasswordAdminUserHandler)
+	user.DELETE("/:id", admin.DeleteAdminUserHandler)
 }
 func initAdminGroupRouter(router *gin.RouterGroup) {
 	group := router.Group("/group")
-	group.GET("/", handler.ListAdminGroupHandler)
-	group.GET("/:id", handler.GetAdminGroupHandler)
-	group.POST("/", handler.CreateAdminGroupHandler)
-	group.PUT("/:id", handler.UpdateAdminGroupHandler)
-	group.DELETE("/:id", handler.DeleteAdminGroupHandler)
+	group.GET("/", admin.ListAdminGroupHandler)
+	group.GET("/:id", admin.GetAdminGroupHandler)
+	group.POST("/", admin.CreateAdminGroupHandler)
+	group.PUT("/:id", admin.UpdateAdminGroupHandler)
+	group.DELETE("/:id", admin.DeleteAdminGroupHandler)
 }
 func initAdminPermissionRouter(router *gin.RouterGroup) {
 	permission := router.Group("/permission")
-	permission.GET("/", handler.ListAdminPermissionsHandler)
-	permission.POST("/", handler.CreateAdminPermissionHandler)
-	permission.GET("/:id", handler.GetAdminPermissionHandler)
-	permission.PUT("/:id", handler.UpdateAdminPermissionHandler)
-	permission.DELETE("/:id", handler.DeleteAdminPermissionHandler)
+	permission.GET("/", admin.ListAdminPermissionsHandler)
+	permission.POST("/", admin.CreateAdminPermissionHandler)
+	permission.GET("/:id", admin.GetAdminPermissionHandler)
+	permission.PUT("/:id", admin.UpdateAdminPermissionHandler)
+	permission.DELETE("/:id", admin.DeleteAdminPermissionHandler)
 }
 func initAdminSettingsRouter(router *gin.RouterGroup) {
 	settings := router.Group("/settings")
-	settings.GET("/", handler.ListAdminSettingsHandler)
-	settings.GET("/:id", handler.GetAdminSettingsHandler)
-	settings.POST("/", handler.CreateAdminSettingsHandler)
-	settings.PUT("/", handler.SetAdminSettingsHandler)
-	settings.PUT("/:id", handler.UpdateAdminSettingsHandler)
-	settings.DELETE("/:id", handler.DeleteAdminSettingsHandler)
+	settings.GET("/", admin.ListAdminSettingsHandler)
+	settings.GET("/:id", admin.GetAdminSettingsHandler)
+	settings.POST("/", admin.CreateAdminSettingsHandler)
+	settings.PUT("/", admin.SetAdminSettingsHandler)
+	settings.PUT("/:id", admin.UpdateAdminSettingsHandler)
+	settings.DELETE("/:id", admin.DeleteAdminSettingsHandler)
 }
 
 func initAdminVersionRouter(router *gin.RouterGroup) {
 	version := router.Group("/version")
 	version.GET("/", func(c *gin.Context) {
-		handler.GetAdminVersionHandler(c, Version, Commit, BuildTime)
+		admin.GetAdminVersionHandler(c, Version, Commit, BuildTime)
 	})
-	version.POST("/", handler.UpgradeAdminVersionHandler)
+	version.POST("/", admin.UpgradeAdminVersionHandler)
 }
 
 func initAdminRouter(router *gin.RouterGroup) {
-	admin := router.Group("/admin")
-	initAdminUserRouter(admin)
-	initAdminGroupRouter(admin)
-	initAdminPermissionRouter(admin)
-	initAdminSettingsRouter(admin)
-	initAdminVersionRouter(admin)
+	adminRouter := router.Group("/admin")
+	initAdminUserRouter(adminRouter)
+	initAdminGroupRouter(adminRouter)
+	initAdminPermissionRouter(adminRouter)
+	initAdminSettingsRouter(adminRouter)
+	initAdminVersionRouter(adminRouter)
 }
