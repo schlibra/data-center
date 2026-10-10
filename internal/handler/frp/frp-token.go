@@ -2,6 +2,7 @@ package frp
 
 import (
 	"data-center/internal/models/request"
+	frpModel "data-center/internal/models/request/frp"
 	"data-center/internal/service/frp"
 
 	"github.com/gin-gonic/gin"
@@ -13,12 +14,12 @@ import (
 // @Accept application/json
 // @Produce application/json
 // @Security BearerAuth
-// @Param request body request.FrpTokenCreate true "令牌参数"
+// @Param request body frp.FrpTokenCreate true "令牌参数"
 // @Success 200 {object} response.Response
 // @Router /frp/token/ [post]
 func CreateFrpTokenHandler(c *gin.Context) {
 	row := checkPermission(c, "frp.token.create")
-	var req request.FrpTokenCreate
+	var req frpModel.FrpTokenCreate
 	if err := c.ShouldBind(&req); err != nil {
 		sendError(c, err)
 	}
@@ -64,12 +65,12 @@ func GetFrpTokenHandler(c *gin.Context) {
 // @Produce application/json
 // @Security BearerAuth
 // @Param id path int true "令牌ID"
-// @Param request body request.FrpTokenUpdate true "令牌参数"
+// @Param request body frp.FrpTokenUpdate true "令牌参数"
 // @Success 200 {object} response.Response
 // @Router /frp/token/{id} [put]
 func UpdateFrpTokenHandler(c *gin.Context) {
 	row := checkPermission(c, "frp.token.update")
-	var req request.FrpTokenUpdate
+	var req frpModel.FrpTokenUpdate
 	if err := c.ShouldBind(&req); err != nil {
 		sendError(c, err)
 	}

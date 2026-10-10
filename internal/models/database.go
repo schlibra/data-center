@@ -52,3 +52,9 @@ type SettingsTable struct {
 	Name  string `json:"name"`
 	Value string `json:"value"`
 }
+type MailDomainTable struct {
+	ID      int    `json:"id"`
+	Domain  string `json:"domain"`
+	Name    string `json:"name"`
+	TableId string `json:"table_id"`
+}

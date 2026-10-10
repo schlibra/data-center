@@ -1,4 +1,4 @@
-package request
+package openvpn
 
 type createOpenVPNUserSrcAddrObject struct {
 	Type   int    `json:"type"`

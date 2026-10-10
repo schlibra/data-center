@@ -2,6 +2,7 @@ package admin
 
 import (
 	"data-center/internal/models/request"
+	adminModel "data-center/internal/models/request/admin"
 	"data-center/internal/service/admin"
 
 	"github.com/gin-gonic/gin"
@@ -45,12 +46,12 @@ func GetAdminUserHandler(c *gin.Context) {
 // @accept application/json
 // @produce application/json
 // @security BearerAuth
-// @param request body request.CreateAdminUser true "用户信息"
+// @param request body admin.CreateAdminUser true "用户信息"
 // @success 200 {object} response.Response
 // @router /admin/user [post]
 func CreateAdminUserHandler(c *gin.Context) {
 	checkAdmin(c)
-	var req request.CreateAdminUser
+	var req adminModel.CreateAdminUser
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
 		return
@@ -75,13 +76,13 @@ func CreateAdminUserHandler(c *gin.Context) {
 // @accept application/json
 // @produce application/json
 // @security BearerAuth
-// @param request body request.UpdateAdminUser true "用户信息"
+// @param request body admin.UpdateAdminUser true "用户信息"
 // @param id path int true "用户ID"
 // @success 200 {object} response.Response
 // @router /admin/user/{id} [put]
 func UpdateAdminUserHandler(c *gin.Context) {
 	checkAdmin(c)
-	var req request.UpdateAdminUser
+	var req adminModel.UpdateAdminUser
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
 		return
@@ -100,13 +101,13 @@ func UpdateAdminUserHandler(c *gin.Context) {
 // @accept application/json
 // @produce application/json
 // @security BearerAuth
-// @param request body request.PasswordAdminUser true "用户密码信息"
+// @param request body admin.PasswordAdminUser true "用户密码信息"
 // @param id path int true "用户ID"
 // @success 200 {object} response.Response
 // @router /admin/user/{id} [patch]
 func PasswordAdminUserHandler(c *gin.Context) {
 	checkAdmin(c)
-	var req request.PasswordAdminUser
+	var req adminModel.PasswordAdminUser
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
 		return

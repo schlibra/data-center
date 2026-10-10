@@ -1,7 +1,7 @@
 package frp_admin
 
 import (
-	"data-center/internal/models/request"
+	"data-center/internal/models/request/frp_admin"
 	"data-center/internal/repository"
 
 	"github.com/gin-gonic/gin"
@@ -31,7 +31,7 @@ func GetFrpAdminRuleService(c *gin.Context, id int) {
 	}
 	sendI18n(c, 200, "frp.rule.get_success", rule)
 }
-func CreateFrpAdminRuleService(c *gin.Context, req request.CreateFrpAdminRule) {
+func CreateFrpAdminRuleService(c *gin.Context, req frp_admin.CreateFrpAdminRule) {
 	frpRule, err := repository.NewFrpRule()
 	if err != nil {
 		sendError(c, err)
@@ -60,7 +60,7 @@ func CreateFrpAdminRuleService(c *gin.Context, req request.CreateFrpAdminRule) {
 		sendI18n(c, 200, "frp.rule.create_success", nil)
 	}
 }
-func UpdateFrpAdminRuleService(c *gin.Context, req request.UpdateFrpAdminRule, id int) {
+func UpdateFrpAdminRuleService(c *gin.Context, req frp_admin.UpdateFrpAdminRule, id int) {
 	frpRule, err := repository.NewFrpRule()
 	if err != nil {
 		sendError(c, err)

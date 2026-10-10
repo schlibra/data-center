@@ -2,7 +2,7 @@ package admin
 
 import (
 	"data-center/internal/models"
-	"data-center/internal/models/request"
+	"data-center/internal/models/request/admin"
 	"data-center/internal/repository"
 
 	"github.com/gin-gonic/gin"
@@ -50,7 +50,7 @@ func GetAdminPermissionService(c *gin.Context, id int) {
 	}
 	sendI18n(c, 200, "admin.permission.get_success", permissionRow)
 }
-func CreateAdminPermissionService(c *gin.Context, req request.CreateAdminPermission) {
+func CreateAdminPermissionService(c *gin.Context, req admin.CreateAdminPermission) {
 	permission, err := repository.NewPermission()
 	if err != nil {
 		sendError(c, err)
@@ -67,7 +67,7 @@ func CreateAdminPermissionService(c *gin.Context, req request.CreateAdminPermiss
 		}
 	}
 }
-func UpdateAdminPermissionService(c *gin.Context, id int, req request.UpdateAdminPermission) {
+func UpdateAdminPermissionService(c *gin.Context, id int, req admin.UpdateAdminPermission) {
 	permission, err := repository.NewPermission()
 	if err != nil {
 		sendError(c, err)

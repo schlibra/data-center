@@ -2,7 +2,7 @@ package admin
 
 import (
 	"data-center/internal/models"
-	"data-center/internal/models/request"
+	"data-center/internal/models/request/admin"
 	"data-center/internal/repository"
 	"data-center/pkg/utils"
 
@@ -42,7 +42,7 @@ func GetAdminUserService(c *gin.Context, id int) {
 	userRow.TokenID = "********"
 	sendI18n(c, 200, "admin.user.get_success", userRow)
 }
-func CreateAdminUserService(c *gin.Context, req request.CreateAdminUser, id int) {
+func CreateAdminUserService(c *gin.Context, req admin.CreateAdminUser, id int) {
 	user, err := repository.NewUser()
 	if err != nil {
 		sendError(c, err)
@@ -70,7 +70,7 @@ func CreateAdminUserService(c *gin.Context, req request.CreateAdminUser, id int)
 		sendI18n(c, 200, "admin.user.create_success", nil)
 	}
 }
-func UpdateAdminUserService(c *gin.Context, req request.UpdateAdminUser, id int) {
+func UpdateAdminUserService(c *gin.Context, req admin.UpdateAdminUser, id int) {
 	user, err := repository.NewUser()
 	if err != nil {
 		sendError(c, err)
@@ -116,7 +116,7 @@ func DeleteAdminUserService(c *gin.Context, row models.UserTable, id int) {
 		sendI18n(c, 200, "admin.user.delete_success", nil)
 	}
 }
-func PasswordAdminUserService(c *gin.Context, req request.PasswordAdminUser, id int) {
+func PasswordAdminUserService(c *gin.Context, req admin.PasswordAdminUser, id int) {
 	user, err := repository.NewUser()
 	if err != nil {
 		sendError(c, err)

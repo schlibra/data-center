@@ -2,6 +2,7 @@ package admin
 
 import (
 	"data-center/internal/models/request"
+	adminModel "data-center/internal/models/request/admin"
 	"data-center/internal/service/admin"
 
 	"github.com/gin-gonic/gin"
@@ -44,12 +45,12 @@ func GetAdminPermissionHandler(c *gin.Context) {
 // @accept application/json
 // @produce application/json
 // @security BearerAuth
-// @param request body request.CreateAdminPermission true "权限信息"
+// @param request body admin.CreateAdminPermission true "权限信息"
 // @success 200 {object} response.Response
 // @router /admin/permission [post]
 func CreateAdminPermissionHandler(c *gin.Context) {
 	checkAdmin(c)
-	var req request.CreateAdminPermission
+	var req adminModel.CreateAdminPermission
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
 	}
@@ -66,7 +67,7 @@ func CreateAdminPermissionHandler(c *gin.Context) {
 // @produce application/json
 // @security BearerAuth
 // @param id path int true "权限ID"
-// @param request body request.UpdateAdminPermission true "权限信息"
+// @param request body admin.UpdateAdminPermission true "权限信息"
 // @success 200 {object} response.Response
 // @router /admin/permission/{id} [put]
 func UpdateAdminPermissionHandler(c *gin.Context) {
@@ -75,7 +76,7 @@ func UpdateAdminPermissionHandler(c *gin.Context) {
 	if err := c.ShouldBindUri(&reqId); err != nil {
 		sendError(c, err)
 	}
-	var req request.UpdateAdminPermission
+	var req adminModel.UpdateAdminPermission
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
 	}

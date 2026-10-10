@@ -1,7 +1,7 @@
 package frp_admin
 
 import (
-	"data-center/internal/models/request"
+	"data-center/internal/models/request/frp"
 	"data-center/pkg/utils"
 	"fmt"
 
@@ -18,7 +18,7 @@ func ProxiesFrpAdminApiService(c *gin.Context) {
 	frpsPort := cfg.FrpsWeb.Port
 	frpsToken := cfg.FrpsWeb.Token
 	client := resty.New()
-	var proxyResult request.FrpApiProxies
+	var proxyResult frp.FrpApiProxies
 	_, err = client.R().
 		SetAuthScheme("Basic").
 		SetAuthToken(frpsToken).
@@ -35,7 +35,7 @@ func ClientsFrpAdminApiService(c *gin.Context) {
 	frpsPort := cfg.FrpsWeb.Port
 	frpsToken := cfg.FrpsWeb.Token
 	client := resty.New()
-	var clientResult request.FrpApiClients
+	var clientResult frp.FrpApiClients
 	_, err = client.R().
 		SetAuthScheme("Basic").
 		SetAuthToken(frpsToken).

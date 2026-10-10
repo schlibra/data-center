@@ -1,7 +1,7 @@
 package openvpn
 
 import (
-	"data-center/internal/models/request"
+	"data-center/internal/models/request/openvpn"
 	"data-center/internal/models/response"
 	"strconv"
 
@@ -36,7 +36,7 @@ func GetOpenVPNUserService(c *gin.Context, id int) {
 	}
 }
 
-func CreateOpenVPNUserService(c *gin.Context, req request.CreateOpenVPNUser) {
+func CreateOpenVPNUserService(c *gin.Context, req openvpn.CreateOpenVPNUser) {
 	var result response.OpenVPNUserChange
 	iKuai, url, err := iKuaiRequest("/auth/users", &result)
 	if err != nil {
@@ -71,7 +71,7 @@ func CreateOpenVPNUserService(c *gin.Context, req request.CreateOpenVPNUser) {
 	}
 }
 
-func UpdateOpenVPNUserService(c *gin.Context, id int, req request.UpdateOpenVPNUser) {
+func UpdateOpenVPNUserService(c *gin.Context, id int, req openvpn.UpdateOpenVPNUser) {
 	var result response.OpenVPNUserChange
 	iKuai, url, err := iKuaiRequest("/auth/users/"+strconv.Itoa(id), &result)
 	if err != nil {

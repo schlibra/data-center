@@ -2,6 +2,7 @@ package frp_admin
 
 import (
 	"data-center/internal/models/request"
+	frpAdminModel "data-center/internal/models/request/frp_admin"
 	"data-center/internal/service/frp_admin"
 
 	"github.com/gin-gonic/gin"
@@ -42,12 +43,12 @@ func GetFrpAdminTokenHandler(c *gin.Context) {
 // @Accept application/json
 // @Produce application/json
 // @Security BearerAuth
-// @Param request body request.CreateFrpAdminToken true "令牌信息"
+// @Param request body frp_admin.CreateFrpAdminToken true "令牌信息"
 // @Success 200 {object} response.Response
 // @Router /frp/admin/token/ [post]
 func CreateFrpAdminTokenHandler(c *gin.Context) {
 	checkAdmin(c)
-	var req request.CreateFrpAdminToken
+	var req frpAdminModel.CreateFrpAdminToken
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
 	}
@@ -64,7 +65,7 @@ func CreateFrpAdminTokenHandler(c *gin.Context) {
 // @Produce application/json
 // @Security BearerAuth
 // @Param id path int true "令牌ID"
-// @Param request body request.UpdateFrpAdminToken true "令牌信息"
+// @Param request body frp_admin.UpdateFrpAdminToken true "令牌信息"
 // @Success 200 {object} response.Response
 // @Router /frp/admin/token/{id} [put]
 func UpdateFrpAdminTokenHandler(c *gin.Context) {
@@ -73,7 +74,7 @@ func UpdateFrpAdminTokenHandler(c *gin.Context) {
 	if err := c.ShouldBindUri(&reqId); err != nil {
 		sendError(c, err)
 	}
-	var req request.UpdateFrpAdminToken
+	var req frpAdminModel.UpdateFrpAdminToken
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
 	}

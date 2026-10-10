@@ -1,4 +1,4 @@
-package request
+package frp_admin
 
 type CreateFrpAdminToken struct {
 	Name string `json:"name"`

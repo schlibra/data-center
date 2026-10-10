@@ -2,7 +2,7 @@ package frp
 
 import (
 	"data-center/internal/models"
-	"data-center/internal/models/request"
+	"data-center/internal/models/request/frp"
 	"data-center/internal/repository"
 	"data-center/pkg/utils"
 	"fmt"
@@ -15,7 +15,7 @@ import (
 	"github.com/go-resty/resty/v2"
 )
 
-func LoginFrpApiService(c *gin.Context, req request.FrpApiLogin) {
+func LoginFrpApiService(c *gin.Context, req frp.FrpApiLogin) {
 	frpToken, err := repository.NewFrpToken()
 	if err != nil {
 		c.JSON(200, H{
@@ -58,7 +58,7 @@ func LoginFrpApiService(c *gin.Context, req request.FrpApiLogin) {
 		"reject_reason": "token not match",
 	})
 }
-func ProxyFrpApiService(c *gin.Context, req request.FrpApiProxy) {
+func ProxyFrpApiService(c *gin.Context, req frp.FrpApiProxy) {
 	frpToken, err := repository.NewFrpToken()
 	if err != nil {
 		c.JSON(200, H{
@@ -129,7 +129,7 @@ func ProxiesFrpApiService(c *gin.Context, row models.UserTable) {
 		tokenList = append(tokenList, token.Name)
 	}
 	client := resty.New()
-	var proxyResult request.FrpApiProxies
+	var proxyResult frp.FrpApiProxies
 	_, err = client.R().
 		SetAuthScheme("Basic").
 		SetAuthToken(frpsToken).
@@ -141,7 +141,7 @@ func ProxiesFrpApiService(c *gin.Context, row models.UserTable) {
 	if proxyResult.Code != 200 {
 		sendJson(c, proxyResult.Code, proxyResult.Msg, proxyResult.Data)
 	}
-	proxies := make([]request.FrpApiProxiesDataItem, 0)
+	proxies := make([]frp.FrpApiProxiesDataItem, 0)
 	for _, item := range proxyResult.Data.Items {
 		if slices.Contains(tokenList, item.User) {
 			proxies = append(proxies, item)
@@ -168,7 +168,7 @@ func ClientFrpApiService(c *gin.Context, row models.UserTable) {
 		tokenList = append(tokenList, token.Name)
 	}
 	client := resty.New()
-	var clientResult request.FrpApiClients
+	var clientResult frp.FrpApiClients
 	_, err = client.R().
 		SetAuthScheme("Basic").
 		SetAuthToken(frpsToken).
@@ -180,7 +180,7 @@ func ClientFrpApiService(c *gin.Context, row models.UserTable) {
 	if clientResult.Code != 200 {
 		sendJson(c, 400, clientResult.Msg, clientResult)
 	}
-	clients := make([]request.FrpApiClientsDataItem, 0)
+	clients := make([]frp.FrpApiClientsDataItem, 0)
 	for _, item := range clientResult.Data.Items {
 		if slices.Contains(tokenList, item.User) {
 			clients = append(clients, item)

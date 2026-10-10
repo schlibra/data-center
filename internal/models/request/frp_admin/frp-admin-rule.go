@@ -1,12 +1,14 @@
-package request
+package frp_admin
 
-type CreateFrpRule struct {
+type CreateFrpAdminRule struct {
 	Min   int `json:"min"`
 	Max   int `json:"max"`
 	Token int `json:"token"`
+	User  int `json:"user"`
 }
-type UpdateFrpRule struct {
+type UpdateFrpAdminRule struct {
 	Min   int `json:"min"`
 	Max   int `json:"max"`
 	Token int `json:"token"`
+	User  int `json:"user"`
 }

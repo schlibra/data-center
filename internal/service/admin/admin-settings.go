@@ -1,7 +1,7 @@
 package admin
 
 import (
-	"data-center/internal/models/request"
+	"data-center/internal/models/request/admin"
 	"data-center/internal/repository"
 
 	"github.com/gin-gonic/gin"
@@ -31,7 +31,7 @@ func GetAdminSettingsService(c *gin.Context, id int) {
 	}
 	sendI18n(c, 200, "settings.get_success", row)
 }
-func CreateAdminSettingsService(c *gin.Context, req request.CreateAdminSettings) {
+func CreateAdminSettingsService(c *gin.Context, req admin.CreateAdminSettings) {
 	settings, err := repository.NewSettings()
 	if err != nil {
 		sendError(c, err)
@@ -49,7 +49,7 @@ func CreateAdminSettingsService(c *gin.Context, req request.CreateAdminSettings)
 		sendI18n(c, 200, "settings.create_success", nil)
 	}
 }
-func UpdateAdminSettingsService(c *gin.Context, id int, req request.UpdateAdminSettings) {
+func UpdateAdminSettingsService(c *gin.Context, id int, req admin.UpdateAdminSettings) {
 	settings, err := repository.NewSettings()
 	if err != nil {
 		sendError(c, err)
@@ -87,7 +87,7 @@ func DeleteAdminSettingsService(c *gin.Context, id int) {
 		sendI18n(c, 200, "settings.delete_success", nil)
 	}
 }
-func SetAdminSettingsService(c *gin.Context, req request.CreateAdminSettings) {
+func SetAdminSettingsService(c *gin.Context, req admin.CreateAdminSettings) {
 	settings, err := repository.NewSettings()
 	if err != nil {
 		sendError(c, err)
