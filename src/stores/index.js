@@ -18,6 +18,7 @@ import {useOpenVPNClientStore} from '@/stores/openvpn/openvpn-client.js'
 import {useOpenVPNGroupStore} from '@/stores/openvpn/openvpn-group.js'
 import {useAdminSettingsStore} from "@/stores/admin/admin-settings.js";
 import {useConfigStore} from "@/stores/config.js";
+import {useAdminVersionStore} from "@/stores/admin/admin-version.js";
 
 export {
   useTokenStore,
@@ -39,5 +40,6 @@ export {
   useOpenVPNGroupStore,
   useOpenVPNUserStore,
   useAdminSettingsStore,
-  useConfigStore
+  useConfigStore,
+  useAdminVersionStore
 }

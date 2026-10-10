@@ -23,6 +23,7 @@ import {
   RocketOutline as OpenVPNIcon,
   FolderOpenOutline as IPGroupIcon,
   AppsOutline as AppsIcon,
+  InformationCircleOutline as InfoCircleIcon,
 } from '@vicons/ionicons5'
 import { useUserStore, useMenuCollapseStore } from '@/stores'
 import {getConfig} from "@/api/config.js";
@@ -202,6 +203,11 @@ const menuOptions = computed(() => [
         label: '所有设置',
         key: '/admin/settings',
         icon: renderIcon(ListIcon)
+      },
+      {
+        label: '版本管理',
+        key: '/admin/version',
+        icon: renderIcon(InfoCircleIcon)
       }
     ],
   },
