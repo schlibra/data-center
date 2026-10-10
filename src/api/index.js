@@ -97,6 +97,10 @@ import {
   updateAdminSettings,
   deleteAdminSettings,
 } from './admin/admin-settings.js'
+import {
+    getAdminVersion,
+    upgradeAdminVersion
+} from "@/api/admin/admin-version.js";
 
 export {
   getAdminGroupList,
@@ -170,4 +174,6 @@ export {
   createAdminSettings,
   updateAdminSettings,
   deleteAdminSettings,
+  getAdminVersion,
+  upgradeAdminVersion
 }

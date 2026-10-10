@@ -30,6 +30,7 @@ const titleList = {
   '/admin/permission': '管理员 权限管理',
   '/admin/system': '管理员 系统设置',
   '/admin/settings': '管理员 所有设置',
+  '/admin/version': '管理员 版本管理',
   '/user': '用户中心',
 }
 const titleText = computed(() => titleList[urlPath.value])
