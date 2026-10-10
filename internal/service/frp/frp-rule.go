@@ -2,13 +2,13 @@ package frp
 
 import (
 	"data-center/internal/models"
-	"data-center/internal/models/request"
+	"data-center/internal/models/request/frp"
 	"data-center/internal/repository"
 
 	"github.com/gin-gonic/gin"
 )
 
-func CreateFrpRuleService(c *gin.Context, row models.UserTable, req request.CreateFrpRule) {
+func CreateFrpRuleService(c *gin.Context, row models.UserTable, req frp.CreateFrpRule) {
 	frpRule, err := repository.NewFrpRule()
 	if err != nil {
 		sendError(c, err)
@@ -59,7 +59,7 @@ func GetFrpRuleService(c *gin.Context, row models.UserTable, id int) {
 	}
 	sendI18n(c, 200, "frp.rule.get_success", rule)
 }
-func UpdateFrpRuleService(c *gin.Context, row models.UserTable, req request.UpdateFrpRule, id int) {
+func UpdateFrpRuleService(c *gin.Context, row models.UserTable, req frp.UpdateFrpRule, id int) {
 	frpRule, err := repository.NewFrpRule()
 	if err != nil {
 		sendError(c, err)

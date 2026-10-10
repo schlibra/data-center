@@ -1,4 +1,4 @@
-package request
+package openvpn
 
 type openVPNGroupValue struct {
 	IP      string `json:"ip"`

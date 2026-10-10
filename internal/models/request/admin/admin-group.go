@@ -1,4 +1,4 @@
-package request
+package admin
 
 type CreateAdminGroup struct {
 	Name       string `json:"name"`

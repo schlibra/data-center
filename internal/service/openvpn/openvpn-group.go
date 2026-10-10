@@ -1,7 +1,7 @@
 package openvpn
 
 import (
-	"data-center/internal/models/request"
+	"data-center/internal/models/request/openvpn"
 	"data-center/internal/models/response"
 	"strconv"
 
@@ -38,7 +38,7 @@ func GetOpenVPNGroupService(c *gin.Context, id int) {
 	}
 }
 
-func CreateOpenVPNGroupService(c *gin.Context, req request.CreateOpenVPNGroup) {
+func CreateOpenVPNGroupService(c *gin.Context, req openvpn.CreateOpenVPNGroup) {
 	var result response.OpenVPNGroupChange
 	iKuai, url, err := iKuaiRequest("/ip-objects", &result)
 	if err != nil {
@@ -59,7 +59,7 @@ func CreateOpenVPNGroupService(c *gin.Context, req request.CreateOpenVPNGroup) {
 	}
 }
 
-func UpdateOpenVPNGroupService(c *gin.Context, id int, req request.UpdateOpenVPNGroup) {
+func UpdateOpenVPNGroupService(c *gin.Context, id int, req openvpn.UpdateOpenVPNGroup) {
 	var result response.OpenVPNGroupChange
 	iKuai, url, err := iKuaiRequest("/ip-objects/"+strconv.Itoa(id), &result)
 	if err != nil {

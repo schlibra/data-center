@@ -2,14 +2,14 @@ package frp
 
 import (
 	"data-center/internal/models"
-	"data-center/internal/models/request"
+	"data-center/internal/models/request/frp"
 	"data-center/internal/repository"
 	"data-center/pkg/utils"
 
 	"github.com/gin-gonic/gin"
 )
 
-func CreateFrpTokenService(c *gin.Context, req request.FrpTokenCreate, row models.UserTable) {
+func CreateFrpTokenService(c *gin.Context, req frp.FrpTokenCreate, row models.UserTable) {
 	frpToken, err := repository.NewFrpToken()
 	if err != nil {
 		sendError(c, err)
@@ -61,7 +61,7 @@ func GetFrpTokenService(c *gin.Context, row models.UserTable, id int) {
 	})
 }
 
-func UpdateFrpTokenService(c *gin.Context, req request.FrpTokenUpdate, row models.UserTable, id int) {
+func UpdateFrpTokenService(c *gin.Context, req frp.FrpTokenUpdate, row models.UserTable, id int) {
 	frpToken, err := repository.NewFrpToken()
 	if err != nil {
 		sendError(c, err)

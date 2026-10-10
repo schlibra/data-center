@@ -11,14 +11,11 @@ var testCmd = &cobra.Command{
 	Use:   "test",
 	Short: "test command",
 	Run: func(cmd *cobra.Command, args []string) {
-		settings, err := repository.NewSettings()
+		mailDomain, err := repository.NewMailDomain()
 		if err != nil {
 			log.Fatal(err)
 		}
-		result, err := settings.Create()
-		if err != nil {
-			log.Fatal(err)
-		}
-		log.Printf("Result: %v", result)
+		_, _ = mailDomain.Drop()
+		_, _ = mailDomain.Create()
 	},
 }

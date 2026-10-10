@@ -1,7 +1,7 @@
 package admin
 
 import (
-	"data-center/internal/models/request"
+	"data-center/internal/models/request/admin"
 	"data-center/internal/repository"
 
 	"github.com/gin-gonic/gin"
@@ -33,7 +33,7 @@ func GetAdminGroupService(c *gin.Context, id int) {
 	}
 	sendI18n(c, 200, "admin.group.get_success", groupRow)
 }
-func CreateAdminGroupService(c *gin.Context, req request.CreateAdminGroup) {
+func CreateAdminGroupService(c *gin.Context, req admin.CreateAdminGroup) {
 	group, err := repository.NewGroup()
 	if err != nil {
 		sendError(c, err)
@@ -50,7 +50,7 @@ func CreateAdminGroupService(c *gin.Context, req request.CreateAdminGroup) {
 		}
 	}
 }
-func UpdateAdminGroupService(c *gin.Context, id int, req request.UpdateAdminGroup) {
+func UpdateAdminGroupService(c *gin.Context, id int, req admin.UpdateAdminGroup) {
 	group, err := repository.NewGroup()
 	if err != nil {
 		sendError(c, err)

@@ -1,4 +1,4 @@
-package request
+package frp
 
 type FrpTokenCreate struct {
 	Name string `json:"name"`

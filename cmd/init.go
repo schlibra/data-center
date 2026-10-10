@@ -42,6 +42,10 @@ var initCmd = &cobra.Command{
 		if err != nil {
 			log.Fatalf("Failed to initialize frp token repository: %v", err)
 		}
+		mailDomain, err := repository.NewMailDomain()
+		if err != nil {
+			log.Fatalf("Failed to initialize mail domain repository: %v", err)
+		}
 		log.Println("Creating tables...")
 		if _, err := user.Create(); err != nil {
 			log.Fatalf("Failed to create user table: %v", err)
@@ -60,6 +64,9 @@ var initCmd = &cobra.Command{
 		}
 		if _, err := frpToken.Create(); err != nil {
 			log.Fatalf("Failed to create frp token table: %v", err)
+		}
+		if _, err := mailDomain.Create(); err != nil {
+			log.Fatalf("Failed to create mail domain table: %v", err)
 		}
 		log.Println("Inserting default data...")
 		if _, err := group.Insert("普通用户", 0, "[]"); err != nil {

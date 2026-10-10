@@ -2,6 +2,7 @@ package openvpn
 
 import (
 	"data-center/internal/models/request"
+	openvpnModel "data-center/internal/models/request/openvpn"
 	"data-center/internal/service/openvpn"
 
 	"github.com/gin-gonic/gin"
@@ -44,12 +45,12 @@ func GetOpenVPNUserHandler(c *gin.Context) {
 // @Produce application/json
 // @Accpept application/json
 // @Security BearerAuth
-// @Param request body request.CreateOpenVPNUser true "用户信息"
+// @Param request body openvpn.CreateOpenVPNUser true "用户信息"
 // @Success 200 {object} response.Response{data=response.OpenVPNUserChange}
 // @Router /openvpn/user [POST]
 func CreateOpenVPNUserHandler(c *gin.Context) {
 	checkPermission(c, "openvpn.user.create")
-	var req request.CreateOpenVPNUser
+	var req openvpnModel.CreateOpenVPNUser
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
 	}
@@ -62,13 +63,13 @@ func CreateOpenVPNUserHandler(c *gin.Context) {
 // @Produce application/json
 // @Accpept application/json
 // @Security BearerAuth
-// @Param request body request.CreateOpenVPNUser true "用户信息"
+// @Param request body openvpn.CreateOpenVPNUser true "用户信息"
 // @Param id path int true "用户ID"
 // @Success 200 {object} response.Response{data=response.OpenVPNUserChange}
 // @Router /openvpn/user/{id} [PUT]
 func UpdateOpenVPNUserHandler(c *gin.Context) {
 	checkPermission(c, "openvpn.user.create")
-	var req request.UpdateOpenVPNUser
+	var req openvpnModel.UpdateOpenVPNUser
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
 	}

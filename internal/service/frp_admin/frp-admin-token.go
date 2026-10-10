@@ -1,7 +1,7 @@
 package frp_admin
 
 import (
-	"data-center/internal/models/request"
+	"data-center/internal/models/request/frp_admin"
 	"data-center/internal/repository"
 	"data-center/pkg/utils"
 
@@ -34,7 +34,7 @@ func GetFrpAdminTokenService(c *gin.Context, id int) {
 	}
 	sendI18n(c, 200, "frp.token.got", token)
 }
-func CreateFrpAdminTokenService(c *gin.Context, req request.CreateFrpAdminToken) {
+func CreateFrpAdminTokenService(c *gin.Context, req frp_admin.CreateFrpAdminToken) {
 	frpToken, err := repository.NewFrpToken()
 	if err != nil {
 		sendError(c, err)
@@ -67,7 +67,7 @@ func CreateFrpAdminTokenService(c *gin.Context, req request.CreateFrpAdminToken)
 		}
 	}
 }
-func UpdateFrpAdminTokenService(c *gin.Context, id int, req request.UpdateFrpAdminToken) {
+func UpdateFrpAdminTokenService(c *gin.Context, id int, req frp_admin.UpdateFrpAdminToken) {
 	frpToken, err := repository.NewFrpToken()
 	if err != nil {
 		sendError(c, err)

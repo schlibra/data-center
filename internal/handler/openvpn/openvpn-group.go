@@ -2,6 +2,7 @@ package openvpn
 
 import (
 	"data-center/internal/models/request"
+	openvpnModel "data-center/internal/models/request/openvpn"
 	"data-center/internal/service/openvpn"
 
 	"github.com/gin-gonic/gin"
@@ -44,12 +45,12 @@ func GetOpenVPNGroupHandler(c *gin.Context) {
 // @Produce application/json
 // @Accept application/json
 // @Security BearerAuth
-// @Param request body request.CreateOpenVPNGroup true "IP组参数"
+// @Param request body openvpn.CreateOpenVPNGroup true "IP组参数"
 // @Success 200 {object} response.Response
 // @Router /openvpn/group [post]
 func CreateOpenVPNGroupHandler(c *gin.Context) {
 	checkPermission(c, "openvpn.group.create")
-	var req request.CreateOpenVPNGroup
+	var req openvpnModel.CreateOpenVPNGroup
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
 	}
@@ -63,12 +64,12 @@ func CreateOpenVPNGroupHandler(c *gin.Context) {
 // @Accept application/json
 // @Security BearerAuth
 // @Param id path int true "IP组ID"
-// @Param request body request.UpdateOpenVPNGroup true "IP组参数"
+// @Param request body openvpn.UpdateOpenVPNGroup true "IP组参数"
 // @Success 200 {object} response.Response
 // @Router /openvpn/group/{id} [put]
 func UpdateOpenVPNGroupHandler(c *gin.Context) {
 	checkPermission(c, "openvpn.group.update")
-	var req request.UpdateOpenVPNGroup
+	var req openvpnModel.UpdateOpenVPNGroup
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
 	}

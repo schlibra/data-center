@@ -1,4 +1,4 @@
-package request
+package admin
 
 type CreateAdminPermission struct {
 	Key    string `json:"key"`

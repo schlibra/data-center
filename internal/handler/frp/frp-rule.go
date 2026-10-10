@@ -2,6 +2,7 @@ package frp
 
 import (
 	"data-center/internal/models/request"
+	frpModel "data-center/internal/models/request/frp"
 	"data-center/internal/service/frp"
 
 	"github.com/gin-gonic/gin"
@@ -12,13 +13,13 @@ import (
 // @Tags FRP规则
 // @Accept application/json
 // @Produce application/json
-// @param request body request.CreateFrpRule true "Frp规则"
+// @param request body frp.CreateFrpRule true "Frp规则"
 // @Security BearerAuth
 // @Success 200 {object} response.Response
 // @Router /frp/rule/ [post]
 func CreateFrpRuleHandler(c *gin.Context) {
 	row := checkPermission(c, "frp.rule.create")
-	var req request.CreateFrpRule
+	var req frpModel.CreateFrpRule
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
 		return
@@ -63,12 +64,12 @@ func GetFrpRuleHandler(c *gin.Context) {
 // @Produce application/json
 // @Security BearerAuth
 // @Param id path int true "规则ID"
-// @Param request body request.UpdateFrpRule true "Frp规则"
+// @Param request body frp.UpdateFrpRule true "Frp规则"
 // @Success 200 {object} response.Response
 // @Router /frp/rule/{id} [put]
 func UpdateFrpRuleHandler(c *gin.Context) {
 	row := checkPermission(c, "frp.rule.update")
-	var req request.UpdateFrpRule
+	var req frpModel.UpdateFrpRule
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
 	}

@@ -1,4 +1,4 @@
-package request
+package frp
 
 type frpApiLoginContentMetas struct {
 	Token string `json:"token"`

@@ -2,6 +2,7 @@ package admin
 
 import (
 	"data-center/internal/models/request"
+	adminModel "data-center/internal/models/request/admin"
 	"data-center/internal/service/admin"
 
 	"github.com/gin-gonic/gin"
@@ -44,12 +45,12 @@ func GetAdminGroupHandler(c *gin.Context) {
 // @accept application/json
 // @produce application/json
 // @security BearerAuth
-// @param request body request.CreateAdminGroup true "用户组信息"
+// @param request body admin.CreateAdminGroup true "用户组信息"
 // @success 200 {object} response.Response
 // @router /admin/group [post]
 func CreateAdminGroupHandler(c *gin.Context) {
 	checkAdmin(c)
-	var req request.CreateAdminGroup
+	var req adminModel.CreateAdminGroup
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
 	}
@@ -66,7 +67,7 @@ func CreateAdminGroupHandler(c *gin.Context) {
 // @produce application/json
 // @security BearerAuth
 // @param id path int true "用户组ID"
-// @param request body request.UpdateAdminGroup true "用户组信息"
+// @param request body admin.UpdateAdminGroup true "用户组信息"
 // @success 200 {object} response.Response
 // @router /admin/group/{id} [put]
 func UpdateAdminGroupHandler(c *gin.Context) {
@@ -75,7 +76,7 @@ func UpdateAdminGroupHandler(c *gin.Context) {
 	if err := c.ShouldBindUri(&reqId); err != nil {
 		sendError(c, err)
 	}
-	var req request.UpdateAdminGroup
+	var req adminModel.UpdateAdminGroup
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
 	}

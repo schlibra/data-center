@@ -2,6 +2,7 @@ package frp_admin
 
 import (
 	"data-center/internal/models/request"
+	frpAdminModel "data-center/internal/models/request/frp_admin"
 	"data-center/internal/service/frp_admin"
 
 	"github.com/gin-gonic/gin"
@@ -42,12 +43,12 @@ func GetFrpAdminRuleHandler(c *gin.Context) {
 // @Accept application/json
 // @Produce application/json
 // @Security BearerAuth
-// @Param request body request.CreateFrpAdminRule true "规则信息"
+// @Param request body frp_admin.CreateFrpAdminRule true "规则信息"
 // @Success 200 {object} response.Response
 // @Router /frp/admin/rule/ [post]
 func CreateFrpAdminRuleHandler(c *gin.Context) {
 	checkAdmin(c)
-	var req request.CreateFrpAdminRule
+	var req frpAdminModel.CreateFrpAdminRule
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
 	}
@@ -62,12 +63,12 @@ func CreateFrpAdminRuleHandler(c *gin.Context) {
 // @Produce application/json
 // @Security BearerAuth
 // @Param id path int true "规则ID"
-// @Param request body request.UpdateFrpAdminRule true "规则信息"
+// @Param request body frp_admin.UpdateFrpAdminRule true "规则信息"
 // @Success 200 {object} response.Response
 // @Router /frp/admin/rule/{id} [put]
 func UpdateFrpAdminRuleHandler(c *gin.Context) {
 	checkAdmin(c)
-	var req request.UpdateFrpAdminRule
+	var req frpAdminModel.UpdateFrpAdminRule
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
 	}

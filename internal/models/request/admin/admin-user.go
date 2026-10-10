@@ -1,4 +1,4 @@
-package request
+package admin
 
 type CreateAdminUser struct {
 	Username string `json:"username"`

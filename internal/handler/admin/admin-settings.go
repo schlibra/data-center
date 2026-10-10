@@ -2,6 +2,7 @@ package admin
 
 import (
 	"data-center/internal/models/request"
+	adminModel "data-center/internal/models/request/admin"
 	"data-center/internal/service/admin"
 
 	"github.com/gin-gonic/gin"
@@ -44,12 +45,12 @@ func GetAdminSettingsHandler(c *gin.Context) {
 // @Accept application/json
 // @Produce application/json
 // @Security BearerAuth
-// @Param request body request.CreateAdminSettings true "设置数据"
+// @Param request body admin.CreateAdminSettings true "设置数据"
 // @Success 200 {object} response.Response
 // @Router /admin/settings [post]
 func CreateAdminSettingsHandler(c *gin.Context) {
 	checkAdmin(c)
-	var req request.CreateAdminSettings
+	var req adminModel.CreateAdminSettings
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
 	}
@@ -67,7 +68,7 @@ func CreateAdminSettingsHandler(c *gin.Context) {
 // @Produce application/json
 // @Security BearerAuth
 // @Param id path int true "设置ID"
-// @Param request body request.UpdateAdminSettings true "设置数据"
+// @Param request body admin.UpdateAdminSettings true "设置数据"
 // @Success 200 {object} response.Response
 // @Router /admin/settings/{id} [put]
 func UpdateAdminSettingsHandler(c *gin.Context) {
@@ -76,7 +77,7 @@ func UpdateAdminSettingsHandler(c *gin.Context) {
 	if err := c.ShouldBindUri(&reqId); err != nil {
 		sendError(c, err)
 	}
-	var req request.UpdateAdminSettings
+	var req adminModel.UpdateAdminSettings
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
 	}
@@ -107,12 +108,12 @@ func DeleteAdminSettingsHandler(c *gin.Context) {
 // @Accept application/json
 // @Produce application/json
 // @Security BearerAuth
-// @Param request body request.CreateAdminSettings true "设置数据"
+// @Param request body admin.CreateAdminSettings true "设置数据"
 // @Success 200 {object} response.Response
 // @Router /admin/settings [put]
 func SetAdminSettingsHandler(c *gin.Context) {
 	checkAdmin(c)
-	var req request.CreateAdminSettings
+	var req adminModel.CreateAdminSettings
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
 	}
