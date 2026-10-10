@@ -7,7 +7,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-//go:embed frontend/dist
+//go:embed dist
 var embedFS embed.FS
 
 //go:embed i18n/*
