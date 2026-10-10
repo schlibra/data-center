@@ -30,6 +30,7 @@ func Execute(embedFs embed.FS, i18nFS embed.FS) {
 	rootCmd.AddCommand(runCmd)
 	rootCmd.AddCommand(serviceCmd)
 	rootCmd.AddCommand(testCmd)
+	rootCmd.AddCommand(initCmd)
 	err := rootCmd.Execute()
 	if err != nil {
 		log.Fatal(err)

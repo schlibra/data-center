@@ -4,7 +4,7 @@ import { useDialog, useLoadingBar } from 'naive-ui'
 import {
   useAdminGroupStore,
   useAdminPermissionStore,
-  useAdminUserStore,
+  useAdminUserStore, useConfigStore,
   useFrpAdminClientStore,
   useFrpAdminProxyStore,
   useFrpAdminRuleStore,
@@ -31,9 +31,11 @@ import {
   getUserInfo,
 } from '@/api'
 import router from '@/router/index.js'
+import {getConfig} from "@/api/config.js";
 
 const loadingBar = useLoadingBar()
 const dialog = useDialog()
+const config = useConfigStore()
 const user = useUserStore()
 const token = useTokenStore()
 const frpToken = useFrpTokenStore()
@@ -155,19 +157,38 @@ async function loadFrpAdminProxyList() {
   frpAdminProxy.proxy = data
   return true
 }
+async function loadConfig(key) {
+  let [status, data] = await getConfig(key)
+  if (!status) {
+    return message.error(`加载配置失败：${data}`)
+  } else {
+    try {
+      config.config[key] = parseInt(data)
+    } catch (e) {
+      config.config[key] = data
+    }
+    return true
+  }
+}
 async function loadBasicData() {
   if (!(await loadUserInfo())) return
-  if (user.hasPermission('frp.token.get')) {
-    if (!(await loadFrpTokenList())) return
-  }
-  if (user.hasPermission('frp.rule.get')) {
-    if (!(await loadFrpRuleList())) return
-  }
-  if (user.hasPermission('frp.api.client')) {
-    if (!(await loadFrpClientList())) return
-  }
-  if (user.hasPermission('frp.api.proxy')) {
-    if (!(await loadFrpProxyList())) return
+  await loadConfig("frp.enable")
+  await loadConfig("openvpn.enable")
+  await loadConfig("mail.enable")
+  await loadConfig("outlook.enable")
+  if (!!config.config["frp.enable"]) {
+    if (user.hasPermission('frp.token.get')) {
+      if (!(await loadFrpTokenList())) return
+    }
+    if (user.hasPermission('frp.rule.get')) {
+      if (!(await loadFrpRuleList())) return
+    }
+    if (user.hasPermission('frp.api.client')) {
+      if (!(await loadFrpClientList())) return
+    }
+    if (user.hasPermission('frp.api.proxy')) {
+      if (!(await loadFrpProxyList())) return
+    }
   }
   return true
 }
@@ -232,7 +253,7 @@ onMounted(async () => {
           </n-table>
         </n-scrollbar>
       </n-timeline-item>
-      <n-timeline-item title="Frp信息" type="success" v-if="user.hasPermission('menu.frp')">
+      <n-timeline-item title="Frp信息" type="success" v-if="user.hasPermission('menu.frp') && !!config.config['frp.enable']">
         <n-scrollbar>
           <n-table>
             <n-thead>
@@ -254,7 +275,7 @@ onMounted(async () => {
           </n-table>
         </n-scrollbar>
       </n-timeline-item>
-      <n-timeline-item title="Frp信息（管理员）" type="success" v-if="user.isAdmin">
+      <n-timeline-item title="Frp信息（管理员）" type="success" v-if="user.isAdmin && !!config.config['frp.enable']">
         <n-scrollbar>
           <n-table>
             <n-thead>

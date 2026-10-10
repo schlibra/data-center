@@ -178,7 +178,7 @@ func ClientFrpApiService(c *gin.Context, row models.UserTable) {
 		sendError(c, err)
 	}
 	if clientResult.Code != 200 {
-		sendJson(c, clientResult.Code, clientResult.Msg, clientResult.Data)
+		sendJson(c, 400, clientResult.Msg, clientResult)
 	}
 	clients := make([]request.FrpApiClientsDataItem, 0)
 	for _, item := range clientResult.Data.Items {
