@@ -26,17 +26,9 @@ import {
 } from '@vicons/ionicons5'
 import { useUserStore, useMenuCollapseStore } from '@/stores'
 import {getConfig} from "@/api/config.js";
-import {defineStore} from "pinia";
+import {useConfigStore} from "@/stores/";
 
-const config = defineStore("config", {
-  state() {
-    const config = ref({})
-    return {
-      config
-    }
-  },
-  persist: true
-})()
+const config = useConfigStore()
 const menuCollapse = useMenuCollapseStore()
 const user = useUserStore()
 const message = useMessage()

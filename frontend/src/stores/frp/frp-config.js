@@ -7,7 +7,7 @@ export const useFrpConfigStore = defineStore("frp-config", {
     const preConfig = ref("")
     const mainConfig = ref([])
     const setAuth = (user, token) => {
-      preConfig.value = `serverHost = "${info.value.host}"
+      preConfig.value = `serverAddr = "${info.value.host}"
 serverPort = ${info.value.port}      
 user = "${user}"
 metadatas.token = "${token}"
