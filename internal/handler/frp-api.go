@@ -68,7 +68,7 @@ func ClientsFrpApiHandler(c *gin.Context) {
 // @Tags FRP接口
 // @Produce application/json
 // @Security BearerAuth
-// @Success 200 {object} response.Response{data=models.FrpsConfig}
+// @Success 200 {object} response.Response
 // @Router /frp/api/info [get]
 func InfoFrpApiHandler(c *gin.Context) {
 	checkPermission(c, "frp.api.info")
