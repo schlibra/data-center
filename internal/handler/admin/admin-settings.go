@@ -1,7 +1,6 @@
 package admin
 
 import (
-	"data-center/internal/models/request"
 	adminModel "data-center/internal/models/request/admin"
 	"data-center/internal/service/admin"
 
@@ -32,11 +31,8 @@ func ListAdminSettingsHandler(c *gin.Context) {
 // @Router /admin/settings/{id} [get]
 func GetAdminSettingsHandler(c *gin.Context) {
 	checkAdmin(c)
-	var reqId request.UriId
-	if err := c.ShouldBindUri(&reqId); err != nil {
-		sendError(c, err)
-	}
-	admin.GetAdminSettingsService(c, reqId.Id)
+	id := getId(c)
+	admin.GetAdminSettingsService(c, id)
 }
 
 // CreateAdminSettingsHandler 创建设置
@@ -73,15 +69,12 @@ func CreateAdminSettingsHandler(c *gin.Context) {
 // @Router /admin/settings/{id} [put]
 func UpdateAdminSettingsHandler(c *gin.Context) {
 	checkAdmin(c)
-	var reqId request.UriId
-	if err := c.ShouldBindUri(&reqId); err != nil {
-		sendError(c, err)
-	}
+	id := getId(c)
 	var req adminModel.UpdateAdminSettings
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
 	}
-	admin.UpdateAdminSettingsService(c, reqId.Id, req)
+	admin.UpdateAdminSettingsService(c, id, req)
 }
 
 // DeleteAdminSettingsHandler 删除设置
@@ -95,11 +88,8 @@ func UpdateAdminSettingsHandler(c *gin.Context) {
 // @Router /admin/settings/{id} [delete]
 func DeleteAdminSettingsHandler(c *gin.Context) {
 	checkAdmin(c)
-	var reqId request.UriId
-	if err := c.ShouldBindUri(&reqId); err != nil {
-		sendError(c, err)
-	}
-	admin.DeleteAdminSettingsService(c, reqId.Id)
+	id := getId(c)
+	admin.DeleteAdminSettingsService(c, id)
 }
 
 // SetAdminSettingsHandler 写入设置

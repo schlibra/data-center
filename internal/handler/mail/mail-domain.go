@@ -1,7 +1,6 @@
 package mail
 
 import (
-	"data-center/internal/models/request"
 	mailModel "data-center/internal/models/request/mail"
 	"data-center/internal/service/mail"
 
@@ -17,7 +16,7 @@ import (
 // @Success 200 {object} response.Response{data=[]models.MailDomainTable}
 // @Router /mail/domain [get]
 func ListMailDomainHandler(c *gin.Context) {
-	checkPermission(c, "mail.get")
+	checkPermission(c, "mail.domain.get")
 	mail.ListMailDomainService(c)
 }
 
@@ -31,12 +30,9 @@ func ListMailDomainHandler(c *gin.Context) {
 // @Success 200 {object} response.Response{data=models.MailDomainTable}
 // @Router /mail/domain/{id} [get]
 func GetMailDomainHandler(c *gin.Context) {
-	checkPermission(c, "mail.get")
-	var reqId request.UriId
-	if err := c.ShouldBindUri(&reqId); err != nil {
-		sendError(c, err)
-	}
-	mail.GetMailDomainService(c, reqId.Id)
+	checkPermission(c, "mail.domain.get")
+	id := getId(c)
+	mail.GetMailDomainService(c, id)
 }
 
 // CreateMailDomainHandler 创建邮箱域名
@@ -49,7 +45,7 @@ func GetMailDomainHandler(c *gin.Context) {
 // @Success 200 {object} response.Response
 // @Router /mail/domain [post]
 func CreateMailDomainHandler(c *gin.Context) {
-	checkPermission(c, "mail.create")
+	checkPermission(c, "mail.domain.create")
 	var req mailModel.CreateMailDomain
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
@@ -68,16 +64,13 @@ func CreateMailDomainHandler(c *gin.Context) {
 // @Success 200 {object} response.Response
 // @Router /mail/domain/{id} [put]
 func UpdateMailDomainHandler(c *gin.Context) {
-	checkPermission(c, "mail.update")
-	var reqId request.UriId
-	if err := c.ShouldBindUri(&reqId); err != nil {
-		sendError(c, err)
-	}
+	checkPermission(c, "mail.domain.update")
+	id := getId(c)
 	var req mailModel.UpdateMailDomain
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
 	}
-	mail.UpdateMailDomainService(c, reqId.Id, req)
+	mail.UpdateMailDomainService(c, id, req)
 }
 
 // DeleteMailDomainHandler 删除邮箱域名
@@ -90,10 +83,7 @@ func UpdateMailDomainHandler(c *gin.Context) {
 // @Success 200 {object} response.Response
 // @Router /mail/domain/{id} [delete]
 func DeleteMailDomainHandler(c *gin.Context) {
-	checkPermission(c, "mail.delete")
-	var reqId request.UriId
-	if err := c.ShouldBindUri(&reqId); err != nil {
-		sendError(c, err)
-	}
-	mail.DeleteMailDomainService(c, reqId.Id)
+	checkPermission(c, "mail.domain.delete")
+	id := getId(c)
+	mail.DeleteMailDomainService(c, id)
 }

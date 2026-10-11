@@ -13,7 +13,7 @@ LDFLAGS     := -s -w \
                -X 'main.GitCommit=$(COMMIT)' \
                -X 'main.BuildTime=$(BUILD_TIME)'
 
-.PHONY: all
+.PHONY: all run-backend run-frontend
 
 all: upx
 
@@ -22,6 +22,12 @@ linux: linux-amd64 linux-386 linux-arm64 linux-arm
 windows: windows-amd64 windows-386 windows-arm64
 
 darwin: darwin-amd64 darwin-arm64
+
+run-frontend:
+	yarn dev
+
+run-backend:
+	go run . run
 
 frontend:
 	yarn install

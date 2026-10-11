@@ -1,7 +1,6 @@
 package frp_admin
 
 import (
-	"data-center/internal/models/request"
 	frpAdminModel "data-center/internal/models/request/frp_admin"
 	"data-center/internal/service/frp_admin"
 
@@ -30,11 +29,8 @@ func ListFrpAdminTokenHandler(c *gin.Context) {
 // @Router /frp/admin/token/{id} [get]
 func GetFrpAdminTokenHandler(c *gin.Context) {
 	checkAdmin(c)
-	var reqId request.UriId
-	if err := c.ShouldBindUri(&reqId); err != nil {
-		sendError(c, err)
-	}
-	frp_admin.GetFrpAdminTokenService(c, reqId.Id)
+	id := getId(c)
+	frp_admin.GetFrpAdminTokenService(c, id)
 }
 
 // CreateFrpAdminTokenHandler 创建 FRP 令牌（管理员）
@@ -70,10 +66,7 @@ func CreateFrpAdminTokenHandler(c *gin.Context) {
 // @Router /frp/admin/token/{id} [put]
 func UpdateFrpAdminTokenHandler(c *gin.Context) {
 	checkAdmin(c)
-	var reqId request.UriId
-	if err := c.ShouldBindUri(&reqId); err != nil {
-		sendError(c, err)
-	}
+	id := getId(c)
 	var req frpAdminModel.UpdateFrpAdminToken
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
@@ -81,7 +74,7 @@ func UpdateFrpAdminTokenHandler(c *gin.Context) {
 	if req.Name == "" {
 		sendI18n(c, 400, "frp.token.name_empty", nil)
 	}
-	frp_admin.UpdateFrpAdminTokenService(c, reqId.Id, req)
+	frp_admin.UpdateFrpAdminTokenService(c, id, req)
 }
 
 // DeleteFrpAdminTokenHandler 删除 FRP 令牌（管理员）
@@ -94,11 +87,8 @@ func UpdateFrpAdminTokenHandler(c *gin.Context) {
 // @Router /frp/admin/token/{id} [delete]
 func DeleteFrpAdminTokenHandler(c *gin.Context) {
 	checkAdmin(c)
-	var reqId request.UriId
-	if err := c.ShouldBindUri(&reqId); err != nil {
-		sendError(c, err)
-	}
-	frp_admin.DeleteFrpAdminTokenService(c, reqId.Id)
+	id := getId(c)
+	frp_admin.DeleteFrpAdminTokenService(c, id)
 }
 
 // GenerateFrpAdminTokenHandler 重新生成 FRP 令牌（管理员）
@@ -111,9 +101,6 @@ func DeleteFrpAdminTokenHandler(c *gin.Context) {
 // @Router /frp/admin/token/{id} [post]
 func GenerateFrpAdminTokenHandler(c *gin.Context) {
 	checkAdmin(c)
-	var reqId request.UriId
-	if err := c.ShouldBindUri(&reqId); err != nil {
-		sendError(c, err)
-	}
-	frp_admin.GenerateFrpAdminTokenService(c, reqId.Id)
+	id := getId(c)
+	frp_admin.GenerateFrpAdminTokenService(c, id)
 }

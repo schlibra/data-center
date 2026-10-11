@@ -35,3 +35,6 @@ func checkAdmin(c *gin.Context) models.UserTable {
 func portCheck(c *gin.Context, min int, max int) {
 	handler.PortCheck(c, min, max)
 }
+func getId(c *gin.Context) int {
+	return handler.GetId(c)
+}

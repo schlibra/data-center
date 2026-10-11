@@ -1,7 +1,6 @@
 package admin
 
 import (
-	"data-center/internal/models/request"
 	adminModel "data-center/internal/models/request/admin"
 	"data-center/internal/service/admin"
 
@@ -32,11 +31,8 @@ func ListAdminGroupHandler(c *gin.Context) {
 // @router /admin/group/{id} [get]
 func GetAdminGroupHandler(c *gin.Context) {
 	checkAdmin(c)
-	var reqId request.UriId
-	if err := c.ShouldBindUri(&reqId); err != nil {
-		sendError(c, err)
-	}
-	admin.GetAdminGroupService(c, reqId.Id)
+	id := getId(c)
+	admin.GetAdminGroupService(c, id)
 }
 
 // CreateAdminGroupHandler 创建用户组（管理员）
@@ -72,10 +68,7 @@ func CreateAdminGroupHandler(c *gin.Context) {
 // @router /admin/group/{id} [put]
 func UpdateAdminGroupHandler(c *gin.Context) {
 	checkAdmin(c)
-	var reqId request.UriId
-	if err := c.ShouldBindUri(&reqId); err != nil {
-		sendError(c, err)
-	}
+	id := getId(c)
 	var req adminModel.UpdateAdminGroup
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
@@ -83,7 +76,7 @@ func UpdateAdminGroupHandler(c *gin.Context) {
 	if req.Name == "" {
 		sendI18n(c, 400, "admin.group.name_empty", nil)
 	}
-	admin.UpdateAdminGroupService(c, reqId.Id, req)
+	admin.UpdateAdminGroupService(c, id, req)
 }
 
 // DeleteAdminGroupHandler 删除用户组（管理员）
@@ -97,9 +90,6 @@ func UpdateAdminGroupHandler(c *gin.Context) {
 // @router /admin/group/{id} [delete]
 func DeleteAdminGroupHandler(c *gin.Context) {
 	checkAdmin(c)
-	var reqId request.UriId
-	if err := c.ShouldBindUri(&reqId); err != nil {
-		sendError(c, err)
-	}
-	admin.DeleteAdminGroupService(c, reqId.Id)
+	id := getId(c)
+	admin.DeleteAdminGroupService(c, id)
 }

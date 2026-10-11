@@ -1,7 +1,6 @@
 package openvpn
 
 import (
-	"data-center/internal/models/request"
 	"data-center/internal/service/openvpn"
 
 	"github.com/gin-gonic/gin"
@@ -31,11 +30,8 @@ func ListOpenVPNClientHandler(c *gin.Context) {
 // @Router /openvpn/client/{id} [get]
 func GetOpenVPNClientHandler(c *gin.Context) {
 	checkPermission(c, "openvpn.client.get")
-	var reqId request.UriId
-	if err := c.ShouldBindUri(&reqId); err != nil {
-		sendError(c, err)
-	}
-	openvpn.GetOpenVPNClientService(c, reqId.Id)
+	id := getId(c)
+	openvpn.GetOpenVPNClientService(c, id)
 }
 
 // KickOpenVPNClientHandler 踢出OpenVPN客户端
@@ -49,9 +45,6 @@ func GetOpenVPNClientHandler(c *gin.Context) {
 // @Router /openvpn/client/{id} [delete]
 func KickOpenVPNClientHandler(c *gin.Context) {
 	checkPermission(c, "openvpn.client.delete")
-	var reqId request.UriId
-	if err := c.ShouldBindUri(&reqId); err != nil {
-		sendError(c, err)
-	}
-	openvpn.KickOpenVPNClientService(c, reqId.Id)
+	id := getId(c)
+	openvpn.KickOpenVPNClientService(c, id)
 }
