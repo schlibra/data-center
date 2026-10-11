@@ -1,4 +1,4 @@
-package models
+package response
 
 type GithubRelease struct {
 	Url             string `json:"url"`

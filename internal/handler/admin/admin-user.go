@@ -46,11 +46,7 @@ func GetAdminUserHandler(c *gin.Context) {
 // @router /admin/user [post]
 func CreateAdminUserHandler(c *gin.Context) {
 	checkAdmin(c)
-	var req adminModel.CreateAdminUser
-	if err := c.ShouldBindJSON(&req); err != nil {
-		sendError(c, err)
-		return
-	}
+	req := adminModel.CreateAdminUser{}.Parse(c)
 	if req.Username == "" {
 		sendI18n(c, 400, "admin.user.username_empty", nil)
 	}
@@ -73,11 +69,7 @@ func CreateAdminUserHandler(c *gin.Context) {
 // @router /admin/user/{id} [put]
 func UpdateAdminUserHandler(c *gin.Context) {
 	checkAdmin(c)
-	var req adminModel.UpdateAdminUser
-	if err := c.ShouldBindJSON(&req); err != nil {
-		sendError(c, err)
-		return
-	}
+	req := adminModel.UpdateAdminUser{}.Parse(c)
 	id := getId(c)
 	admin.UpdateAdminUserService(c, req, id)
 }
@@ -94,11 +86,7 @@ func UpdateAdminUserHandler(c *gin.Context) {
 // @router /admin/user/{id} [patch]
 func PasswordAdminUserHandler(c *gin.Context) {
 	checkAdmin(c)
-	var req adminModel.PasswordAdminUser
-	if err := c.ShouldBindJSON(&req); err != nil {
-		sendError(c, err)
-		return
-	}
+	req := adminModel.PasswordAdminUser{}.Parse(c)
 	if req.Password == "" {
 		sendI18n(c, 400, "admin.user.password_empty", nil)
 	}

@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"data-center/internal/models"
+	"data-center/internal/models/response"
 	"data-center/pkg/utils"
 	"fmt"
 	"log"
@@ -16,7 +16,7 @@ var downloadCmd = &cobra.Command{
 	Use:   "download",
 	Short: "Download latest version",
 	Run: func(cmd *cobra.Command, args []string) {
-		type Result models.GithubRelease
+		type Result response.GithubRelease
 		var result Result
 		_, err := resty.
 			New().

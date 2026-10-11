@@ -63,11 +63,8 @@ func GetFrpTokenHandler(c *gin.Context) {
 // @Router /frp/token/{id} [put]
 func UpdateFrpTokenHandler(c *gin.Context) {
 	row := checkPermission(c, "frp.token.update")
-	var req frpModel.UpdateFrpToken
-	if err := c.ShouldBind(&req); err != nil {
-		sendError(c, err)
-	}
 	id := getId(c)
+	req := frpModel.UpdateFrpToken{}.Parse(c)
 	if req.Name == "" {
 		sendI18n(c, 400, "frp.token.name_empty", nil)
 	}

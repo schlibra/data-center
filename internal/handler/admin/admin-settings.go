@@ -70,10 +70,7 @@ func CreateAdminSettingsHandler(c *gin.Context) {
 func UpdateAdminSettingsHandler(c *gin.Context) {
 	checkAdmin(c)
 	id := getId(c)
-	var req adminModel.UpdateAdminSettings
-	if err := c.ShouldBindJSON(&req); err != nil {
-		sendError(c, err)
-	}
+	req := adminModel.UpdateAdminSettings{}.Parse(c)
 	admin.UpdateAdminSettingsService(c, id, req)
 }
 
@@ -103,9 +100,6 @@ func DeleteAdminSettingsHandler(c *gin.Context) {
 // @Router /admin/settings [put]
 func SetAdminSettingsHandler(c *gin.Context) {
 	checkAdmin(c)
-	var req adminModel.CreateAdminSettings
-	if err := c.ShouldBindJSON(&req); err != nil {
-		sendError(c, err)
-	}
+	req := adminModel.CreateAdminSettings{}.Parse(c)
 	admin.SetAdminSettingsService(c, req)
 }

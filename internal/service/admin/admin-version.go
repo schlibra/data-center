@@ -2,7 +2,7 @@ package admin
 
 import (
 	"bufio"
-	"data-center/internal/models"
+	"data-center/internal/models/response"
 	"fmt"
 	"os"
 	"runtime"
@@ -13,7 +13,7 @@ import (
 )
 
 func GetAdminVersionService(c *gin.Context, version string, commit string, buildTime string) {
-	var result models.GithubRelease
+	var result response.GithubRelease
 	_, err := resty.New().R().SetResult(&result).Get("https://api.github.com/repos/schlibra/data-center/releases/latest")
 	var latestVersion string
 	if err != nil {

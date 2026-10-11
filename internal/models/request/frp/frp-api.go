@@ -1,5 +1,11 @@
 package frp
 
+import (
+	"data-center/pkg/response"
+
+	"github.com/gin-gonic/gin"
+)
+
 type frpApiLoginContentMetas struct {
 	Token string `json:"token"`
 }
@@ -18,11 +24,19 @@ type frpApiLoginContent struct {
 	Version       string                  `json:"version"`
 }
 
-type FrpApiLogin struct {
+type LoginFrpApi struct {
 	Version string             `json:"version"`
 	Op      string             `json:"op"`
 	Content frpApiLoginContent `json:"content"`
 }
+
+func (lfa LoginFrpApi) Parse(c *gin.Context) LoginFrpApi {
+	if err := c.ShouldBindJSON(&lfa); err != nil {
+		response.SendError(c, err)
+	}
+	return lfa
+}
+
 type frpApiProxyContentUser struct {
 	User string `json:"user"`
 }
@@ -30,10 +44,18 @@ type frpApiProxyContent struct {
 	User       frpApiProxyContentUser `json:"user"`
 	RemotePort int                    `json:"remote_port"`
 }
-type FrpApiProxy struct {
+type ProxyFrpApi struct {
 	Content frpApiProxyContent `json:"content"`
 }
-type FrpApiClientsDataItem struct {
+
+func (pfa ProxyFrpApi) Parse(c *gin.Context) ProxyFrpApi {
+	if err := c.ShouldBindJSON(&pfa); err != nil {
+		response.SendError(c, err)
+	}
+	return pfa
+}
+
+type ClientsFrpApiDataItem struct {
 	ClientID         string `json:"clientID"`
 	ClientIP         string `json:"clientIP"`
 	FirstConnectedAt int64  `json:"firstConnectedAt"`
@@ -47,16 +69,24 @@ type FrpApiClientsDataItem struct {
 	WireProtocol     string `json:"wireProtocol"`
 }
 type frpApiClientsData struct {
-	Items    []FrpApiClientsDataItem `json:"items"`
+	Items    []ClientsFrpApiDataItem `json:"items"`
 	Page     int                     `json:"page"`
 	PageSize int                     `json:"pageSize"`
 	Total    int                     `json:"total"`
 }
-type FrpApiClients struct {
+type ClientsFrpApi struct {
 	Code int               `json:"code"`
 	Data frpApiClientsData `json:"data"`
 	Msg  string            `json:"msg"`
 }
+
+func (cfa ClientsFrpApi) Parse(c *gin.Context) ClientsFrpApi {
+	if err := c.ShouldBindJSON(&cfa); err != nil {
+		response.SendError(c, err)
+	}
+	return cfa
+}
+
 type frpApiProxiesDataItemSpecTypeTransport struct {
 	UseEncryption      bool   `json:"useEncryption"`
 	UseCompression     bool   `json:"useCompression"`
@@ -84,21 +114,29 @@ type frpApiProxiesDataItemStatus struct {
 	LastStartAt     int64  `json:"lastStartAt"`
 	LastCloseAt     int64  `json:"lastCloseAt"`
 }
-type FrpApiProxiesDataItem struct {
+type ProxiesFrpApiDataItem struct {
 	Name     string                      `json:"name"`
 	User     string                      `json:"user"`
 	ClientID string                      `json:"clientID"`
 	Spec     frpApiProxiesDataItemSpec   `json:"spec"`
 	Status   frpApiProxiesDataItemStatus `json:"status"`
 }
+
 type frpApiProxiesData struct {
 	Total    int                     `json:"total"`
 	Page     int                     `json:"page"`
 	PageSize int                     `json:"pageSize"`
-	Items    []FrpApiProxiesDataItem `json:"items"`
+	Items    []ProxiesFrpApiDataItem `json:"items"`
 }
-type FrpApiProxies struct {
+type ProxiesFrpApi struct {
 	Code int               `json:"code"`
 	Data frpApiProxiesData `json:"data"`
 	Msg  string            `json:"msg"`
+}
+
+func (pfa ProxiesFrpApi) Parse(c *gin.Context) ProxiesFrpApi {
+	if err := c.ShouldBindJSON(&pfa); err != nil {
+		response.SendError(c, err)
+	}
+	return pfa
 }

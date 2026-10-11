@@ -46,10 +46,7 @@ func GetMailDomainHandler(c *gin.Context) {
 // @Router /mail/domain [post]
 func CreateMailDomainHandler(c *gin.Context) {
 	checkPermission(c, "mail.domain.create")
-	var req mailModel.CreateMailDomain
-	if err := c.ShouldBindJSON(&req); err != nil {
-		sendError(c, err)
-	}
+	req := mailModel.CreateMailDomain{}.Parse(c)
 	mail.CreateMailDomainService(c, req)
 }
 
@@ -66,10 +63,7 @@ func CreateMailDomainHandler(c *gin.Context) {
 func UpdateMailDomainHandler(c *gin.Context) {
 	checkPermission(c, "mail.domain.update")
 	id := getId(c)
-	var req mailModel.UpdateMailDomain
-	if err := c.ShouldBindJSON(&req); err != nil {
-		sendError(c, err)
-	}
+	req := mailModel.UpdateMailDomain{}.Parse(c)
 	mail.UpdateMailDomainService(c, id, req)
 }
 

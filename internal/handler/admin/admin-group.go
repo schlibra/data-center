@@ -46,10 +46,7 @@ func GetAdminGroupHandler(c *gin.Context) {
 // @router /admin/group [post]
 func CreateAdminGroupHandler(c *gin.Context) {
 	checkAdmin(c)
-	var req adminModel.CreateAdminGroup
-	if err := c.ShouldBindJSON(&req); err != nil {
-		sendError(c, err)
-	}
+	req := adminModel.CreateAdminGroup{}.Parse(c)
 	if req.Name == "" {
 		sendI18n(c, 400, "admin.group.name_empty", nil)
 	}
@@ -69,10 +66,7 @@ func CreateAdminGroupHandler(c *gin.Context) {
 func UpdateAdminGroupHandler(c *gin.Context) {
 	checkAdmin(c)
 	id := getId(c)
-	var req adminModel.UpdateAdminGroup
-	if err := c.ShouldBindJSON(&req); err != nil {
-		sendError(c, err)
-	}
+	req := adminModel.UpdateAdminGroup{}.Parse(c)
 	if req.Name == "" {
 		sendI18n(c, 400, "admin.group.name_empty", nil)
 	}

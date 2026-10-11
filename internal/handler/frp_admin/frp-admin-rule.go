@@ -44,10 +44,7 @@ func GetFrpAdminRuleHandler(c *gin.Context) {
 // @Router /frp/admin/rule/ [post]
 func CreateFrpAdminRuleHandler(c *gin.Context) {
 	checkAdmin(c)
-	var req frpAdminModel.CreateFrpAdminRule
-	if err := c.ShouldBindJSON(&req); err != nil {
-		sendError(c, err)
-	}
+	req := frpAdminModel.CreateFrpAdminRule{}.Parse(c)
 	portCheck(c, req.Min, req.Max)
 	frp_admin.CreateFrpAdminRuleService(c, req)
 }
@@ -64,12 +61,9 @@ func CreateFrpAdminRuleHandler(c *gin.Context) {
 // @Router /frp/admin/rule/{id} [put]
 func UpdateFrpAdminRuleHandler(c *gin.Context) {
 	checkAdmin(c)
-	var req frpAdminModel.UpdateFrpAdminRule
-	if err := c.ShouldBindJSON(&req); err != nil {
-		sendError(c, err)
-	}
-	portCheck(c, req.Min, req.Max)
 	id := getId(c)
+	req := frpAdminModel.UpdateFrpAdminRule{}.Parse(c)
+	portCheck(c, req.Min, req.Max)
 	frp_admin.UpdateFrpAdminRuleService(c, req, id)
 }
 
