@@ -1,7 +1,6 @@
 package openvpn
 
 import (
-	"data-center/internal/models/request"
 	openvpnModel "data-center/internal/models/request/openvpn"
 	"data-center/internal/service/openvpn"
 
@@ -32,11 +31,8 @@ func ListOpenVPNUserHandler(c *gin.Context) {
 // @Router /openvpn/user/{id} [GET]
 func GetOpenVPNUserHandler(c *gin.Context) {
 	checkPermission(c, "openvpn.user.get")
-	var reqId request.UriId
-	if err := c.ShouldBindUri(&reqId); err != nil {
-		sendError(c, err)
-	}
-	openvpn.GetOpenVPNUserService(c, reqId.Id)
+	id := getId(c)
+	openvpn.GetOpenVPNUserService(c, id)
 }
 
 // CreateOpenVPNUserHandler 创建OpenVPN用户
@@ -73,11 +69,8 @@ func UpdateOpenVPNUserHandler(c *gin.Context) {
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
 	}
-	var reqId request.UriId
-	if err := c.ShouldBindUri(&reqId); err != nil {
-		sendError(c, err)
-	}
-	openvpn.UpdateOpenVPNUserService(c, reqId.Id, req)
+	id := getId(c)
+	openvpn.UpdateOpenVPNUserService(c, id, req)
 }
 
 // DeleteOpenVPNUserHandler 删除OpenVPN用户
@@ -91,9 +84,6 @@ func UpdateOpenVPNUserHandler(c *gin.Context) {
 // @Router /openvpn/user/{id} [DELETE]
 func DeleteOpenVPNUserHandler(c *gin.Context) {
 	checkPermission(c, "openvpn.user.delete")
-	var reqId request.UriId
-	if err := c.ShouldBindUri(&reqId); err != nil {
-		sendError(c, err)
-	}
-	openvpn.DeleteOpenVPNUserService(c, reqId.Id)
+	id := getId(c)
+	openvpn.DeleteOpenVPNUserService(c, id)
 }

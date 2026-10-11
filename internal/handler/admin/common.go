@@ -32,3 +32,6 @@ func checkPermission(c *gin.Context, pmsKey string) models.UserTable {
 func checkAdmin(c *gin.Context) models.UserTable {
 	return handler.CheckAdmin(c)
 }
+func getId(c *gin.Context) int {
+	return handler.GetId(c)
+}

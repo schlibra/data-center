@@ -1,7 +1,6 @@
 package openvpn
 
 import (
-	"data-center/internal/models/request"
 	openvpnModel "data-center/internal/models/request/openvpn"
 	"data-center/internal/service/openvpn"
 
@@ -32,11 +31,8 @@ func ListOpenVPNGroupHandler(c *gin.Context) {
 // @Router /openvpn/group/{id} [get]
 func GetOpenVPNGroupHandler(c *gin.Context) {
 	checkPermission(c, "openvpn.group.get")
-	var reqId request.UriId
-	if err := c.ShouldBindUri(&reqId); err != nil {
-		sendError(c, err)
-	}
-	openvpn.GetOpenVPNGroupService(c, reqId.Id)
+	id := getId(c)
+	openvpn.GetOpenVPNGroupService(c, id)
 }
 
 // CreateOpenVPNGroupHandler 创建OpenVPN IP组
@@ -73,11 +69,8 @@ func UpdateOpenVPNGroupHandler(c *gin.Context) {
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
 	}
-	var reqId request.UriId
-	if err := c.ShouldBindUri(&reqId); err != nil {
-		sendError(c, err)
-	}
-	openvpn.UpdateOpenVPNGroupService(c, reqId.Id, req)
+	id := getId(c)
+	openvpn.UpdateOpenVPNGroupService(c, id, req)
 }
 
 // DeleteOpenVPNGroupHandler 删除OpenVPN IP组
@@ -91,9 +84,6 @@ func UpdateOpenVPNGroupHandler(c *gin.Context) {
 // @Router /openvpn/group/{id} [delete]
 func DeleteOpenVPNGroupHandler(c *gin.Context) {
 	checkPermission(c, "openvpn.group.delete")
-	var reqId request.UriId
-	if err := c.ShouldBindUri(&reqId); err != nil {
-		sendError(c, err)
-	}
-	openvpn.DeleteOpenVPNGroupService(c, reqId.Id)
+	id := getId(c)
+	openvpn.DeleteOpenVPNGroupService(c, id)
 }

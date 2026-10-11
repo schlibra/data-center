@@ -1,7 +1,6 @@
 package admin
 
 import (
-	"data-center/internal/models/request"
 	adminModel "data-center/internal/models/request/admin"
 	"data-center/internal/service/admin"
 
@@ -32,12 +31,8 @@ func ListAdminUserHandler(c *gin.Context) {
 // @router /admin/user/{id} [get]
 func GetAdminUserHandler(c *gin.Context) {
 	checkAdmin(c)
-	var reqId request.UriId
-	if err := c.ShouldBindUri(&reqId); err != nil {
-		sendError(c, err)
-		return
-	}
-	admin.GetAdminUserService(c, reqId.Id)
+	id := getId(c)
+	admin.GetAdminUserService(c, id)
 }
 
 // CreateAdminUserHandler 创建用户（管理员）
@@ -62,12 +57,8 @@ func CreateAdminUserHandler(c *gin.Context) {
 	if req.Password == "" {
 		sendI18n(c, 400, "admin.user.password_empty", nil)
 	}
-	var reqId request.UriId
-	if err := c.ShouldBindUri(&reqId); err != nil {
-		sendError(c, err)
-		return
-	}
-	admin.CreateAdminUserService(c, req, reqId.Id)
+	id := getId(c)
+	admin.CreateAdminUserService(c, req, id)
 }
 
 // UpdateAdminUserHandler 更新用户（管理员）
@@ -87,12 +78,8 @@ func UpdateAdminUserHandler(c *gin.Context) {
 		sendError(c, err)
 		return
 	}
-	var reqId request.UriId
-	if err := c.ShouldBindUri(&reqId); err != nil {
-		sendError(c, err)
-		return
-	}
-	admin.UpdateAdminUserService(c, req, reqId.Id)
+	id := getId(c)
+	admin.UpdateAdminUserService(c, req, id)
 }
 
 // PasswordAdminUserHandler 修改用户密码（管理员）
@@ -115,12 +102,8 @@ func PasswordAdminUserHandler(c *gin.Context) {
 	if req.Password == "" {
 		sendI18n(c, 400, "admin.user.password_empty", nil)
 	}
-	var reqId request.UriId
-	if err := c.ShouldBindUri(&reqId); err != nil {
-		sendError(c, err)
-		return
-	}
-	admin.PasswordAdminUserService(c, req, reqId.Id)
+	id := getId(c)
+	admin.PasswordAdminUserService(c, req, id)
 }
 
 // DeleteAdminUserHandler 删除用户（管理员）
@@ -134,10 +117,6 @@ func PasswordAdminUserHandler(c *gin.Context) {
 // @router /admin/user/{id} [delete]
 func DeleteAdminUserHandler(c *gin.Context) {
 	row := checkAdmin(c)
-	var reqId request.UriId
-	if err := c.ShouldBindUri(&reqId); err != nil {
-		sendError(c, err)
-		return
-	}
-	admin.DeleteAdminUserService(c, row, reqId.Id)
+	id := getId(c)
+	admin.DeleteAdminUserService(c, row, id)
 }

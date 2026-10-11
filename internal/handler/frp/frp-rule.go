@@ -1,7 +1,6 @@
 package frp
 
 import (
-	"data-center/internal/models/request"
 	frpModel "data-center/internal/models/request/frp"
 	"data-center/internal/service/frp"
 
@@ -50,11 +49,8 @@ func ListFrpRuleHandler(c *gin.Context) {
 // @Router /frp/rule/{id} [get]
 func GetFrpRuleHandler(c *gin.Context) {
 	row := checkPermission(c, "frp.rule.get")
-	var req request.UriId
-	if err := c.ShouldBindUri(&req); err != nil {
-		sendError(c, err)
-	}
-	frp.GetFrpRuleService(c, row, req.Id)
+	id := getId(c)
+	frp.GetFrpRuleService(c, row, id)
 }
 
 // UpdateFrpRuleHandler 更新 FRP 规则
@@ -73,12 +69,9 @@ func UpdateFrpRuleHandler(c *gin.Context) {
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
 	}
-	var reqId request.UriId
-	if err := c.ShouldBindUri(&reqId); err != nil {
-		sendError(c, err)
-	}
+	id := getId(c)
 	portCheck(c, req.Min, req.Max)
-	frp.UpdateFrpRuleService(c, row, req, reqId.Id)
+	frp.UpdateFrpRuleService(c, row, req, id)
 }
 
 // DeleteFrpRuleHandler 删除 FRP 规则
@@ -91,9 +84,6 @@ func UpdateFrpRuleHandler(c *gin.Context) {
 // @Router /frp/rule/{id} [delete]
 func DeleteFrpRuleHandler(c *gin.Context) {
 	row := checkPermission(c, "frp.rule.delete")
-	var reqId request.UriId
-	if err := c.ShouldBindUri(&reqId); err != nil {
-		sendError(c, err)
-	}
-	frp.DeleteFrpRuleService(c, row, reqId.Id)
+	id := getId(c)
+	frp.DeleteFrpRuleService(c, row, id)
 }

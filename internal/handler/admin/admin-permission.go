@@ -1,7 +1,6 @@
 package admin
 
 import (
-	"data-center/internal/models/request"
 	adminModel "data-center/internal/models/request/admin"
 	"data-center/internal/service/admin"
 
@@ -32,11 +31,8 @@ func ListAdminPermissionsHandler(c *gin.Context) {
 // @router /admin/permission/{id} [get]
 func GetAdminPermissionHandler(c *gin.Context) {
 	checkAdmin(c)
-	var reqId request.UriId
-	if err := c.ShouldBindUri(&reqId); err != nil {
-		sendError(c, err)
-	}
-	admin.GetAdminPermissionService(c, reqId.Id)
+	id := getId(c)
+	admin.GetAdminPermissionService(c, id)
 }
 
 // CreateAdminPermissionHandler 创建权限（管理员）
@@ -72,10 +68,7 @@ func CreateAdminPermissionHandler(c *gin.Context) {
 // @router /admin/permission/{id} [put]
 func UpdateAdminPermissionHandler(c *gin.Context) {
 	checkAdmin(c)
-	var reqId request.UriId
-	if err := c.ShouldBindUri(&reqId); err != nil {
-		sendError(c, err)
-	}
+	id := getId(c)
 	var req adminModel.UpdateAdminPermission
 	if err := c.ShouldBindJSON(&req); err != nil {
 		sendError(c, err)
@@ -83,10 +76,10 @@ func UpdateAdminPermissionHandler(c *gin.Context) {
 	if req.Key == "" || req.Name == "" {
 		sendI18n(c, 400, "admin.permission.key_name_empty", nil)
 	}
-	if req.Parent == reqId.Id {
+	if req.Parent == id {
 		sendI18n(c, 400, "admin.permission.id_equal_parent", nil)
 	}
-	admin.UpdateAdminPermissionService(c, reqId.Id, req)
+	admin.UpdateAdminPermissionService(c, id, req)
 }
 
 // DeleteAdminPermissionHandler 删除权限（管理员）
@@ -100,9 +93,6 @@ func UpdateAdminPermissionHandler(c *gin.Context) {
 // @router /admin/permission/{id} [delete]
 func DeleteAdminPermissionHandler(c *gin.Context) {
 	checkAdmin(c)
-	var reqId request.UriId
-	if err := c.ShouldBindUri(&reqId); err != nil {
-		sendError(c, err)
-	}
-	admin.DeleteAdminPermissionService(c, reqId.Id)
+	id := getId(c)
+	admin.DeleteAdminPermissionService(c, id)
 }

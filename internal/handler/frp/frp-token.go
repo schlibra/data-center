@@ -1,7 +1,6 @@
 package frp
 
 import (
-	"data-center/internal/models/request"
 	frpModel "data-center/internal/models/request/frp"
 	"data-center/internal/service/frp"
 
@@ -14,15 +13,12 @@ import (
 // @Accept application/json
 // @Produce application/json
 // @Security BearerAuth
-// @Param request body frp.FrpTokenCreate true "令牌参数"
+// @Param request body frp.CreateFrpToken true "令牌参数"
 // @Success 200 {object} response.Response
 // @Router /frp/token/ [post]
 func CreateFrpTokenHandler(c *gin.Context) {
 	row := checkPermission(c, "frp.token.create")
-	var req frpModel.FrpTokenCreate
-	if err := c.ShouldBind(&req); err != nil {
-		sendError(c, err)
-	}
+	req := frpModel.CreateFrpToken{}.Parse(c)
 	if req.Name == "" {
 		sendI18n(c, 400, "frp.token.name_empty", nil)
 	}
@@ -51,11 +47,8 @@ func ListFrpTokenHandler(c *gin.Context) {
 // @Router /frp/token/{id} [get]
 func GetFrpTokenHandler(c *gin.Context) {
 	row := checkPermission(c, "frp.token.get")
-	var req request.UriId
-	if err := c.ShouldBindUri(&req); err != nil {
-		sendError(c, err)
-	}
-	frp.GetFrpTokenService(c, row, req.Id)
+	id := getId(c)
+	frp.GetFrpTokenService(c, row, id)
 }
 
 // UpdateFrpTokenHandler 更新 FRP 令牌
@@ -65,23 +58,20 @@ func GetFrpTokenHandler(c *gin.Context) {
 // @Produce application/json
 // @Security BearerAuth
 // @Param id path int true "令牌ID"
-// @Param request body frp.FrpTokenUpdate true "令牌参数"
+// @Param request body frp.UpdateFrpToken true "令牌参数"
 // @Success 200 {object} response.Response
 // @Router /frp/token/{id} [put]
 func UpdateFrpTokenHandler(c *gin.Context) {
 	row := checkPermission(c, "frp.token.update")
-	var req frpModel.FrpTokenUpdate
+	var req frpModel.UpdateFrpToken
 	if err := c.ShouldBind(&req); err != nil {
 		sendError(c, err)
 	}
-	var reqId request.UriId
-	if err := c.ShouldBindUri(&reqId); err != nil {
-		sendError(c, err)
-	}
+	id := getId(c)
 	if req.Name == "" {
 		sendI18n(c, 400, "frp.token.name_empty", nil)
 	}
-	frp.UpdateFrpTokenService(c, req, row, reqId.Id)
+	frp.UpdateFrpTokenService(c, req, row, id)
 }
 
 // DeleteFrpTokenHandler 删除 FRP 令牌
@@ -94,11 +84,8 @@ func UpdateFrpTokenHandler(c *gin.Context) {
 // @Router /frp/token/{id} [delete]
 func DeleteFrpTokenHandler(c *gin.Context) {
 	row := checkPermission(c, "frp.token.delete")
-	var req request.UriId
-	if err := c.ShouldBindUri(&req); err != nil {
-		sendError(c, err)
-	}
-	frp.DeleteFrpTokenService(c, row, req.Id)
+	id := getId(c)
+	frp.DeleteFrpTokenService(c, row, id)
 }
 
 // GenerateFrpTokenHandler 重新生成 FRP 令牌
@@ -111,9 +98,6 @@ func DeleteFrpTokenHandler(c *gin.Context) {
 // @Router /frp/token/{id} [post]
 func GenerateFrpTokenHandler(c *gin.Context) {
 	row := checkPermission(c, "frp.token.generate")
-	var req request.UriId
-	if err := c.ShouldBindUri(&req); err != nil {
-		sendError(c, err)
-	}
-	frp.GenerateFrpTokenService(c, row, req.Id)
+	id := getId(c)
+	frp.GenerateFrpTokenService(c, row, id)
 }

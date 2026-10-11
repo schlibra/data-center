@@ -28,6 +28,19 @@ func sendError(c *gin.Context, err error) {
 func closeDB(db *sql.DB) {
 	_ = db.Close()
 }
+func GetId(c *gin.Context) int {
+	return getId(c)
+}
+func getId(c *gin.Context) int {
+	type ReqId struct {
+		Id int `uri:"id"`
+	}
+	var reqId ReqId
+	if err := c.ShouldBindUri(&reqId); err != nil {
+		sendError(c, err)
+	}
+	return reqId.Id
+}
 func ParseToken(c *gin.Context) models.UserTable {
 	return parseToken(c)
 }

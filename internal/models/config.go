@@ -42,4 +42,8 @@ type Config struct {
 		Host string `yaml:"host"`
 		Port int    `yaml:"port"`
 	} `yaml:"frps"`
+	Teable struct {
+		Address string `yaml:"address"`
+		Key     string `yaml:"key"`
+	} `yaml:"teable"`
 }

@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func CreateFrpTokenService(c *gin.Context, req frp.FrpTokenCreate, row models.UserTable) {
+func CreateFrpTokenService(c *gin.Context, req frp.CreateFrpToken, row models.UserTable) {
 	frpToken, err := repository.NewFrpToken()
 	if err != nil {
 		sendError(c, err)
@@ -61,7 +61,7 @@ func GetFrpTokenService(c *gin.Context, row models.UserTable, id int) {
 	})
 }
 
-func UpdateFrpTokenService(c *gin.Context, req frp.FrpTokenUpdate, row models.UserTable, id int) {
+func UpdateFrpTokenService(c *gin.Context, req frp.UpdateFrpToken, row models.UserTable, id int) {
 	frpToken, err := repository.NewFrpToken()
 	if err != nil {
 		sendError(c, err)
