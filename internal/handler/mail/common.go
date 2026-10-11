@@ -38,3 +38,23 @@ func portCheck(c *gin.Context, min int, max int) {
 func getId(c *gin.Context) int {
 	return handler.GetId(c)
 }
+func getDomain(c *gin.Context) int {
+	type ReqDomain struct {
+		Domain int `uri:"domain"`
+	}
+	var reqDomain ReqDomain
+	if err := c.ShouldBindUri(&reqDomain); err != nil {
+		sendError(c, err)
+	}
+	return reqDomain.Domain
+}
+func getRecord(c *gin.Context) string {
+	type ReqRecord struct {
+		Record string `uri:"record"`
+	}
+	var reqRecord ReqRecord
+	if err := c.ShouldBindUri(&reqRecord); err != nil {
+		sendError(c, err)
+	}
+	return reqRecord.Record
+}

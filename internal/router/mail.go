@@ -18,10 +18,10 @@ func initMailDomainRouter(router *gin.RouterGroup) {
 func initMailListRouter(router *gin.RouterGroup) {
 	list := router.Group("/list")
 	list.GET("/:domain", mail.ListMailListHandler)
-	list.GET("/:domain/:id", mail.GetMailListHandler)
+	list.GET("/:domain/:record", mail.GetMailListHandler)
 	list.POST("/:domain", mail.CreateMailListHandler)
-	list.PUT("/:domain/:id", mail.UpdateMailListHandler)
-	list.DELETE("/:domain/:id", mail.DeleteMailListHandler)
+	list.PUT("/:domain/:record", mail.UpdateMailListHandler)
+	list.DELETE("/:domain/:record", mail.DeleteMailListHandler)
 }
 
 func initMailRouter(router *gin.RouterGroup) {

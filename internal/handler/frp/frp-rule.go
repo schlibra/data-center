@@ -18,11 +18,7 @@ import (
 // @Router /frp/rule/ [post]
 func CreateFrpRuleHandler(c *gin.Context) {
 	row := checkPermission(c, "frp.rule.create")
-	var req frpModel.CreateFrpRule
-	if err := c.ShouldBindJSON(&req); err != nil {
-		sendError(c, err)
-		return
-	}
+	req := frpModel.CreateFrpRule{}.Parse(c)
 	portCheck(c, req.Min, req.Max)
 	frp.CreateFrpRuleService(c, row, req)
 }
@@ -65,11 +61,8 @@ func GetFrpRuleHandler(c *gin.Context) {
 // @Router /frp/rule/{id} [put]
 func UpdateFrpRuleHandler(c *gin.Context) {
 	row := checkPermission(c, "frp.rule.update")
-	var req frpModel.UpdateFrpRule
-	if err := c.ShouldBindJSON(&req); err != nil {
-		sendError(c, err)
-	}
 	id := getId(c)
+	req := frpModel.UpdateFrpRule{}.Parse(c)
 	portCheck(c, req.Min, req.Max)
 	frp.UpdateFrpRuleService(c, row, req, id)
 }

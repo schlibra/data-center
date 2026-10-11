@@ -46,10 +46,7 @@ func GetAdminPermissionHandler(c *gin.Context) {
 // @router /admin/permission [post]
 func CreateAdminPermissionHandler(c *gin.Context) {
 	checkAdmin(c)
-	var req adminModel.CreateAdminPermission
-	if err := c.ShouldBindJSON(&req); err != nil {
-		sendError(c, err)
-	}
+	req := adminModel.CreateAdminPermission{}.Parse(c)
 	if req.Key == "" || req.Name == "" {
 		sendI18n(c, 400, "admin.permission.key_name_empty", nil)
 	}
@@ -69,10 +66,7 @@ func CreateAdminPermissionHandler(c *gin.Context) {
 func UpdateAdminPermissionHandler(c *gin.Context) {
 	checkAdmin(c)
 	id := getId(c)
-	var req adminModel.UpdateAdminPermission
-	if err := c.ShouldBindJSON(&req); err != nil {
-		sendError(c, err)
-	}
+	req := adminModel.UpdateAdminPermission{}.Parse(c)
 	if req.Key == "" || req.Name == "" {
 		sendI18n(c, 400, "admin.permission.key_name_empty", nil)
 	}

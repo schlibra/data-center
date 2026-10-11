@@ -12,14 +12,11 @@ import (
 // @Tags FRP接口
 // @Accept application/json
 // @Produce application/json
-// @Param request body frp.FrpApiLogin true "登录回调参数"
+// @Param request body frp.LoginFrpApi true "登录回调参数"
 // @Success 200 {object} response.Response
 // @Router /frp/api/login [post]
 func LoginFrpApiHandler(c *gin.Context) {
-	var req frpModel.FrpApiLogin
-	if err := c.ShouldBindJSON(&req); err != nil {
-		sendError(c, err)
-	}
+	req := frpModel.LoginFrpApi{}.Parse(c)
 	frp.LoginFrpApiService(c, req)
 }
 
@@ -28,14 +25,11 @@ func LoginFrpApiHandler(c *gin.Context) {
 // @Tags FRP接口
 // @Accept application/json
 // @Produce application/json
-// @Param request body frp.FrpApiProxy true "代理回调参数"
+// @Param request body frp.ProxyFrpApi true "代理回调参数"
 // @Success 200 {object} response.Response
 // @Router /frp/api/proxy [post]
 func ProxyFrpApiHandler(c *gin.Context) {
-	var req frpModel.FrpApiProxy
-	if err := c.ShouldBindJSON(&req); err != nil {
-		sendError(c, err)
-	}
+	req := frpModel.ProxyFrpApi{}.Parse(c)
 	frp.ProxyFrpApiService(c, req)
 }
 
@@ -44,7 +38,7 @@ func ProxyFrpApiHandler(c *gin.Context) {
 // @Tags FRP接口
 // @Produce application/json
 // @Security BearerAuth
-// @Success 200 {object} response.Response{data=[]frp.FrpApiProxiesDataItem}
+// @Success 200 {object} response.Response{data=[]frp.ProxiesFrpApiDataItem}
 // @Router /frp/api/proxy [get]
 func ProxiesFrpApiHandler(c *gin.Context) {
 	row := checkPermission(c, "frp.api.proxy")
@@ -56,7 +50,7 @@ func ProxiesFrpApiHandler(c *gin.Context) {
 // @Tags FRP接口
 // @Produce application/json
 // @Security BearerAuth
-// @Success 200 {object} response.Response{data=[]frp.FrpApiClientsDataItem}
+// @Success 200 {object} response.Response{data=[]frp.ClientsFrpApiDataItem}
 // @Router /frp/api/client [get]
 func ClientsFrpApiHandler(c *gin.Context) {
 	row := checkPermission(c, "frp.api.client")

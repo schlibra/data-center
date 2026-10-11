@@ -15,7 +15,7 @@ import (
 	"github.com/go-resty/resty/v2"
 )
 
-func LoginFrpApiService(c *gin.Context, req frp.FrpApiLogin) {
+func LoginFrpApiService(c *gin.Context, req frp.LoginFrpApi) {
 	frpToken, err := repository.NewFrpToken()
 	if err != nil {
 		c.JSON(200, H{
@@ -58,7 +58,7 @@ func LoginFrpApiService(c *gin.Context, req frp.FrpApiLogin) {
 		"reject_reason": "token not match",
 	})
 }
-func ProxyFrpApiService(c *gin.Context, req frp.FrpApiProxy) {
+func ProxyFrpApiService(c *gin.Context, req frp.ProxyFrpApi) {
 	frpToken, err := repository.NewFrpToken()
 	if err != nil {
 		c.JSON(200, H{
@@ -129,7 +129,7 @@ func ProxiesFrpApiService(c *gin.Context, row models.UserTable) {
 		tokenList = append(tokenList, token.Name)
 	}
 	client := resty.New()
-	var proxyResult frp.FrpApiProxies
+	var proxyResult frp.ProxiesFrpApi
 	_, err = client.R().
 		SetAuthScheme("Basic").
 		SetAuthToken(frpsToken).
@@ -141,7 +141,7 @@ func ProxiesFrpApiService(c *gin.Context, row models.UserTable) {
 	if proxyResult.Code != 200 {
 		sendJson(c, proxyResult.Code, proxyResult.Msg, proxyResult.Data)
 	}
-	proxies := make([]frp.FrpApiProxiesDataItem, 0)
+	proxies := make([]frp.ProxiesFrpApiDataItem, 0)
 	for _, item := range proxyResult.Data.Items {
 		if slices.Contains(tokenList, item.User) {
 			proxies = append(proxies, item)
@@ -168,7 +168,7 @@ func ClientFrpApiService(c *gin.Context, row models.UserTable) {
 		tokenList = append(tokenList, token.Name)
 	}
 	client := resty.New()
-	var clientResult frp.FrpApiClients
+	var clientResult frp.ClientsFrpApi
 	_, err = client.R().
 		SetAuthScheme("Basic").
 		SetAuthToken(frpsToken).
@@ -180,7 +180,7 @@ func ClientFrpApiService(c *gin.Context, row models.UserTable) {
 	if clientResult.Code != 200 {
 		sendJson(c, 400, clientResult.Msg, clientResult)
 	}
-	clients := make([]frp.FrpApiClientsDataItem, 0)
+	clients := make([]frp.ClientsFrpApiDataItem, 0)
 	for _, item := range clientResult.Data.Items {
 		if slices.Contains(tokenList, item.User) {
 			clients = append(clients, item)

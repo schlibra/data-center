@@ -18,7 +18,7 @@ func ProxiesFrpAdminApiService(c *gin.Context) {
 	frpsPort := cfg.FrpsWeb.Port
 	frpsToken := cfg.FrpsWeb.Token
 	client := resty.New()
-	var proxyResult frp.FrpApiProxies
+	var proxyResult frp.ProxiesFrpApi
 	_, err = client.R().
 		SetAuthScheme("Basic").
 		SetAuthToken(frpsToken).
@@ -35,7 +35,7 @@ func ClientsFrpAdminApiService(c *gin.Context) {
 	frpsPort := cfg.FrpsWeb.Port
 	frpsToken := cfg.FrpsWeb.Token
 	client := resty.New()
-	var clientResult frp.FrpApiClients
+	var clientResult frp.ClientsFrpApi
 	_, err = client.R().
 		SetAuthScheme("Basic").
 		SetAuthToken(frpsToken).

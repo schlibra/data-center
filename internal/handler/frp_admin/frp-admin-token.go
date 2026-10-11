@@ -44,10 +44,7 @@ func GetFrpAdminTokenHandler(c *gin.Context) {
 // @Router /frp/admin/token/ [post]
 func CreateFrpAdminTokenHandler(c *gin.Context) {
 	checkAdmin(c)
-	var req frpAdminModel.CreateFrpAdminToken
-	if err := c.ShouldBindJSON(&req); err != nil {
-		sendError(c, err)
-	}
+	req := frpAdminModel.CreateFrpAdminToken{}.Parse(c)
 	if req.Name == "" {
 		sendI18n(c, 400, "frp.token.name_empty", nil)
 	}
@@ -67,10 +64,7 @@ func CreateFrpAdminTokenHandler(c *gin.Context) {
 func UpdateFrpAdminTokenHandler(c *gin.Context) {
 	checkAdmin(c)
 	id := getId(c)
-	var req frpAdminModel.UpdateFrpAdminToken
-	if err := c.ShouldBindJSON(&req); err != nil {
-		sendError(c, err)
-	}
+	req := frpAdminModel.UpdateFrpAdminToken{}.Parse(c)
 	if req.Name == "" {
 		sendI18n(c, 400, "frp.token.name_empty", nil)
 	}

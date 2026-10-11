@@ -21,3 +21,10 @@ type UpdateFrpToken struct {
 	Name   string `json:"name"`
 	Enable int    `json:"enable"`
 }
+
+func (uft UpdateFrpToken) Parse(c *gin.Context) UpdateFrpToken {
+	if err := c.ShouldBindBodyWithJSON(&uft); err != nil {
+		response.SendError(c, err)
+	}
+	return uft
+}
