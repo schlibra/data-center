@@ -34,7 +34,8 @@ func UpgradeAdminVersionService(c *gin.Context) {
 		}
 		return ""
 	}()
-	open, err := os.Open(fmt.Sprintf("data-center-%s-%s%s", runtime.GOOS, runtime.GOARCH, fileExt))
+	updateFileName := fmt.Sprintf("data-center-%s-%s%s", runtime.GOOS, runtime.GOARCH, fileExt)
+	open, err := os.Open(updateFileName)
 	if err != nil {
 		sendJson(c, 400, "更新文件不存在", nil)
 		return
@@ -47,5 +48,6 @@ func UpgradeAdminVersionService(c *gin.Context) {
 	if err != nil {
 		sendError(c, err)
 	}
+	_ = os.Remove(updateFileName)
 	sendJson(c, 200, "更新成功", nil)
 }
