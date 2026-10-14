@@ -27,9 +27,7 @@ func initMailListRouter(router *gin.RouterGroup) {
 func initMailMessageRouter(router *gin.RouterGroup) {
 	message := router.Group("/message")
 	message.GET("/:domain/:record", mail.ListMailMessageHandler)
-	message.GET("/:domain/:record/:msg", mail.GetMailMessageHandler)
-	message.POST("/:domain/:record", mail.SendMailMessageHandler)
-	message.DELETE("/:domain/:record/:msg", mail.DeleteMailMessageHandler)
+	message.GET("/:domain/:record/:id", mail.GetMailMessageHandler)
 }
 
 func initMailRouter(router *gin.RouterGroup) {
