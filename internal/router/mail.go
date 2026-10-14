@@ -24,8 +24,17 @@ func initMailListRouter(router *gin.RouterGroup) {
 	list.DELETE("/:domain/:record", mail.DeleteMailListHandler)
 }
 
+func initMailMessageRouter(router *gin.RouterGroup) {
+	message := router.Group("/message")
+	message.GET("/:domain/:record", mail.ListMailMessageHandler)
+	message.GET("/:domain/:record/:msg", mail.GetMailMessageHandler)
+	message.POST("/:domain/:record", mail.SendMailMessageHandler)
+	message.DELETE("/:domain/:record/:msg", mail.DeleteMailMessageHandler)
+}
+
 func initMailRouter(router *gin.RouterGroup) {
 	mailRouter := router.Group("/mail")
 	initMailDomainRouter(mailRouter)
 	initMailListRouter(mailRouter)
+	initMailMessageRouter(mailRouter)
 }

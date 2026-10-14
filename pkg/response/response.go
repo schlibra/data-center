@@ -7,6 +7,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type H map[string]any
+
 // Response 通用响应体（用于 Swagger 文档）
 type Response struct {
 	Code    int    `json:"code"`
@@ -28,7 +30,9 @@ func SendI18n(c *gin.Context, code int, messageId string, data any) {
 	SendJson(c, code, i18n.MustGetMessage(c, messageId), data)
 }
 func SendError(c *gin.Context, err error) {
-	SendJson(c, 500, err.Error(), nil)
+	SendJson(c, 500, err.Error(), H{
+		"error": err,
+	})
 }
 func NW(c *gin.Context) bool {
 	return !c.Writer.Written()

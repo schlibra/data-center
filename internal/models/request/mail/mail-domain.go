@@ -10,6 +10,9 @@ type CreateMailDomain struct {
 	Domain  string `json:"domain"`
 	Name    string `json:"name"`
 	TableId string `json:"tableId"`
+	Server  string `json:"server"`
+	Port    int    `json:"port"`
+	SSL     string `json:"ssl"`
 }
 
 func (cmd CreateMailDomain) Parse(c *gin.Context) CreateMailDomain {
@@ -22,6 +25,9 @@ func (cmd CreateMailDomain) Parse(c *gin.Context) CreateMailDomain {
 type UpdateMailDomain struct {
 	Name    string `json:"name"`
 	TableId string `json:"tableId"`
+	Server  string `json:"server"`
+	Port    int    `json:"port"`
+	SSL     string `json:"ssl"`
 }
 
 func (cmd UpdateMailDomain) Parse(c *gin.Context) UpdateMailDomain {
