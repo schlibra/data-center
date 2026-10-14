@@ -57,4 +57,7 @@ type MailDomainTable struct {
 	Domain  string `json:"domain"`
 	Name    string `json:"name"`
 	TableId string `json:"table_id"`
+	Server  string `json:"server"`
+	Port    int    `json:"port"`
+	SSL     string `json:"ssl"`
 }
