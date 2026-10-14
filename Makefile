@@ -29,7 +29,7 @@ run-frontend:
 	@yarn dev --host
 
 run-backend:
-	go run . run
+	@go run . run
 
 make-dir:
 	@mkdir -p $(OUTPUT_DIR)
@@ -45,19 +45,23 @@ build-frontend:
 	@yarn build
 
 define build-bin
-	@if [ "$(1)" = "windows" ]; then\
+	@echo "Building $(APP_NAME)-$(1)-$(2)";\
+	if [ "$(1)" = "windows" ]; then\
 		EXT=.exe;\
 	else\
 		EXT=;\
-	fi
-	@if [ "$(1)" = "darwin" ]; then\
+	fi;\
+	if [ "$(1)" = "darwin" ]; then\
 		UPX_FLAG=--force-macos;\
 	else\
 		UPX_FLAG=;\
-	fi
-	CGO_ENABLED=0 GOOS=$(1) GOARCH=$(2) go build -ldflags "$(LDFLAGS)" -o $(OUTPUT_DIR)/$(APP_NAME)-$(1)-$(2)-original$(EXT) $(SRC_DIR)
-	@upx -$(UPX_LEVEL) $(OUTPUT_DIR)/$(APP_NAME)-$(1)-$(2)-original$(EXT) -o $(OUTPUT_DIR)/$(APP_NAME)-$(1)-$(2)$(EXT)
-	@rm -vf $(OUTPUT_DIR)/$(APP_NAME)-$(1)-$(2)-original$(EXT) $(UPX_FLEG)
+	fi;\
+	echo "    Building original binary";\
+	CGO_ENABLED=0 GOOS=$(1) GOARCH=$(2) go build -ldflags "$(LDFLAGS)" -o $(OUTPUT_DIR)/$(APP_NAME)-$(1)-$(2)-original$$EXT $(SRC_DIR);\
+	echo "    Building upx binary";\
+	upx -q -f -$(UPX_LEVEL) $(OUTPUT_DIR)/$(APP_NAME)-$(1)-$(2)-original$$EXT -o $(OUTPUT_DIR)/$(APP_NAME)-$(1)-$(2)$$EXT --ultra-brute $$UPX_FLEG;\
+	echo "    Cleaning up original binary";\
+	rm -vf $(OUTPUT_DIR)/$(APP_NAME)-$(1)-$(2)-original$$EXT;
 endef
 
 linux-amd64:
@@ -88,5 +92,6 @@ darwin-arm64:
 	$(call build-bin,darwin,arm64)
 
 clean:
-	@rm -vrf $(OUTPUT_DIR)
-	@rm -vrf $(SRC_DIR)/dist
+	@echo "Cleaning up"
+	@rm -rf $(OUTPUT_DIR)
+	@rm -rf $(SRC_DIR)/dist
