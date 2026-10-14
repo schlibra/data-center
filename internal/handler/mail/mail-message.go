@@ -13,11 +13,9 @@ func ListMailMessageHandler(c *gin.Context) {
 	mail.ListMailMessageService(c, domain, record)
 }
 func GetMailMessageHandler(c *gin.Context) {
-
-}
-func SendMailMessageHandler(c *gin.Context) {
-
-}
-func DeleteMailMessageHandler(c *gin.Context) {
-
+	checkPermission(c, "mail.message.get")
+	domain := getDomain(c)
+	record := getRecord(c)
+	id := getId(c)
+	mail.GetMailMessageService(c, domain, record, id)
 }
