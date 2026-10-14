@@ -144,13 +144,18 @@ const menuOptions = computed(() => [
     icon: renderIcon(MailIcon),
     children: [
       {
+        label: '域名管理',
+        key: '/mail/domain',
+        icon: renderIcon(ListIcon),
+      },
+      {
         label: '邮箱列表',
         key: '/mail/list',
         icon: renderIcon(ListIcon),
       },
       {
         label: '邮件管理',
-        key: '/mail/info',
+        key: '/mail/message',
         icon: renderIcon(InfoIcon),
       },
     ],

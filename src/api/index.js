@@ -101,6 +101,24 @@ import {
     getAdminVersion,
     upgradeAdminVersion
 } from "@/api/admin/admin-version.js";
+import {
+  listMailDomain,
+  getMailDomain,
+  createMailDomain,
+  updateMailDomain,
+  deleteMailDomain
+} from './mail/mail-domain.js'
+import {
+  listMailList,
+  getMailList,
+  createMailList,
+  updateMailList,
+  deleteMailList
+} from './mail/mail-list.js'
+import {
+  listMailMessage,
+  createMailMessage,
+} from './mail/mail-message.js'
 
 export {
   getAdminGroupList,
@@ -175,5 +193,17 @@ export {
   updateAdminSettings,
   deleteAdminSettings,
   getAdminVersion,
-  upgradeAdminVersion
+  upgradeAdminVersion,
+  listMailDomain,
+  getMailDomain,
+  createMailDomain,
+  updateMailDomain,
+  deleteMailDomain,
+  listMailList,
+  getMailList,
+  createMailList,
+  updateMailList,
+  deleteMailList,
+  listMailMessage,
+  createMailMessage,
 }
