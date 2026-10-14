@@ -5,6 +5,7 @@ import (
 	"data-center/internal/models/response"
 	"data-center/internal/repository"
 	"data-center/pkg/utils"
+	"encoding/json"
 	"fmt"
 	"strings"
 
@@ -67,24 +68,36 @@ func GetMailListService(c *gin.Context, domain int, id string) {
 	}
 	teableUrl := strings.TrimRight(cfg.Teable.Address, "/")
 	teableKey := cfg.Teable.Key
-	var result response.MailListRecord
-	_, err = resty.
+	res, err := resty.
 		New().
 		R().
 		SetAuthScheme("Bearer").
 		SetAuthToken(teableKey).
-		SetResult(&result).
 		Get(fmt.Sprintf("%s/api/table/%s/record/%s", teableUrl, domainRow.TableId, id))
 	if err != nil {
 		sendError(c, err)
 	}
-	sendJson(c, 200, "Success", H{
-		"id":       result.ID,
-		"ID":       result.Fields.ID,
-		"username": result.Fields.Username,
-		"password": result.Fields.Password,
-		"email":    result.Fields.Email,
-	})
+	if res.StatusCode() == 200 {
+		var result response.MailListRecord
+		err = json.Unmarshal(res.Body(), &result)
+		if err != nil {
+			sendError(c, err)
+		}
+		sendJson(c, 200, "Success", H{
+			"id":       result.ID,
+			"ID":       result.Fields.ID,
+			"username": result.Fields.Username,
+			"password": result.Fields.Password,
+			"email":    result.Fields.Email,
+		})
+	} else {
+		var result response.MailListResponse
+		err = json.Unmarshal(res.Body(), &result)
+		if err != nil {
+			sendError(c, err)
+		}
+		sendJson(c, result.Status, result.Message, result)
+	}
 }
 func CreateMailListService(c *gin.Context, domain int, req mail.CreateMailList) {
 	cfg, err := utils.LoadConfig()
@@ -102,13 +115,11 @@ func CreateMailListService(c *gin.Context, domain int, req mail.CreateMailList) 
 	}
 	teableUrl := strings.TrimRight(cfg.Teable.Address, "/")
 	teableKey := cfg.Teable.Key
-	var result any
-	_, err = resty.
+	res, err := resty.
 		New().
 		R().
 		SetAuthScheme("Bearer").
 		SetAuthToken(teableKey).
-		SetResult(&result).
 		SetBody(H{
 			"records": []H{
 				{
@@ -120,33 +131,101 @@ func CreateMailListService(c *gin.Context, domain int, req mail.CreateMailList) 
 	if err != nil {
 		sendError(c, err)
 	}
-	//log.Println(resp.String())
-	sendJson(c, 200, "Success", result)
+	if res.StatusCode() == 201 {
+		var result response.MailList
+		err = json.Unmarshal(res.Body(), &result)
+		if err != nil {
+			sendError(c, err)
+		}
+		sendJson(c, 201, "Success", result)
+	} else {
+		var result response.MailListResponse
+		err = json.Unmarshal(res.Body(), &result)
+		if err != nil {
+			sendError(c, err)
+		}
+		sendJson(c, result.Status, result.Message, result)
+	}
 }
 func UpdateMailListService(c *gin.Context, domain int, id string, req mail.UpdateMailList) {
+	cfg, err := utils.LoadConfig()
+	if err != nil {
+		sendError(c, err)
+	}
+	mailDomain, err := repository.NewMailDomain()
+	if err != nil {
+		sendError(c, err)
+	}
+	defer closeDB(mailDomain.DB)
+	domainRow, err := mailDomain.SelectById(domain)
+	if err != nil {
+		sendError(c, err)
+	}
+	teableUrl := strings.TrimRight(cfg.Teable.Address, "/")
+	teableKey := cfg.Teable.Key
+	res, err := resty.
+		New().
+		R().
+		SetAuthScheme("Bearer").
+		SetAuthToken(teableKey).
+		SetBody(H{
+			"record": H{
+				"fields": req,
+			},
+		}).Put(fmt.Sprintf("%s/api/table/%s/record/%s", teableUrl, domainRow.TableId, id))
+	if err != nil {
+		sendError(c, err)
+	}
+	if res.StatusCode() == 200 {
+		var result response.MailListRecordFields
+		err = json.Unmarshal(res.Body(), &result)
+		if err != nil {
+			sendError(c, err)
+		}
+		sendJson(c, 200, "Success", result)
+	} else {
+		var result response.MailListResponse
+		err = json.Unmarshal(res.Body(), &result)
+		if err != nil {
+			sendError(c, err)
+		}
+		sendJson(c, result.Status, result.Message, result)
+	}
 
 }
 func DeleteMailListService(c *gin.Context, domain int, id string) {
-	//cfg, err := utils.LoadConfig()
-	//if err != nil {
-	//	sendError(c, err)
-	//}
-	//mailDomain, err := repository.NewMailDomain()
-	//if err != nil {
-	//	sendError(c, err)
-	//}
-	//defer closeDB(mailDomain.DB)
-	//domainRow, err := mailDomain.SelectById(domain)
-	//if err != nil {
-	//	sendError(c, err)
-	//}
-	//teableUrl := strings.TrimRight(cfg.Teable.Address, "/")
-	//teableKey := cfg.Teable.Key
-	//var
-	//_, err = resty.
-	//	New().
-	//	R().
-	//	SetAuthScheme("Bearer").
-	//	SetAuthToken(teableKey).
-	//	SetResult(&any{}).
+	cfg, err := utils.LoadConfig()
+	if err != nil {
+		sendError(c, err)
+	}
+	mailDomain, err := repository.NewMailDomain()
+	if err != nil {
+		sendError(c, err)
+	}
+	defer closeDB(mailDomain.DB)
+	domainRow, err := mailDomain.SelectById(domain)
+	if err != nil {
+		sendError(c, err)
+	}
+	teableUrl := strings.TrimRight(cfg.Teable.Address, "/")
+	teableKey := cfg.Teable.Key
+	res, err := resty.
+		New().
+		R().
+		SetAuthScheme("Bearer").
+		SetAuthToken(teableKey).
+		Delete(fmt.Sprintf("%s/api/table/%s/record/%s", teableUrl, domainRow.TableId, id))
+	if err != nil {
+		sendError(c, err)
+	}
+	if res.StatusCode() == 200 {
+		sendJson(c, 200, "Success", nil)
+	} else {
+		var result response.MailListResponse
+		err = json.Unmarshal(res.Body(), &result)
+		if err != nil {
+			sendError(c, err)
+		}
+		sendJson(c, result.Status, result.Message, result)
+	}
 }
