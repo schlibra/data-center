@@ -19,6 +19,9 @@ import {useOpenVPNGroupStore} from '@/stores/openvpn/openvpn-group.js'
 import {useAdminSettingsStore} from "@/stores/admin/admin-settings.js";
 import {useConfigStore} from "@/stores/config.js";
 import {useAdminVersionStore} from "@/stores/admin/admin-version.js";
+import {useMailDomainStore} from "@/stores/mail/mail-domain.js";
+import {useMailListStore} from "@/stores/mail/mail-list.js";
+import {useMailMessageStore} from "@/stores/mail/mail-message.js";
 
 export {
   useTokenStore,
@@ -41,5 +44,8 @@ export {
   useOpenVPNUserStore,
   useAdminSettingsStore,
   useConfigStore,
-  useAdminVersionStore
+  useAdminVersionStore,
+  useMailListStore,
+  useMailMessageStore,
+  useMailDomainStore,
 }

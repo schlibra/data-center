@@ -44,6 +44,21 @@ const router = createRouter({
       component: () => import("@/views/Frp/FrpConfigView.vue")
     },
     {
+      path: '/mail/domain',
+      name: 'mail domain',
+      component: () => import("@/views/Mail/MailDomainView.vue")
+    },
+    {
+      path: '/mail/list',
+      name: 'mail list',
+      component: () => import("@/views/Mail/MailListView.vue")
+    },
+    {
+      path: '/mail/message',
+      name: 'mail message',
+      component: () => import("@/views/Mail/MailMessageView.vue")
+    },
+    {
       path: '/admin/user',
       name: 'admin user',
       component: () => import("@/views/Admin/AdminUserView.vue")

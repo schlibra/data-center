@@ -23,6 +23,7 @@ func (cmd CreateMailDomain) Parse(c *gin.Context) CreateMailDomain {
 }
 
 type UpdateMailDomain struct {
+	Domain  string `json:"domain"`
 	Name    string `json:"name"`
 	TableId string `json:"tableId"`
 	Server  string `json:"server"`

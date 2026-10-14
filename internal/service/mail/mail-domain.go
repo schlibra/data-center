@@ -34,9 +34,6 @@ func CreateMailDomainService(c *gin.Context, req mail.CreateMailDomain) {
 		sendError(c, err)
 	}
 	defer closeDB(mailDomain.DB)
-	if _, err := mailDomain.SelectByDomain(req.Domain); err == nil {
-		sendI18n(c, 400, "mail.domain.exist", nil)
-	}
 	if nw(c) {
 		_, err := mailDomain.Insert(req.Domain, req.Name, req.TableId, req.Server, req.Port, req.SSL)
 		if err != nil {
@@ -51,13 +48,11 @@ func UpdateMailDomainService(c *gin.Context, id int, req mail.UpdateMailDomain) 
 		sendError(c, err)
 	}
 	defer closeDB(mailDomain.DB)
-	row, err := mailDomain.SelectById(id)
-	if err != nil {
+	if _, err := mailDomain.SelectById(id); err != nil {
 		sendI18n(c, 400, "mail.domain.not_exist", nil)
-		return
 	}
 	if nw(c) {
-		if _, err := mailDomain.UpdateById(id, row.Domain, req.Name, req.TableId, req.Server, req.Port, req.SSL); err != nil {
+		if _, err := mailDomain.UpdateById(id, req.Domain, req.Name, req.TableId, req.Server, req.Port, req.SSL); err != nil {
 			sendError(c, err)
 		}
 		sendI18n(c, 200, "mail.domain.update_success", nil)
