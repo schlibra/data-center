@@ -15,7 +15,7 @@ LDFLAGS     := -s -w \
 
 .PHONY: all run-backend run-frontend
 
-all: upx
+all: clean prepare linux windows darwin
 
 linux: linux-amd64 linux-386 linux-arm64 linux-arm
 
@@ -23,66 +23,70 @@ windows: windows-amd64 windows-386 windows-arm64
 
 darwin: darwin-amd64 darwin-arm64
 
+prepare: make-dir build-frontend install-swaggo build-docs
+
 run-frontend:
-	yarn dev
+	@yarn dev --host
 
 run-backend:
 	go run . run
 
-frontend:
-	yarn install
-	yarn build
-
-linux-amd64: frontend
+make-dir:
 	@mkdir -p $(OUTPUT_DIR)
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "$(LDFLAGS)" -o $(OUTPUT_DIR)/$(APP_NAME)-$@-original $(SRC_DIR)
 
-linux-arm64: frontend
-	@mkdir -p $(OUTPUT_DIR)
-	CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -ldflags "$(LDFLAGS)" -o $(OUTPUT_DIR)/$(APP_NAME)-$@-original $(SRC_DIR)
+install-swaggo:
+	go install github.com/swaggo/swag/cmd/swag@latest
 
-linux-386: frontend
-	@mkdir -p $(OUTPUT_DIR)
-	CGO_ENABLED=0 GOOS=linux GOARCH=386 go build -ldflags "$(LDFLAGS)" -o $(OUTPUT_DIR)/$(APP_NAME)-$@-original $(SRC_DIR)
+build-docs:
+	swag init -g main.go -o docs
 
-linux-arm: frontend
-	@mkdir -p $(OUTPUT_DIR)
-	CGO_ENABLED=0 GOOS=linux GOARCH=arm go build -ldflags "$(LDFLAGS)" -o $(OUTPUT_DIR)/$(APP_NAME)-$@-original $(SRC_DIR)
+build-frontend:
+	@yarn install
+	@yarn build
 
-windows-amd64: frontend
-	@mkdir -p $(OUTPUT_DIR)
-	CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -ldflags "$(LDFLAGS)" -o $(OUTPUT_DIR)/$(APP_NAME)-$@-original.exe $(SRC_DIR)
+define build-bin
+	@if [ "$(1)" = "windows" ]; then\
+		EXT=.exe;\
+	else\
+		EXT=;\
+	fi
+	@if [ "$(1)" = "darwin" ]; then\
+		UPX_FLAG=--force-macos;\
+	else\
+		UPX_FLAG=;\
+	fi
+	CGO_ENABLED=0 GOOS=$(1) GOARCH=$(2) go build -ldflags "$(LDFLAGS)" -o $(OUTPUT_DIR)/$(APP_NAME)-$(1)-$(2)-original$(EXT) $(SRC_DIR)
+	@upx -$(UPX_LEVEL) $(OUTPUT_DIR)/$(APP_NAME)-$(1)-$(2)-original$(EXT) -o $(OUTPUT_DIR)/$(APP_NAME)-$(1)-$(2)$(EXT)
+	@rm -vf $(OUTPUT_DIR)/$(APP_NAME)-$(1)-$(2)-original$(EXT) $(UPX_FLEG)
+endef
 
-windows-386: frontend
-	@mkdir -p $(OUTPUT_DIR)
-	CGO_ENABLED=0 GOOS=windows GOARCH=386 go build -ldflags "$(LDFLAGS)" -o $(OUTPUT_DIR)/$(APP_NAME)-$@-original.exe $(SRC_DIR)
+linux-amd64:
+	$(call build-bin,linux,amd64)
 
-windows-arm64: frontend
-	@mkdir -p $(OUTPUT_DIR)
-	CGO_ENABLED=0 GOOS=windows GOARCH=arm64 go build -ldflags "$(LDFLAGS)" -o $(OUTPUT_DIR)/$(APP_NAME)-$@-original.exe $(SRC_DIR)
+linux-arm64:
+	$(call build-bin,linux,arm64)
 
-darwin-amd64: frontend
-	@mkdir -p $(OUTPUT_DIR)
-	CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -ldflags "$(LDFLAGS)" -o $(OUTPUT_DIR)/$(APP_NAME)-$@-original $(SRC_DIR)
+linux-386:
+	$(call build-bin,linux,386)
 
-darwin-arm64: frontend
-	@mkdir -p $(OUTPUT_DIR)
-	CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 go build -ldflags "$(LDFLAGS)" -o $(OUTPUT_DIR)/$(APP_NAME)-$@-original $(SRC_DIR)
+linux-arm:
+	$(call build-bin,linux,arm)
 
-upx: linux windows darwin
-	@mkdir -p $(OUTPUT_DIR)
-	upx -$(UPX_LEVEL) $(OUTPUT_DIR)/$(APP_NAME)-linux-amd64-original -o $(OUTPUT_DIR)/$(APP_NAME)-linux-amd64
-	upx -$(UPX_LEVEL) $(OUTPUT_DIR)/$(APP_NAME)-linux-386-original -o $(OUTPUT_DIR)/$(APP_NAME)-linux-386
-	upx -$(UPX_LEVEL) $(OUTPUT_DIR)/$(APP_NAME)-linux-arm64-original -o $(OUTPUT_DIR)/$(APP_NAME)-linux-arm64
-	upx -$(UPX_LEVEL) $(OUTPUT_DIR)/$(APP_NAME)-linux-arm-original -o $(OUTPUT_DIR)/$(APP_NAME)-linux-arm
-	upx -$(UPX_LEVEL) $(OUTPUT_DIR)/$(APP_NAME)-windows-amd64-original.exe -o $(OUTPUT_DIR)/$(APP_NAME)-windows-amd64.exe
-	upx -$(UPX_LEVEL) $(OUTPUT_DIR)/$(APP_NAME)-windows-386-original.exe -o $(OUTPUT_DIR)/$(APP_NAME)-windows-386.exe
-	upx -$(UPX_LEVEL) $(OUTPUT_DIR)/$(APP_NAME)-windows-arm64-original.exe -o $(OUTPUT_DIR)/$(APP_NAME)-windows-arm64.exe
-	upx -$(UPX_LEVEL) $(OUTPUT_DIR)/$(APP_NAME)-darwin-amd64-original -o $(OUTPUT_DIR)/$(APP_NAME)-darwin-amd64 --force-macos
-	upx -$(UPX_LEVEL) $(OUTPUT_DIR)/$(APP_NAME)-darwin-arm64-original -o $(OUTPUT_DIR)/$(APP_NAME)-darwin-arm64 --force-macos
-	rm -v $(OUTPUT_DIR)/*-original*
+windows-amd64:
+	$(call build-bin,windows,amd64)
 
+windows-386:
+	$(call build-bin,windows,386)
+
+windows-arm64:
+	$(call build-bin,windows,arm64)
+
+darwin-amd64:
+	$(call build-bin,darwin,amd64)
+
+darwin-arm64:
+	$(call build-bin,darwin,arm64)
 
 clean:
-	rm -vrf $(OUTPUT_DIR)
-	rm -vrf $(SRC_DIR)/dist
+	@rm -vrf $(OUTPUT_DIR)
+	@rm -vrf $(SRC_DIR)/dist

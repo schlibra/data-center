@@ -11,7 +11,7 @@ import (
 // @Tags FRP管理-接口
 // @Produce application/json
 // @Security BearerAuth
-// @Success 200 {object} response.Response{data=[]frp.FrpApiProxiesDataItem}
+// @Success 200 {object} response.Response{data=[]frp.ProxiesFrpApiDataItem}
 // @Router /frp/admin/api/proxy [get]
 func ProxiesFrpAdminApiHandler(c *gin.Context) {
 	checkAdmin(c)
@@ -23,7 +23,7 @@ func ProxiesFrpAdminApiHandler(c *gin.Context) {
 // @Tags FRP管理-接口
 // @Produce application/json
 // @Security BearerAuth
-// @Success 200 {object} response.Response{data=[]frp.FrpApiClientsDataItem}
+// @Success 200 {object} response.Response{data=[]frp.ClientsFrpApiDataItem}
 // @Router /frp/admin/api/client [get]
 func ClientsFrpAdminApiHandler(c *gin.Context) {
 	checkAdmin(c)
