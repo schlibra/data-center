@@ -2,9 +2,14 @@
 import {computed, onMounted, ref} from 'vue'
 import logo from '@/assets/logo.svg'
 
-import { MoonOutline as DarkIcon, SunnyOutline as LightIcon } from '@vicons/ionicons5'
+import {
+  MoonOutline as DarkIcon,
+  SunnyOutline as LightIcon,
+  RefreshSharp as RefreshIcon,
+} from '@vicons/ionicons5'
 import { useThemeStore } from '@/stores/theme.js'
 import {getConfig} from "@/api/config.js";
+import {event} from "@/utils/event.js";
 
 const theme = useThemeStore()
 const siteName = ref('')
@@ -39,11 +44,16 @@ const titleList = {
   '/user': '用户中心',
 }
 const titleText = computed(() => titleList[urlPath.value])
+const showRefresh = computed(() => urlPath.value !== '/login' && urlPath.value !== '/register' && urlPath.value !== '/404')
 setInterval(() => {
   urlPath.value = location.pathname
   document.title = titleText.value
 }, 100)
-
+const handleRefresh = () => {
+  event.emit('trigger-refresh')
+  event.emit('trigger-menu-refresh')
+  loadDataList()
+}
 async function loadSiteName() {
   let [status, data] = await getConfig("site.name")
   siteName.value = status && data ? data : 'Data-Center'
@@ -70,12 +80,19 @@ onMounted(() => {
       <span>{{ titleText }}</span>
     </template>
     <template #extra>
-      <n-button @click="theme.switchTheme()">
-        <n-icon>
-          <LightIcon v-if="theme.dark"></LightIcon>
-          <DarkIcon v-else></DarkIcon>
-        </n-icon>
-      </n-button>
+      <n-flex>
+        <n-button @click="handleRefresh" v-if="showRefresh">
+          <n-icon>
+            <RefreshIcon></RefreshIcon>
+          </n-icon>
+        </n-button>
+        <n-button @click="theme.switchTheme()">
+          <n-icon>
+            <LightIcon v-if="theme.dark"></LightIcon>
+            <DarkIcon v-else></DarkIcon>
+          </n-icon>
+        </n-button>
+      </n-flex>
     </template>
   </n-page-header>
 </template>

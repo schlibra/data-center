@@ -1,8 +1,9 @@
 <script setup>
-import { h, onMounted } from 'vue'
+import {h, onMounted, onUnmounted} from 'vue'
 import { NTag, useDialog, useLoadingBar } from 'naive-ui'
 import { getFrpClientList, getUserInfo } from '@/api'
 import { useFrpClientStore, useUserStore } from '@/stores'
+import {event} from "@/utils/event.js";
 
 const dialog = useDialog()
 const loadingBar = useLoadingBar()
@@ -103,6 +104,10 @@ async function loadDataList() {
 }
 onMounted(async () => {
   await loadDataList()
+  event.on('trigger-refresh', loadDataList)
+})
+onUnmounted(() => {
+  event.off('trigger-refresh', loadDataList)
 })
 </script>
 

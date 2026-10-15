@@ -1,8 +1,9 @@
 <script setup>
-import {onMounted} from "vue";
+import {onMounted, onUnmounted} from "vue";
 import {useDialog, useLoadingBar, useMessage} from "naive-ui";
 import {useAdminVersionStore, useUserStore} from "@/stores/index.js";
 import {getAdminVersion, getUserInfo, upgradeAdminVersion} from "@/api/index.js";
+import {event} from "@/utils/event.js";
 
 const dialog = useDialog()
 const message = useMessage()
@@ -56,8 +57,12 @@ async function doUpgrade() {
     message.success('版本更新成功')
   }
 }
-onMounted(() => {
-  loadDataList()
+onMounted(async () => {
+  await loadDataList()
+  event.on('trigger-refresh', loadDataList)
+})
+onUnmounted(() => {
+  event.off('trigger-refresh', loadDataList)
 })
 </script>
 

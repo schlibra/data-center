@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted } from 'vue'
+import {onMounted, onUnmounted} from 'vue'
 import { useDialog, useLoadingBar } from 'naive-ui'
 import {
   useAdminGroupStore,
@@ -32,6 +32,7 @@ import {
 } from '@/api'
 import router from '@/router/index.js'
 import {getConfig} from "@/api/config.js";
+import {event} from "@/utils/event.js";
 
 const loadingBar = useLoadingBar()
 const dialog = useDialog()
@@ -216,6 +217,10 @@ async function loadDataList() {
 
 onMounted(async () => {
   await loadDataList()
+  event.on('trigger-refresh', loadDataList)
+})
+onUnmounted(() => {
+  event.off('trigger-refresh', loadDataList)
 })
 </script>
 

@@ -10,7 +10,8 @@ import {
   updateFrpAdminToken,
 } from '@/api'
 import { useAdminUserStore, useFrpAdminTokenStore, useUserStore } from '@/stores/'
-import { computed, h, onMounted, ref } from 'vue'
+import {computed, h, onMounted, onUnmounted, ref} from 'vue'
+import {event} from "@/utils/event.js";
 
 const dialog = useDialog()
 const message = useMessage()
@@ -277,6 +278,10 @@ async function loadDataList() {
 }
 onMounted(async () => {
   await loadDataList()
+  event.on('trigger-refresh', loadDataList)
+})
+onUnmounted(() => {
+  event.off('trigger-refresh', loadDataList)
 })
 </script>
 

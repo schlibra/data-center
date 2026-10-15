@@ -15,7 +15,8 @@ import {
   NFlex,
   useMessage
 } from "naive-ui";
-import {h, onMounted, ref} from "vue";
+import {h, onMounted, onUnmounted, ref} from "vue";
+import {event} from "@/utils/event.js";
 
 const loadingBar = useLoadingBar()
 const dialog = useDialog()
@@ -159,8 +160,12 @@ async function loadDataList() {
   if (!await loadSettingsList()) return
   loadingBar.finish()
 }
-onMounted(() => {
-  loadDataList()
+onMounted(async () => {
+  await loadDataList()
+  event.on('trigger-refresh', loadDataList)
+})
+onUnmounted(() => {
+  event.off('trigger-refresh', loadDataList)
 })
 </script>
 
