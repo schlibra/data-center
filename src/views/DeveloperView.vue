@@ -1,9 +1,10 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import {onMounted, onUnmounted, ref} from 'vue'
 import { useDialog, useLoadingBar, useMessage } from 'naive-ui'
 import {generateUserApiKey, getUserApiKey, getUserInfo} from '@/api'
 import { useUserStore, useTokenStore } from '@/stores'
 import router from '@/router'
+import {event} from "@/utils/event.js";
 
 const loadingBar = useLoadingBar()
 const message = useMessage()
@@ -100,6 +101,10 @@ function clearCache() {
 }
 onMounted(async () => {
   await loadDataList()
+  event.on('trigger-refresh', loadDataList)
+})
+onUnmounted(() => {
+  event.off('trigger-refresh', loadDataList)
 })
 </script>
 

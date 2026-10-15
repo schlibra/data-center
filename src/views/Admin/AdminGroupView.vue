@@ -1,6 +1,6 @@
 <script setup>
 import { NButton, NFlex, NSwitch, useDialog, useLoadingBar, useMessage } from 'naive-ui'
-import { computed, h, onMounted, ref } from 'vue'
+import {computed, h, onMounted, onUnmounted, ref} from 'vue'
 import {
   createAdminGroup, deleteAdminGroup,
   getAdminGroupList,
@@ -9,6 +9,7 @@ import {
   updateAdminGroup,
 } from '@/api'
 import { useAdminGroupStore, useAdminPermissionStore, useUserStore } from '@/stores'
+import {event} from "@/utils/event.js";
 
 const dialog = useDialog()
 const message = useMessage()
@@ -227,6 +228,10 @@ async function loadDataList() {
 }
 onMounted(async () => {
   await loadDataList()
+  event.on('trigger-refresh', loadDataList)
+})
+onUnmounted(() => {
+  event.off('trigger-refresh', loadDataList)
 })
 </script>
 

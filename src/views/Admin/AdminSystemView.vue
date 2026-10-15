@@ -1,9 +1,10 @@
 <script setup>
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, onUnmounted, ref} from "vue";
 import {useDialog, useLoadingBar, useMessage} from "naive-ui";
 import {getConfig} from "@/api/config.js";
 import {useAdminGroupStore} from "@/stores/index.js";
 import {getAdminGroupList, setAdminSettings} from "@/api/index.js";
+import {event} from "@/utils/event.js";
 
 const dialog = useDialog()
 const message = useMessage()
@@ -98,8 +99,12 @@ async function loadDataList() {
   loadingBar.finish()
 }
 
-onMounted(() => {
-  loadDataList()
+onMounted(async () => {
+  await loadDataList()
+  event.on('trigger-refresh', loadDataList)
+})
+onUnmounted(() => {
+  event.off('trigger-refresh', loadDataList)
 })
 </script>
 

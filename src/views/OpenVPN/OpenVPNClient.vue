@@ -2,7 +2,8 @@
 import { getUserInfo, getOpenVPNClientList, kickOpenVPNClient } from '@/api/index.js'
 import { NButton, useDialog, useLoadingBar, useMessage } from 'naive-ui'
 import { useOpenVPNClientStore, useUserStore } from '@/stores/index.js'
-import { h, onMounted } from 'vue'
+import {h, onMounted, onUnmounted} from 'vue'
+import {event} from "@/utils/event.js";
 
 const dialog = useDialog()
 const message = useMessage()
@@ -105,6 +106,10 @@ async function loadDataList() {
 }
 onMounted(async () => {
   await loadDataList()
+  event.on('trigger-refresh', loadDataList)
+})
+onUnmounted(() => {
+  event.off('trigger-refresh', loadDataList)
 })
 </script>
 

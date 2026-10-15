@@ -1,5 +1,5 @@
 <script setup>
-import { computed, h, onMounted, ref } from 'vue'
+import {computed, h, onMounted, onUnmounted, ref} from 'vue'
 import { NButton, NFlex, useDialog, useLoadingBar, useMessage } from 'naive-ui'
 import {
   getFrpTokenList,
@@ -10,6 +10,7 @@ import {
   getUserInfo,
 } from '@/api'
 import { useFrpTokenStore, useFrpRuleStore, useUserStore } from '@/stores'
+import {event} from "@/utils/event.js";
 
 const dialog = useDialog()
 const message = useMessage()
@@ -200,6 +201,10 @@ async function submitModal() {
 }
 onMounted(async () => {
   await loadDataList()
+  event.on('trigger-refresh', loadDataList)
+})
+onUnmounted(() => {
+  event.off('trigger-refresh', loadDataList)
 })
 </script>
 

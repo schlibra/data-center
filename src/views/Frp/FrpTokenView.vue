@@ -1,5 +1,5 @@
 <script setup>
-import { h, onMounted, ref } from 'vue'
+import {h, onMounted, onUnmounted, ref} from 'vue'
 import { NButton, NFlex, NSwitch, useDialog, useLoadingBar, useMessage } from 'naive-ui'
 import router from '@/router'
 import {
@@ -11,6 +11,7 @@ import {
   getUserInfo, getFrpInfo,
 } from '@/api'
 import { useFrpTokenStore, useFrpConfigStore, useUserStore } from '@/stores'
+import {event} from "@/utils/event.js";
 
 const dialog = useDialog()
 const message = useMessage()
@@ -257,6 +258,10 @@ async function loadDataList() {
 
 onMounted(async () => {
   await loadDataList()
+  event.on('trigger-refresh', loadDataList)
+})
+onUnmounted(() => {
+  event.off('trigger-refresh', loadDataList)
 })
 </script>
 

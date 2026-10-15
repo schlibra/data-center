@@ -1,5 +1,5 @@
 <script setup>
-import { computed, h, onMounted, ref } from 'vue'
+import {computed, h, onMounted, onUnmounted, ref} from 'vue'
 import { NButton, NFlex, NSwitch, useDialog, useLoadingBar, useMessage } from 'naive-ui'
 import {
   createAdminUser,
@@ -10,6 +10,7 @@ import {
   getAdminGroupList,
 } from '@/api'
 import { useAdminUserStore, useUserStore, useAdminGroupStore } from '@/stores'
+import {event} from "@/utils/event.js";
 
 const dialog = useDialog()
 const message = useMessage()
@@ -261,6 +262,10 @@ async function updateEnable(row, value) {
 }
 onMounted(async () => {
   await loadDataList()
+  event.on('trigger-refresh', loadDataList)
+})
+onUnmounted(() => {
+  event.off('trigger-refresh', loadDataList)
 })
 </script>
 

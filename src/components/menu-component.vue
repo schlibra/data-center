@@ -1,5 +1,5 @@
 <script setup>
-import {computed, h, onMounted, ref} from 'vue'
+import {computed, h, onMounted, onUnmounted, ref} from 'vue'
 import {NIcon, useMessage} from 'naive-ui'
 import router from '@/router'
 import {
@@ -28,6 +28,7 @@ import {
 import { useUserStore, useMenuCollapseStore } from '@/stores'
 import {getConfig} from "@/api/config.js";
 import {useConfigStore} from "@/stores/";
+import {event} from "@/utils/event.js";
 
 const config = useConfigStore()
 const menuCollapse = useMenuCollapseStore()
@@ -40,6 +41,7 @@ const renderIcon = (icon) => () => h(NIcon, null, { default: () => h(icon) })
 const menuChange = (key) => {
   urlPath.value = key
   router.push(key)
+  event.emit('trigger-menu-refresh')
 }
 
 const urlPath = ref(location.pathname)
@@ -253,6 +255,10 @@ async function loadDataList() {
 
 onMounted(() => {
   loadDataList()
+  event.on('trigger-menu-refresh', loadDataList)
+})
+onUnmounted(() => {
+  event.off('trigger-menu-refresh', loadDataList)
 })
 </script>
 

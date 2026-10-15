@@ -2,7 +2,8 @@
 import { createOpenVPNGroup, deleteOpenVPNGroup, getOpenVPNGroupList, getUserInfo, updateOpenVPNGroup } from '@/api/index.js'
 import { useOpenVPNGroupStore, useUserStore } from '@/stores/index.js'
 import { NButton, NFlex, useDialog, useLoadingBar, useMessage } from 'naive-ui'
-import { h, onMounted, ref } from 'vue'
+import {h, onMounted, onUnmounted, ref} from 'vue'
+import {event} from "@/utils/event.js";
 
 const dialog = useDialog()
 const message = useMessage()
@@ -176,6 +177,10 @@ async function loadDataList() {
 }
 onMounted(async () => {
   await loadDataList()
+  event.on('trigger-refresh', loadDataList)
+})
+onUnmounted(() => {
+  event.off('trigger-refresh', loadDataList)
 })
 </script>
 
