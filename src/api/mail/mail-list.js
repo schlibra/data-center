@@ -27,9 +27,9 @@ async function createMailList(domain, email, password, username) {
         return apiError(e)
     }
 }
-async function updateMailList(domain, id, email, password, username) {
+async function updateMailList(domain, recordId, email, password, username) {
     try {
-        return apiBack(await axios.put(`/api/mail/list/${domain}/${id}`, {
+        return apiBack(await axios.put(`/api/mail/list/${domain}/${recordId}`, {
             email, password, username
         }, token.config))
     } catch (e) {

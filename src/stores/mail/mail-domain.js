@@ -6,7 +6,8 @@ export const useMailDomainStore = defineStore('mail-domain', {
         const domain = ref([])
         const count = computed(() => domain.value.length)
         return {
-            domain
+            domain,
+            count
         }
     },
     persist: true

@@ -137,7 +137,7 @@ func CreateMailListService(c *gin.Context, domain int, req mail.CreateMailList) 
 		if err != nil {
 			sendError(c, err)
 		}
-		sendJson(c, 201, "Success", result)
+		sendJson(c, 200, "Success", result)
 	} else {
 		var result response.MailListResponse
 		err = json.Unmarshal(res.Body(), &result)
@@ -172,12 +172,12 @@ func UpdateMailListService(c *gin.Context, domain int, id string, req mail.Updat
 			"record": H{
 				"fields": req,
 			},
-		}).Put(fmt.Sprintf("%s/api/table/%s/record/%s", teableUrl, domainRow.TableId, id))
+		}).Patch(fmt.Sprintf("%s/api/table/%s/record/%s", teableUrl, domainRow.TableId, id))
 	if err != nil {
 		sendError(c, err)
 	}
 	if res.StatusCode() == 200 {
-		var result response.MailListRecordFields
+		var result response.MailListUpdateResponse
 		err = json.Unmarshal(res.Body(), &result)
 		if err != nil {
 			sendError(c, err)

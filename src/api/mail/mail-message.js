@@ -6,14 +6,14 @@ const token = useTokenStore()
 
 async function listMailMessage(domain, record) {
     try {
-        return apiBack(await axios.get(`/api/mail/domain/${domain}/${record}`, token.config))
+        return apiBack(await axios.get(`/api/mail/message/${domain}/${record}`, token.config))
     } catch (e) {
         return apiError(e)
     }
 }
 async function createMailMessage(domain, record, id) {
     try {
-        return apiBack(await axios.get(`/api/mail/domain/${domain}/${record}/${id}`, token.config))
+        return apiBack(await axios.get(`/api/mail/message/${domain}/${record}/${id}`, token.config))
     } catch (e) {
         return apiError(e)
     }

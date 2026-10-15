@@ -59,7 +59,7 @@ define build-bin
 	echo "    Building original binary";\
 	CGO_ENABLED=0 GOOS=$(1) GOARCH=$(2) go build -ldflags "$(LDFLAGS)" -o $(OUTPUT_DIR)/$(APP_NAME)-$(1)-$(2)-original$$EXT $(SRC_DIR);\
 	echo "    Building upx binary";\
-	upx -q -f -$(UPX_LEVEL) $(OUTPUT_DIR)/$(APP_NAME)-$(1)-$(2)-original$$EXT -o $(OUTPUT_DIR)/$(APP_NAME)-$(1)-$(2)$$EXT --ultra-brute $$UPX_FLEG;\
+	upx -q -$(UPX_LEVEL) $(OUTPUT_DIR)/$(APP_NAME)-$(1)-$(2)-original$$EXT -o $(OUTPUT_DIR)/$(APP_NAME)-$(1)-$(2)$$EXT $$UPX_FLEG;\
 	echo "    Cleaning up original binary";\
 	rm -vf $(OUTPUT_DIR)/$(APP_NAME)-$(1)-$(2)-original$$EXT;
 endef
