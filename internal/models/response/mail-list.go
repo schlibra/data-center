@@ -1,5 +1,9 @@
 package response
 
+type MailListUpdateResponse struct {
+	ID     string               `json:"id"`
+	Fields MailListRecordFields `json:"fields"`
+}
 type MailListRecordFields struct {
 	ID       int    `json:"ID"`
 	Email    string `json:"email"`

@@ -105,6 +105,7 @@ func ListMailMessageService(c *gin.Context, domain int, record string) {
 			mails = append(mails, H{
 				"id":      id,
 				"subject": subject,
+				"date":    rawMsg.Header.Get("Date"),
 				"from": H{
 					"address": from.Address,
 					"name":    from.Name,
@@ -217,6 +218,7 @@ func GetMailMessageService(c *gin.Context, domain int, record string, id int) {
 				"address": from.Address,
 				"name":    from.Name,
 			},
+			"date": rawMsg.Header.Get("Date"),
 			"body": H{
 				"text": env.Text,
 				"html": env.HTML,
