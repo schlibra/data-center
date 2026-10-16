@@ -41,7 +41,8 @@ import {
 } from './frp/frp-token.js'
 import {
   getFrpAdminClientList,
-  getFrpAdminProxyList
+  getFrpAdminProxyList,
+  clearOfflineProxyFrpAdmin,
 } from './frp-admin/frp-admin-api.js'
 import {
   getFrpAdminRuleInfo,
@@ -206,4 +207,5 @@ export {
   deleteMailList,
   listMailMessage,
   createMailMessage,
+  clearOfflineProxyFrpAdmin,
 }

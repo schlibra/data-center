@@ -18,6 +18,11 @@ func ProxiesFrpAdminApiHandler(c *gin.Context) {
 	frp_admin.ProxiesFrpAdminApiService(c)
 }
 
+func ClearOfflineFrpAdminApiHandler(c *gin.Context) {
+	checkAdmin(c)
+	frp_admin.ClearOfflineFrpAdminApiService(c)
+}
+
 // ClientsFrpAdminApiHandler 获取全部客户端列表（管理员）
 // @Summary 获取全部客户端列表（管理员）
 // @Tags FRP管理-接口

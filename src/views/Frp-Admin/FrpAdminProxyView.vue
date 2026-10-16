@@ -1,12 +1,13 @@
 <script setup>
 import {computed, h, onMounted, onUnmounted} from 'vue'
-import { NTag, useDialog, useLoadingBar } from 'naive-ui'
+import {NTag, useDialog, useLoadingBar, useMessage} from 'naive-ui'
 import { calcSize } from '@/utils'
-import { getFrpAdminProxyList, getFrpProxyList, getUserInfo } from '@/api'
+import {clearOfflineProxyFrpAdmin, getFrpAdminProxyList, getFrpProxyList, getUserInfo} from '@/api'
 import { useFrpProxyStore, useUserStore } from '@/stores'
 import {event} from "@/utils/event.js";
 
 const dialog = useDialog()
+const message = useMessage()
 const loadingBar = useLoadingBar()
 const user = useUserStore()
 const frpProxy = useFrpProxyStore()
@@ -180,6 +181,27 @@ const dialogError = (content) => {
   })
   loadingBar.error()
 }
+function clearOffline() {
+  dialog.info({
+    title: '清理离线映射',
+    content: '确定要清理离线映射吗？',
+    positiveText: '确定',
+    negativeText: '取消',
+    async onPositiveClick() {
+      let [status, data] = await clearOfflineProxyFrpAdmin()
+      if (!status) {
+        dialog.error({
+          title: '清理失败',
+          content: data,
+          positiveText: '确定',
+        })
+      } else {
+        message.success("清理成功")
+      }
+      await loadDataList()
+    }
+  })
+}
 async function loadUserInfo() {
   let [status, data] = await getUserInfo()
   if (!status) {
@@ -216,7 +238,10 @@ onUnmounted(() => {
     <template #header>
       <n-h1 prefix="bar">Frp 映射管理（管理员）</n-h1>
     </template>
-    <n-data-table :data="frpProxy.proxy" :columns="columns"></n-data-table>
+    <n-flex>
+      <n-button size="large" type="warning" @click="clearOffline">清理离线</n-button>
+      <n-data-table :data="frpProxy.proxy" :columns="columns"></n-data-table>
+    </n-flex>
   </n-card>
 </template>
 

@@ -11,7 +11,13 @@ async function getFrpAdminClientList() {
     return apiError(e)
   }
 }
-
+async function clearOfflineProxyFrpAdmin() {
+  try {
+    return apiBack(await axios.delete('/api/frp/admin/api/proxy', token.config))
+  } catch (e) {
+    return apiError(e)
+  }
+}
 async function getFrpAdminProxyList() {
   try {
     return apiBack(await axios.get('/api/frp/admin/api/proxy', token.config))
@@ -19,4 +25,4 @@ async function getFrpAdminProxyList() {
     return apiError(e)
   }
 }
-export { getFrpAdminClientList, getFrpAdminProxyList }
+export { getFrpAdminClientList, getFrpAdminProxyList, clearOfflineProxyFrpAdmin }
