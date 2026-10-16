@@ -28,6 +28,7 @@ func initFrpAdminTokenRouter(router *gin.RouterGroup) {
 func initFrpAdminApiRouter(router *gin.RouterGroup) {
 	api := router.Group("/api")
 	api.GET("/proxy", frp_admin.ProxiesFrpAdminApiHandler)
+	api.DELETE("/proxy", frp_admin.ClearOfflineFrpAdminApiHandler)
 	api.GET("/client", frp_admin.ClientsFrpAdminApiHandler)
 }
 
