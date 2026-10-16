@@ -8,46 +8,48 @@ import (
 )
 
 func ListMailDomainService(c *gin.Context) {
-	mailDomain, err := repository.NewMailDomain()
-	if err != nil {
+	mailDomain := new(repository.MailDomain)
+	if err := mailDomain.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(mailDomain.DB)
-	domains, err := mailDomain.SelectAll()
-	sendI18n(c, 200, "mail.domain.get_success", domains)
+	defer mailDomain.Close()
+	if domains, err := mailDomain.SelectAll(); err != nil {
+		sendError(c, err)
+	} else {
+		sendI18n(c, 200, "mail.domain.get_success", domains)
+	}
 }
 func GetMailDomainService(c *gin.Context, id int) {
-	mailDomain, err := repository.NewMailDomain()
-	if err != nil {
+	mailDomain := new(repository.MailDomain)
+	if err := mailDomain.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(mailDomain.DB)
-	domain, err := mailDomain.SelectById(id)
-	if err != nil {
+	defer mailDomain.Close()
+	if domain, err := mailDomain.SelectById(id); err != nil {
 		sendI18n(c, 400, "mail.domain.not_exist", nil)
+	} else {
+		sendI18n(c, 200, "mail.domain.get_success", domain)
 	}
-	sendI18n(c, 200, "mail.domain.get_success", domain)
 }
 func CreateMailDomainService(c *gin.Context, req mail.CreateMailDomain) {
-	mailDomain, err := repository.NewMailDomain()
-	if err != nil {
+	mailDomain := new(repository.MailDomain)
+	if err := mailDomain.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(mailDomain.DB)
+	defer mailDomain.Close()
 	if nw(c) {
-		_, err := mailDomain.Insert(req.Domain, req.Name, req.TableId, req.Server, req.Port, req.SSL)
-		if err != nil {
+		if _, err := mailDomain.Insert(req.Domain, req.Name, req.TableId, req.Server, req.Port, req.SSL); err != nil {
 			sendError(c, err)
 		}
 		sendI18n(c, 200, "mail.domain.create_success", nil)
 	}
 }
 func UpdateMailDomainService(c *gin.Context, id int, req mail.UpdateMailDomain) {
-	mailDomain, err := repository.NewMailDomain()
-	if err != nil {
+	mailDomain := new(repository.MailDomain)
+	if err := mailDomain.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(mailDomain.DB)
+	defer mailDomain.Close()
 	if _, err := mailDomain.SelectById(id); err != nil {
 		sendI18n(c, 400, "mail.domain.not_exist", nil)
 	}
@@ -59,11 +61,11 @@ func UpdateMailDomainService(c *gin.Context, id int, req mail.UpdateMailDomain) 
 	}
 }
 func DeleteMailDomainService(c *gin.Context, id int) {
-	mailDomain, err := repository.NewMailDomain()
-	if err != nil {
+	mailDomain := new(repository.MailDomain)
+	if err := mailDomain.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(mailDomain.DB)
+	defer mailDomain.Close()
 	if _, err := mailDomain.SelectById(id); err != nil {
 		sendI18n(c, 400, "mail.domain.not_exist", nil)
 	}

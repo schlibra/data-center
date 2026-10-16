@@ -8,14 +8,18 @@ import (
 )
 
 type FrpRule struct {
+	Repository
 	DB *sql.DB
 }
 
-func NewFrpRule() (*FrpRule, error) {
+func (r *FrpRule) New() error {
 	db, err := LoadMySQL()
-	return &FrpRule{DB: db}, err
+	r.DB = db
+	return err
 }
-
+func (r *FrpRule) Close() {
+	_ = r.DB.Close()
+}
 func (r *FrpRule) Create() (sql.Result, error) {
 	return r.DB.Exec("CREATE TABLE `frp-rule`  (\n  `id` int NOT NULL AUTO_INCREMENT,\n  `min` int NOT NULL,\n  `max` int NOT NULL,\n  `token` int NOT NULL,\n  `user` int NOT NULL,\n  PRIMARY KEY (`id`)\n);")
 }

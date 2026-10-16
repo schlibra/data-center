@@ -18,34 +18,41 @@ var initCmd = &cobra.Command{
 			log.Fatal("Already initialized. Remove `install.lock` to reinitialize.")
 		}
 		log.Println("Loading database...")
-		user, err := repository.NewUser()
-		if err != nil {
+		user := new(repository.User)
+		if err := user.New(); err != nil {
 			log.Fatalf("Failed to initialize user repository: %v", err)
 		}
-		settings, err := repository.NewSettings()
-		if err != nil {
+		defer user.Close()
+		settings := new(repository.Settings)
+		if err := settings.New(); err != nil {
 			log.Fatalf("Failed to initialize settings repository: %v", err)
 		}
-		group, err := repository.NewGroup()
-		if err != nil {
+		defer settings.Close()
+		group := new(repository.Group)
+		if err := group.New(); err != nil {
 			log.Fatalf("Failed to initialize group repository: %v", err)
 		}
-		permission, err := repository.NewPermission()
-		if err != nil {
+		defer group.Close()
+		permission := new(repository.Permission)
+		if err := permission.New(); err != nil {
 			log.Fatalf("Failed to initialize permission repository: %v", err)
 		}
-		frpRule, err := repository.NewFrpRule()
-		if err != nil {
+		defer permission.Close()
+		frpRule := new(repository.FrpRule)
+		if err := frpRule.New(); err != nil {
 			log.Fatalf("Failed to initialize frp rule repository: %v", err)
 		}
-		frpToken, err := repository.NewFrpToken()
-		if err != nil {
+		defer frpRule.Close()
+		frpToken := new(repository.FrpToken)
+		if err := frpToken.New(); err != nil {
 			log.Fatalf("Failed to initialize frp token repository: %v", err)
 		}
-		mailDomain, err := repository.NewMailDomain()
-		if err != nil {
+		defer frpToken.Close()
+		mailDomain := new(repository.MailDomain)
+		if err := mailDomain.New(); err != nil {
 			log.Fatalf("Failed to initialize mail domain repository: %v", err)
 		}
+		defer mailDomain.Close()
 		log.Println("Creating tables...")
 		if _, err := user.Create(); err != nil {
 			log.Fatalf("Failed to create user table: %v", err)

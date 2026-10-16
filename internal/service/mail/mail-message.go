@@ -24,11 +24,11 @@ func ListMailMessageService(c *gin.Context, domain int, record string) {
 	if err != nil {
 		sendError(c, err)
 	}
-	mailDomain, err := repository.NewMailDomain()
-	if err != nil {
+	mailDomain := new(repository.MailDomain)
+	if err := mailDomain.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(mailDomain.DB)
+	defer mailDomain.Close()
 	domainRow, err := mailDomain.SelectById(domain)
 	if err != nil {
 		sendError(c, err)
@@ -135,11 +135,11 @@ func GetMailMessageService(c *gin.Context, domain int, record string, id int) {
 	if err != nil {
 		sendError(c, err)
 	}
-	mailDomain, err := repository.NewMailDomain()
-	if err != nil {
+	mailDomain := new(repository.MailDomain)
+	if err := mailDomain.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(mailDomain.DB)
+	defer mailDomain.Close()
 	domainRow, err := mailDomain.SelectById(domain)
 	if err != nil {
 		sendError(c, err)

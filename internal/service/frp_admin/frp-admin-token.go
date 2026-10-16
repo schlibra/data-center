@@ -9,11 +9,11 @@ import (
 )
 
 func ListFrpAdminTokenService(c *gin.Context) {
-	frpToken, err := repository.NewFrpToken()
-	if err != nil {
+	frpToken := new(repository.FrpToken)
+	if err := frpToken.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(frpToken.DB)
+	defer frpToken.Close()
 	tokens, err := frpToken.SelectAll()
 	if err != nil {
 		sendError(c, err)
@@ -21,11 +21,11 @@ func ListFrpAdminTokenService(c *gin.Context) {
 	sendI18n(c, 200, "frp.token.got", tokens)
 }
 func GetFrpAdminTokenService(c *gin.Context, id int) {
-	frpToken, err := repository.NewFrpToken()
-	if err != nil {
+	frpToken := new(repository.FrpToken)
+	if err := frpToken.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(frpToken.DB)
+	defer frpToken.Close()
 	token, err := frpToken.SelectById(id)
 	if err != nil {
 		sendI18n(c, 400, "frp.token.not_exist", H{
@@ -35,22 +35,20 @@ func GetFrpAdminTokenService(c *gin.Context, id int) {
 	sendI18n(c, 200, "frp.token.got", token)
 }
 func CreateFrpAdminTokenService(c *gin.Context, req frp_admin.CreateFrpAdminToken) {
-	frpToken, err := repository.NewFrpToken()
-	if err != nil {
+	frpToken := new(repository.FrpToken)
+	if err := frpToken.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(frpToken.DB)
-	user, err := repository.NewUser()
-	if err != nil {
+	defer frpToken.Close()
+	user := new(repository.User)
+	if err := user.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(user.DB)
-	_, err = frpToken.SelectByName(req.Name)
-	if err == nil {
+	defer user.Close()
+	if _, err := frpToken.SelectByName(req.Name); err == nil {
 		sendI18n(c, 400, "frp.token.exist", nil)
 	}
-	_, err = user.SelectById(req.User)
-	if err != nil {
+	if _, err := user.SelectById(req.User); err != nil {
 		sendI18n(c, 400, "admin.user.not_exist", H{
 			"error": err.Error(),
 		})
@@ -68,16 +66,16 @@ func CreateFrpAdminTokenService(c *gin.Context, req frp_admin.CreateFrpAdminToke
 	}
 }
 func UpdateFrpAdminTokenService(c *gin.Context, id int, req frp_admin.UpdateFrpAdminToken) {
-	frpToken, err := repository.NewFrpToken()
-	if err != nil {
+	frpToken := new(repository.FrpToken)
+	if err := frpToken.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(frpToken.DB)
-	user, err := repository.NewUser()
-	if err != nil {
+	defer frpToken.Close()
+	user := new(repository.User)
+	if err := user.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(user.DB)
+	defer user.Close()
 	tokenRow, err := frpToken.SelectById(id)
 	if err != nil {
 		sendI18n(c, 400, "frp.token.not_exist", H{
@@ -102,16 +100,16 @@ func UpdateFrpAdminTokenService(c *gin.Context, id int, req frp_admin.UpdateFrpA
 	}
 }
 func DeleteFrpAdminTokenService(c *gin.Context, id int) {
-	frpToken, err := repository.NewFrpToken()
-	if err != nil {
+	frpToken := new(repository.FrpToken)
+	if err := frpToken.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(frpToken.DB)
-	frpRule, err := repository.NewFrpRule()
-	if err != nil {
+	defer frpToken.Close()
+	frpRule := new(repository.FrpRule)
+	if err := frpRule.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(frpRule.DB)
+	defer frpRule.Close()
 	if _, err := frpToken.SelectById(id); err != nil {
 		sendI18n(c, 400, "frp.token.not_exist", H{
 			"error": err.Error(),
@@ -134,11 +132,11 @@ func DeleteFrpAdminTokenService(c *gin.Context, id int) {
 	}
 }
 func GenerateFrpAdminTokenService(c *gin.Context, id int) {
-	frpToken, err := repository.NewFrpToken()
-	if err != nil {
+	frpToken := new(repository.FrpToken)
+	if err := frpToken.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(frpToken.DB)
+	defer frpToken.Close()
 	tokenRow, err := frpToken.SelectById(id)
 	if err != nil {
 		sendI18n(c, 400, "frp.token.not_exist", H{

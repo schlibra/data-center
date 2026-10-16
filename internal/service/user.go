@@ -17,11 +17,11 @@ import (
 )
 
 func UserLoginService(c *gin.Context, req request.UserLogin) {
-	user, err := repository.NewUser()
-	if err != nil {
+	user := new(repository.User)
+	if err := user.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(user.DB)
+	defer user.Close()
 	redis, err := utils.NewRedis()
 	if err != nil {
 		sendError(c, err)
@@ -91,11 +91,16 @@ func UserLoginKeyService(c *gin.Context, req request.UserLoginKey) {
 	})
 }
 func UserRegisterService(c *gin.Context, req request.UserRegister) {
-	settings, err := repository.NewSettings()
-	if err != nil {
+	settings := new(repository.Settings)
+	if err := settings.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(settings.DB)
+	defer settings.Close()
+	user := new(repository.User)
+	if err := user.New(); err != nil {
+		sendError(c, err)
+	}
+	defer user.Close()
 	var defaultGroup int
 	row, err := settings.SelectByKey("group.default")
 	if err != nil {
@@ -110,11 +115,6 @@ func UserRegisterService(c *gin.Context, req request.UserRegister) {
 	} else {
 		registerConfirm = row.Value == "1"
 	}
-	user, err := repository.NewUser()
-	if err != nil {
-		sendError(c, err)
-	}
-	defer closeDB(user.DB)
 	if _, err := user.SelectByUsername(req.Username); err == nil {
 		sendJson(c, 400, i18n.MustGetMessage(c, "user.register.exists"), nil)
 	}
@@ -175,23 +175,22 @@ func UserRegisterKeyService(c *gin.Context, req request.UserRegisterKey) {
 	})
 }
 func UserLogoutService(c *gin.Context, row models.UserTable) {
-	user, err := repository.NewUser()
-	if err != nil {
+	user := new(repository.User)
+	if err := user.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(user.DB)
-	_, err = user.UpdateById(row.ID, row.Password, row.Nickname, row.Group, row.Enable, "", row.ApiId)
-	if err != nil {
+	defer user.Close()
+	if _, err := user.UpdateById(row.ID, row.Password, row.Nickname, row.Group, row.Enable, "", row.ApiId); err != nil {
 		sendError(c, err)
 	}
 	sendI18n(c, 200, "user.logout.success", nil)
 }
 func UserInfoService(c *gin.Context, row models.UserTable) {
-	permission, err := repository.NewPermission()
-	if err != nil {
+	permission := new(repository.Permission)
+	if err := permission.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(permission.DB)
+	defer permission.Close()
 	if row.Enable == 1 {
 		var groupPermission []int
 		if err := json.Unmarshal([]byte(row.GroupInfo.Permission), &groupPermission); err != nil {
@@ -220,43 +219,41 @@ func UserInfoService(c *gin.Context, row models.UserTable) {
 	}
 }
 func UserUpdateService(c *gin.Context, req request.UserUpdate, row models.UserTable) {
-	user, err := repository.NewUser()
-	if err != nil {
+	user := new(repository.User)
+	if err := user.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(user.DB)
+	defer user.Close()
 	if !c.Writer.Written() {
-		_, err = user.UpdateById(row.ID, row.Password, req.Nickname, row.Group, row.Enable, row.TokenID, row.ApiId)
-		if err != nil {
+		if _, err := user.UpdateById(row.ID, row.Password, req.Nickname, row.Group, row.Enable, row.TokenID, row.ApiId); err != nil {
 			sendError(c, err)
 		}
 		sendI18n(c, 200, "user.update.success", nil)
 	}
 }
 func UserPasswordService(c *gin.Context, req request.UserPassword, row models.UserTable) {
-	user, err := repository.NewUser()
-	if err != nil {
+	user := new(repository.User)
+	if err := user.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(user.DB)
+	defer user.Close()
 	pwd, err := utils.PasswordHash(req.Password)
 	if err != nil {
 		sendError(c, err)
 	}
 	if !c.Writer.Written() {
-		_, err = user.UpdateById(row.ID, pwd, row.Nickname, row.Group, row.Enable, "", row.ApiId)
-		if err != nil {
+		if _, err := user.UpdateById(row.ID, pwd, row.Nickname, row.Group, row.Enable, "", row.ApiId); err != nil {
 			sendError(c, err)
 		}
 		sendI18n(c, 200, "user.password.success", nil)
 	}
 }
 func GenerateUserApiKeyService(c *gin.Context, row models.UserTable) {
-	user, err := repository.NewUser()
-	if err != nil {
+	user := new(repository.User)
+	if err := user.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(user.DB)
+	defer user.Close()
 	apiId, err := utils.GenerateRandomString(32)
 	if err != nil {
 		sendError(c, err)

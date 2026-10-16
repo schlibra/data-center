@@ -11,25 +11,29 @@ type Settings struct {
 	DB *sql.DB
 }
 
-func NewSettings() (*Settings, error) {
+func (s *Settings) New() error {
 	db, err := LoadMySQL()
-	return &Settings{DB: db}, err
+	s.DB = db
+	return err
 }
-func (s Settings) Create() (result sql.Result, err error) {
+func (s *Settings) Close() {
+	_ = s.DB.Close()
+}
+func (s *Settings) Create() (result sql.Result, err error) {
 	return s.DB.Exec("CREATE TABLE `settings`  (\n  `id` int NOT NULL AUTO_INCREMENT,\n  `key` varchar(255) NOT NULL DEFAULT '',\n  `name` varchar(255) NOT NULL DEFAULT '',\n  `value` longtext NULL,\n  PRIMARY KEY (`id`)\n);")
 }
-func (s Settings) Insert(key string, name string, value string) (result sql.Result, err error) {
+func (s *Settings) Insert(key string, name string, value string) (result sql.Result, err error) {
 	return s.DB.Exec("INSERT INTO `settings` (`key`, `name`, `value`) VALUES (?, ?, ?);", key, name, value)
 }
-func (s Settings) SelectById(id int) (row models.SettingsTable, err error) {
+func (s *Settings) SelectById(id int) (row models.SettingsTable, err error) {
 	err = s.DB.QueryRow("SELECT * FROM `settings` WHERE `id` = ?", id).Scan(&row.ID, &row.Key, &row.Name, &row.Value)
 	return row, err
 }
-func (s Settings) SelectByKey(key string) (row models.SettingsTable, err error) {
+func (s *Settings) SelectByKey(key string) (row models.SettingsTable, err error) {
 	err = s.DB.QueryRow("SELECT * FROM `settings` WHERE `key` = ?", key).Scan(&row.ID, &row.Key, &row.Name, &row.Value)
 	return row, err
 }
-func (s Settings) SelectAll() (rows []models.SettingsTable, err error) {
+func (s *Settings) SelectAll() (rows []models.SettingsTable, err error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	row, err := s.DB.QueryContext(ctx, "SELECT * FROM `settings`")
@@ -49,12 +53,12 @@ func (s Settings) SelectAll() (rows []models.SettingsTable, err error) {
 	}
 	return rows, nil
 }
-func (s Settings) UpdateById(id int, key string, name string, value string) (result sql.Result, err error) {
+func (s *Settings) UpdateById(id int, key string, name string, value string) (result sql.Result, err error) {
 	return s.DB.Exec("UPDATE `settings` SET `key` = ?, `name` = ?, `value` = ? WHERE `id` = ?", key, name, value, id)
 }
-func (s Settings) DeleteById(id int) (result sql.Result, err error) {
+func (s *Settings) DeleteById(id int) (result sql.Result, err error) {
 	return s.DB.Exec("DELETE FROM `settings` WHERE `id` = ?", id)
 }
-func (s Settings) Drop() (result sql.Result, err error) {
+func (s *Settings) Drop() (result sql.Result, err error) {
 	return s.DB.Exec("DROP TABLE `settings`")
 }

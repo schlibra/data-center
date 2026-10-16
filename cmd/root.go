@@ -41,6 +41,7 @@ func Execute(embedFs embed.FS, i18nFS embed.FS, version string, commit string, b
 	rootCmd.AddCommand(initCmd)
 	rootCmd.AddCommand(versionCmd)
 	rootCmd.AddCommand(downloadCmd)
+	addDbCmd(rootCmd)
 	err := rootCmd.Execute()
 	if err != nil {
 		log.Fatal(err)
