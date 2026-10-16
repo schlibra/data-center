@@ -93,10 +93,7 @@ func DeleteFrpTokenService(c *gin.Context, row models.UserTable, id int) {
 	}
 	defer frpToken.Close()
 	frpRule := new(repository.FrpRule)
-	if err := frpRule.New(); err != nil {
-		sendError(c, err)
-	}
-	defer frpRule.Close()
+	frpRule.DB = frpToken.DB
 	token, err := frpToken.SelectById(id)
 	if err != nil {
 		sendError(c, err)

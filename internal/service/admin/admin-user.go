@@ -49,10 +49,7 @@ func CreateAdminUserService(c *gin.Context, req admin.CreateAdminUser, id int) {
 	}
 	defer user.Close()
 	group := new(repository.Group)
-	if err := group.New(); err != nil {
-		sendError(c, err)
-	}
-	defer group.Close()
+	group.DB = user.DB
 	if _, err := group.SelectById(req.Group); err != nil {
 		sendI18n(c, 400, "admin.user.group_not_exist", nil)
 	}
@@ -82,10 +79,7 @@ func UpdateAdminUserService(c *gin.Context, req admin.UpdateAdminUser, id int) {
 		return
 	}
 	group := new(repository.Group)
-	if err := group.New(); err != nil {
-		sendError(c, err)
-	}
-	defer group.Close()
+	group.DB = user.DB
 	if _, err := group.SelectById(req.Group); err != nil {
 		sendI18n(c, 400, "admin.user.group_not_exist", nil)
 	}

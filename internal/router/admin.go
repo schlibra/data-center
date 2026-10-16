@@ -48,7 +48,10 @@ func initAdminVersionRouter(router *gin.RouterGroup) {
 	})
 	version.POST("/", admin.UpgradeAdminVersionHandler)
 }
-
+func initAdminBenchmarkRouter(router *gin.RouterGroup) {
+	benchmark := router.Group("/benchmark")
+	benchmark.Any("/", admin.DoAdminBenchmarkHandler)
+}
 func initAdminRouter(router *gin.RouterGroup) {
 	adminRouter := router.Group("/admin")
 	initAdminUserRouter(adminRouter)
@@ -56,4 +59,5 @@ func initAdminRouter(router *gin.RouterGroup) {
 	initAdminPermissionRouter(adminRouter)
 	initAdminSettingsRouter(adminRouter)
 	initAdminVersionRouter(adminRouter)
+	initAdminBenchmarkRouter(adminRouter)
 }

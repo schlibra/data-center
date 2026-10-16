@@ -14,9 +14,6 @@ import (
 
 type H map[string]any
 
-func sendJson(c *gin.Context, code int, message string, data any) {
-	response.SendJson(c, code, message, data)
-}
 func sendI18n(c *gin.Context, code int, messageId string, data any) {
 	response.SendI18n(c, code, messageId, data)
 }

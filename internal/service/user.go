@@ -97,10 +97,7 @@ func UserRegisterService(c *gin.Context, req request.UserRegister) {
 	}
 	defer settings.Close()
 	user := new(repository.User)
-	if err := user.New(); err != nil {
-		sendError(c, err)
-	}
-	defer user.Close()
+	user.DB = settings.DB
 	var defaultGroup int
 	row, err := settings.SelectByKey("group.default")
 	if err != nil {
