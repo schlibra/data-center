@@ -35,26 +35,47 @@ const options = computed(() =>
   }),
 )
 
-const columns = [
+const columns = computed(() => [
   {
     title: 'ID',
     key: 'id',
     width: 60,
+    sorter(rowA, rowB) {
+      return rowA.id - rowB.id;
+    }
   },
   {
     title: '最小端口',
     key: 'min',
     width: 100,
+    sorter(rowA, rowB) {
+      return rowA.min - rowB.min;
+    }
   },
   {
     title: '最大端口',
     key: 'max',
     width: 100,
+    sorter(rowA, rowB) {
+      return rowA.max - rowB.max;
+    }
   },
   {
     title: 'Token',
     key: 'token',
     width: 200,
+    filterOptions: frpToken.tokens.map(item => {
+      return {
+        label: item.name,
+        value: item.id
+      }
+    }),
+    filter(value, row) {
+      return row.token === value
+    },
+    sorter(rowA, rowB) {
+      return rowA.token - rowB.token;
+    },
     render(row) {
       return h('span', {}, `${row.token_info.name} ( ${row.token} )`)
     },
@@ -88,7 +109,7 @@ const columns = [
       ])
     },
   },
-]
+])
 
 const dialogError = (content) => {
   dialog.error({

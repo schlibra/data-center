@@ -31,22 +31,47 @@ const columns = [
   {
     title: 'ID',
     key: 'id',
-    width: 60
+    width: 60,
+    sorter(rowA, rowB) {
+      return rowA.id - rowB.id
+    },
   },
   {
     title: '名称',
     key: 'name',
-    width: 200,
+    width: 100,
+    ellipsis: {
+      tooltip: true
+    }
   },
   {
     title: 'Token',
     key: 'token',
-    width: 200
+    width: 200,
+    ellipsis: {
+      tooltip: true
+    }
   },
   {
     title: '启用',
     key: 'enable',
-    width: 100,
+    filterOptions: [
+      {
+        label: '启用',
+        value: "1"
+      },
+      {
+        label: '禁用',
+        value: "0"
+      }
+    ],
+    filter(value, row) {
+      return ((row.enable + "") === value)
+    },
+    sorter(rowA, rowB) {
+      return rowA.enable - rowB.enable;
+    },
+    width: 120,
     render(row) {
       return h(NSwitch, {
         value: row.enable === 1,

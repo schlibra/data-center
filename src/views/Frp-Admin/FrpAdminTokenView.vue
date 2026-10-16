@@ -43,11 +43,6 @@ const columns = computed(() => [
     width: 60,
     sorter(row1, row2) {
       return row1.id - row2.id
-    },
-    defaultSortOrder: 'ascend',
-    customNextSortOrder(order) {
-      if (order === 'ascend') return 'descend'
-      return 'ascend'
     }
   },
   {
@@ -75,12 +70,28 @@ const columns = computed(() => [
     }),
     filter(value, row) {
       return row.user_info.id === value;
+    },
+    sorter(rowA, rowB) {
+      return rowA.user_info.id - rowB.user_info.id;
     }
   },
   {
     title: '启用',
     key: 'enable',
-    width: 100,
+    width: 120,
+    filterOptions: [
+      {
+        label: '启用',
+        value: 1,
+      },
+      {
+        label: '禁用',
+        value: 0,
+      }
+    ],
+    filter(value, row) {
+      return row.enable === value;
+    },
     render(row) {
       return h(NSwitch, {
         value: row.enable === 1,

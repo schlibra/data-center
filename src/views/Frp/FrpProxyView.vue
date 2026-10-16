@@ -1,5 +1,5 @@
 <script setup>
-import {h, onMounted, onUnmounted} from 'vue'
+import {computed, h, onMounted, onUnmounted} from 'vue'
 import { NTag, useDialog, useLoadingBar } from 'naive-ui'
 import { calcSize } from '@/utils'
 import { getFrpProxyList, getUserInfo } from '@/api'
@@ -11,10 +11,24 @@ const loadingBar = useLoadingBar()
 const user = useUserStore()
 const frpProxy = useFrpProxyStore()
 
-const columns = [
+const columns = computed(() => [
   {
     title: '状态',
     key: 'status.phase',
+    filterOptions: [
+      {
+        label: '在线',
+        value: 'online',
+      },
+      {
+        label: '离线',
+        value: 'offline',
+      }
+    ],
+    filter(value, row) {
+      return row.status.phase === value
+    },
+    width: 100,
     render(row) {
       const _status = row.status.phase
       return h(
@@ -42,6 +56,9 @@ const columns = [
     title: '远程端口',
     key: 'remotePort',
     width: 100,
+    sorter(rowA, rowB) {
+      return rowA.spec[rowA.spec.type].remotePort - rowB.spec[rowB.spec.type].remotePort
+    },
     render(row) {
       const type = row.spec.type
       const port = row.spec[type].remotePort
@@ -52,6 +69,23 @@ const columns = [
     title: 'Token',
     key: 'user',
     width: 100,
+    filterOptions: function() {
+      let list = {}
+      frpProxy.proxy.forEach(item => {
+        list[item.user] = item.user
+      })
+      let options = []
+      for (let key in list) {
+        options.push({
+          label: key,
+          value: key,
+        })
+      }
+      return options
+    }(),
+    filter(value, row) {
+      return row.user === value
+    }
   },
   {
     title: '类型',
@@ -71,18 +105,24 @@ const columns = [
   {
     title: '今日入站流量',
     key: 'status.todayTrafficIn',
-    width: 110,
+    width: 130,
     render(row) {
       return h('span', {}, calcSize(row.status.todayTrafficIn))
     },
+    sorter(rowA, rowB) {
+      return rowA.status.todayTrafficIn - rowB.status.todayTrafficIn;
+    }
   },
   {
     title: '今日出站流量',
     key: 'status.todayTrafficOut',
-    width: 110,
+    width: 130,
     render(row) {
       return h('span', {}, calcSize(row.status.todayTrafficOut))
     },
+    sorter(rowA, rowB) {
+      return rowA.status.todayTrafficOut - rowB.status.todayTrafficOut;
+    }
   },
   {
     title: '当前连接数量',
@@ -114,7 +154,7 @@ const columns = [
       }
     },
   },
-]
+])
 const dialogError = (content) => {
   dialog.error({
     title: '数据获取失败',
