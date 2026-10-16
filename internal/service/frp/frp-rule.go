@@ -15,10 +15,7 @@ func CreateFrpRuleService(c *gin.Context, row models.UserTable, req frp.CreateFr
 	}
 	defer frpRule.Close()
 	frpToken := new(repository.FrpToken)
-	if err := frpToken.New(); err != nil {
-		sendError(c, err)
-	}
-	defer frpToken.Close()
+	frpToken.DB = frpRule.DB
 	if _, err := frpToken.SelectById(req.Token); err != nil {
 		sendI18n(c, 400, "frp.rule.token_not_exist", nil)
 	}

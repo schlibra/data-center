@@ -69,14 +69,7 @@ func ProxyFrpApiService(c *gin.Context, req frp.ProxyFrpApi) {
 	}
 	defer frpToken.Close()
 	frpRule := new(repository.FrpRule)
-	if err := frpRule.New(); err != nil {
-		c.JSON(200, gin.H{
-			"reject":        true,
-			"reject_reason": err.Error(),
-		})
-		return
-	}
-	defer frpRule.Close()
+	frpRule.DB = frpToken.DB
 	user := req.Content.User.User
 	tokenRow, err := frpToken.SelectByName(user)
 	if err != nil {
