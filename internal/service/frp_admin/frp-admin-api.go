@@ -35,7 +35,12 @@ func ClearOfflineFrpAdminApiService(c *gin.Context) {
 	frpsHost := cfg.FrpsWeb.Host
 	frpsPort := cfg.FrpsWeb.Port
 	frpToken := cfg.FrpsWeb.Token
-	_, err = resty.New().R().SetAuthScheme("Basic").SetAuthScheme(frpToken).Post(fmt.Sprintf("http://%s:%d/api/v2/system/prune?type=offline", frpsHost, frpsPort))
+	_, err = resty.
+		New().
+		R().
+		SetAuthScheme("Basic").
+		SetAuthToken(frpToken).
+		Post(fmt.Sprintf("http://%s:%d/api/v2/system/prune?type=offline_proxies", frpsHost, frpsPort))
 	if err != nil {
 		sendError(c, err)
 	}
