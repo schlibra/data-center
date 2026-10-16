@@ -1,5 +1,5 @@
 <script setup>
-import {h, onMounted, onUnmounted} from 'vue'
+import {computed, h, onMounted, onUnmounted} from 'vue'
 import { NTag, useDialog, useLoadingBar } from 'naive-ui'
 import { calcSize } from '@/utils'
 import { getFrpAdminProxyList, getFrpProxyList, getUserInfo } from '@/api'
@@ -11,10 +11,11 @@ const loadingBar = useLoadingBar()
 const user = useUserStore()
 const frpProxy = useFrpProxyStore()
 
-const columns = [
+const columns = computed(() => [
   {
     title: '状态',
     key: 'status.phase',
+    width: 100,
     render(row) {
       const _status = row.status.phase
       return h(
@@ -26,6 +27,19 @@ const columns = [
         _status === 'online' ? '在线' : _status === 'offline' ? '离线' : '未知',
       )
     },
+    filterOptions: [
+      {
+        label: '在线',
+        value: 'online'
+      },
+      {
+        label: '离线',
+        value: 'offline'
+      }
+    ],
+    filter(value, row) {
+      return row.status.phase === value
+    }
   },
   {
     title: '名称',
@@ -47,42 +61,85 @@ const columns = [
       const port = row.spec[type].remotePort
       return h('spane', {}, port)
     },
+    sorter(rowA, rowB) {
+      return rowA.spec[rowB.spec.type].remotePort - rowB.spec[rowB.spec.type].remotePort
+    }
   },
   {
     title: 'Token',
     key: 'user',
     width: 100,
+    filterOptions: function() {
+      let list = {}
+      frpProxy.proxy.forEach(item => {
+        list[item.user] = item.user
+      })
+      let options = []
+      for (let key in list) {
+        options.push({
+          label: key,
+          value: key,
+        })
+      }
+      return options
+    }(),
+    filter(value, row) {
+      return row.user === value
+    }
   },
   {
     title: '类型',
     key: 'spec.type',
-    width: 70,
+    width: 80,
     render(row) {
       return h(
         NTag,
         {
-          type: 'info',
+          type: row.spec.type === 'tcp' ? 'success' : row.spec.type === 'udp' ? 'info' : 'default',
           round: true,
         },
         row.spec.type,
       )
     },
+    filterOptions: function() {
+      let list = {}
+      frpProxy.proxy.forEach(item => {
+        list[item.spec.type] = item.spec.type
+      })
+      let options = []
+      for (let key in list) {
+        options.push({
+          label: key,
+          value: key,
+        })
+      }
+      return options
+    }(),
+    filter(value, row) {
+      return row.spec.type === value
+    }
   },
   {
     title: '今日入站流量',
     key: 'status.todayTrafficIn',
-    width: 110,
+    width: 130,
     render(row) {
       return h('span', {}, calcSize(row.status.todayTrafficIn))
     },
+    sorter(rowA, rowB) {
+      return rowA.status.todayTrafficIn - rowB.status.todayTrafficIn
+    }
   },
   {
     title: '今日出站流量',
     key: 'status.todayTrafficOut',
-    width: 110,
+    width: 130,
     render(row) {
       return h('span', {}, calcSize(row.status.todayTrafficOut))
     },
+    sorter(rowA, rowB) {
+      return rowA.status.todayTrafficOut - rowB.status.todayTrafficOut
+    }
   },
   {
     title: '当前连接数量',
@@ -114,7 +171,7 @@ const columns = [
       }
     },
   },
-]
+])
 const dialogError = (content) => {
   dialog.error({
     title: '数据获取失败',

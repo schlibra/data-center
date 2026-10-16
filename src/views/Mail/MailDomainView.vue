@@ -14,30 +14,40 @@ const loadingBar = useLoadingBar()
 const columns = [
   {
     title: 'ID',
-    key: 'id'
+    key: 'id',
+    width: 70,
+    sorter(rowA, rowB) {
+      return rowA.id - rowB.id;
+    }
   },
   {
     title: '域名',
-    key: 'domain'
+    key: 'domain',
+    width: 100,
   },
   {
     title: '名称',
-    key: 'name'
+    key: 'name',
+    width: 100,
   },
   {
     title: '数据表ID',
-    key: 'table_id'
+    key: 'table_id',
+    width: 200,
   },
   {
     title: '服务器',
-    key: 'server'
+    key: 'server',
+    width: 200,
   },
   {
     title: '端口',
-    key: 'port'
+    key: 'port',
+    width: 100
   },
   {
     title: '启用SSL',
+    width: 100,
     key: 'ssl',
     render(row) {
       return h(NSwitch, {
@@ -50,25 +60,23 @@ const columns = [
   },
   {
     title: '操作',
+    width: 250,
     key: 'action',
     render(row) {
       return h(NFlex, {}, [
           h(NButton, {
-            size: 'large',
             type: 'primary',
             onClick() {
               openUpdateModal(row)
             }
           }, '编辑'),
           h(NButton, {
-            size: 'large',
             type: 'info',
             onClick() {
               goMailList(row)
             }
           }, '邮箱列表'),
           h(NButton, {
-            size: 'large',
             type: 'error',
             onClick() {
               deleteDomain(row)

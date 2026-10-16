@@ -34,35 +34,38 @@ const settingsValue = ref("")
 const columns = [
   {
     title: 'ID',
-    key: 'id'
+    key: 'id',
+    width: 70
   },
   {
     title: '设置键名',
-    key: 'key'
+    key: 'key',
+    width: 150
   },
   {
     title: '设置名称',
-    key: 'name'
+    key: 'name',
+    width: 150
   },
   {
     title: '设置值',
-    key: 'value'
+    key: 'value',
+    width: 80
   },
   {
     title: '操作',
     key: 'action',
+    width: 150,
     render(row) {
       return h(NFlex, {}, [
           h(NButton, {
             type: 'primary',
-            size: 'large',
             onClick() {
               openUpdateModal(row)
             }
           }, '编辑'),
           h(NButton, {
             type: 'error',
-            size: 'large',
             onClick() {
               deleteSettings(row)
             }

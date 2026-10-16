@@ -25,46 +25,52 @@ const mailMessage = useMailMessageStore()
 const columns = [
   {
     title: 'ID',
-    key: 'id'
+    key: 'id',
+    width: 100,
   },
   {
     title: '自增ID',
-    key: 'ID'
+    width: 100,
+    key: 'ID',
+    sorter(rowA, rowB) {
+      return rowA.ID - rowB.ID;
+    }
   },
   {
     title: '邮箱',
+    width: 100,
     key: 'email'
   },
   {
     title: '用户名',
+    width: 120,
     key: 'username'
   },
   {
     title: '密码',
+    width: 100,
     key: 'password'
   },
   {
     title: '操作',
     key: 'action',
+    width: 250,
     render(row) {
       return h(NFlex, {}, [
           h(NButton, {
             type: 'primary',
-            size: 'large',
             onClick() {
               openUpdateModal(row)
             }
           }, '编辑'),
           h(NButton, {
             type: 'info',
-            size: 'large',
             onClick() {
               goMailMessage(row)
             }
           }, '邮件列表'),
           h(NButton, {
             type: 'error',
-            size: 'large',
             onClick() {
               deleteModal(row)
             }

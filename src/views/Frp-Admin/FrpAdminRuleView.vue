@@ -51,21 +51,30 @@ const userSelectOption = computed(() =>
     }
   }),
 )
-const columns = [
+const columns = computed(() => [
   {
     title: 'ID',
     key: 'id',
     width: 60,
+    sorter(rowA, rowB) {
+      return rowA.id - rowB.id;
+    }
   },
   {
     title: '最小端口',
     key: 'min',
     width: 100,
+    sorter(rowA, rowB) {
+      return rowA.min - rowB.min;
+    }
   },
   {
     title: '最大端口',
     key: 'max',
     width: 100,
+    sorter(rowA, rowB) {
+      return rowA.max - rowB.max;
+    }
   },
   {
     title: 'Token',
@@ -74,6 +83,18 @@ const columns = [
     render(row) {
       return h('span', {}, `${row.token_info.name}(${row.token})`)
     },
+    sorter(rowA, rowB) {
+      return rowA.token - rowB.token
+    },
+    filterOptions: frpAdminToken.tokens.map(item => {
+      return {
+        label: item.name,
+        value: item.id,
+      }
+    }),
+    filter(value, row) {
+      return row.token === value;
+    }
   },
   {
     title: '用户',
@@ -82,6 +103,18 @@ const columns = [
     render(row) {
       return h('span', {}, `${row.user_info.nickname}(${row.user_info.username})`)
     },
+    sorter(rowA, rowB) {
+      return rowA.user - rowB.user;
+    },
+    filterOptions: adminUser.users.map(item => {
+      return {
+        label: `${item.username}(${item.nickname})`,
+        value: item.id,
+      }
+    }),
+    filter(value, row) {
+      return row.user === value;
+    }
   },
   {
     title: '操作',
@@ -112,7 +145,7 @@ const columns = [
       ])
     },
   },
-]
+])
 function openCreateModal() {
   ruleId.value = ''
   ruleMin.value = ''
