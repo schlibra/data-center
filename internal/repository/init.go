@@ -29,3 +29,10 @@ func LoadMySQL() (*sql.DB, error) {
 func Close(row *sql.Rows) {
 	_ = row.Close()
 }
+
+type Repository interface {
+	New() error
+	Close()
+	Create() (sql.Result, error)
+	Drop() (sql.Result, error)
+}

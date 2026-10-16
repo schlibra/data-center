@@ -7,10 +7,11 @@ import (
 )
 
 func GetConfigService(c *gin.Context, key string) {
-	settings, err := repository.NewSettings()
-	if err != nil {
+	settings := new(repository.Settings)
+	if err := settings.New(); err != nil {
 		sendError(c, err)
 	}
+	defer settings.Close()
 	row, err := settings.SelectByKey(key)
 	if err != nil {
 		sendJson(c, 200, "success", "")

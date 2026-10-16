@@ -11,9 +11,13 @@ type Permission struct {
 	DB *sql.DB
 }
 
-func NewPermission() (*Permission, error) {
+func (p *Permission) New() error {
 	db, err := LoadMySQL()
-	return &Permission{DB: db}, err
+	p.DB = db
+	return err
+}
+func (p *Permission) Close() {
+	_ = p.DB.Close()
 }
 func (p *Permission) Create() (sql.Result, error) {
 	return p.DB.Exec("CREATE TABLE IF NOT EXISTS `permission`  (\n  `id` int NOT NULL AUTO_INCREMENT,\n  `key` varchar(255) NOT NULL,\n  `name` varchar(255) NOT NULL,\n  `parent` int NOT NULL,\n  PRIMARY KEY (`id`)\n);")

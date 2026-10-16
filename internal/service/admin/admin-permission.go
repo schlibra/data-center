@@ -9,11 +9,11 @@ import (
 )
 
 func ListAdminPermissionService(c *gin.Context) {
-	permission, err := repository.NewPermission()
-	if err != nil {
+	permission := new(repository.Permission)
+	if err := permission.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(permission.DB)
+	defer permission.Close()
 	permissions, err := permission.SelectAll()
 	if err != nil {
 		sendError(c, err)
@@ -39,11 +39,11 @@ func ListAdminPermissionService(c *gin.Context) {
 	sendI18n(c, 200, "admin.permission.get_success", permissionResult)
 }
 func GetAdminPermissionService(c *gin.Context, id int) {
-	permission, err := repository.NewPermission()
-	if err != nil {
+	permission := new(repository.Permission)
+	if err := permission.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(permission.DB)
+	defer permission.Close()
 	permissionRow, err := permission.SelectById(id)
 	if err != nil {
 		sendError(c, err)
@@ -51,11 +51,11 @@ func GetAdminPermissionService(c *gin.Context, id int) {
 	sendI18n(c, 200, "admin.permission.get_success", permissionRow)
 }
 func CreateAdminPermissionService(c *gin.Context, req admin.CreateAdminPermission) {
-	permission, err := repository.NewPermission()
-	if err != nil {
+	permission := new(repository.Permission)
+	if err := permission.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(permission.DB)
+	defer permission.Close()
 	if _, err := permission.SelectByKey(req.Key); err == nil {
 		sendI18n(c, 400, "admin.permission.exist", req.Key)
 	}
@@ -68,11 +68,11 @@ func CreateAdminPermissionService(c *gin.Context, req admin.CreateAdminPermissio
 	}
 }
 func UpdateAdminPermissionService(c *gin.Context, id int, req admin.UpdateAdminPermission) {
-	permission, err := repository.NewPermission()
-	if err != nil {
+	permission := new(repository.Permission)
+	if err := permission.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(permission.DB)
+	defer permission.Close()
 	permissionRow, err := permission.SelectById(id)
 	if err != nil {
 		sendI18n(c, 400, "admin.permission.not_exists", nil)
@@ -90,11 +90,11 @@ func UpdateAdminPermissionService(c *gin.Context, id int, req admin.UpdateAdminP
 	}
 }
 func DeleteAdminPermissionService(c *gin.Context, id int) {
-	permission, err := repository.NewPermission()
-	if err != nil {
+	permission := new(repository.Permission)
+	if err := permission.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(permission.DB)
+	defer permission.Close()
 	if _, err := permission.SelectById(id); err != nil {
 		sendI18n(c, 400, "admin.permission.not_exists", nil)
 	}

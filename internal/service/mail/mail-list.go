@@ -18,11 +18,11 @@ func ListMailListService(c *gin.Context, domain int) {
 	if err != nil {
 		sendError(c, err)
 	}
-	mailDomain, err := repository.NewMailDomain()
-	if err != nil {
+	mailDomain := new(repository.MailDomain)
+	if err := mailDomain.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(mailDomain.DB)
+	defer mailDomain.Close()
 	domainRow, err := mailDomain.SelectById(domain)
 	if err != nil {
 		sendError(c, err)
@@ -57,11 +57,11 @@ func GetMailListService(c *gin.Context, domain int, id string) {
 	if err != nil {
 		sendError(c, err)
 	}
-	mailDomain, err := repository.NewMailDomain()
-	if err != nil {
+	mailDomain := new(repository.MailDomain)
+	if err := mailDomain.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(mailDomain.DB)
+	defer mailDomain.Close()
 	domainRow, err := mailDomain.SelectById(domain)
 	if err != nil {
 		sendError(c, err)
@@ -104,11 +104,11 @@ func CreateMailListService(c *gin.Context, domain int, req mail.CreateMailList) 
 	if err != nil {
 		sendError(c, err)
 	}
-	mailDomain, err := repository.NewMailDomain()
-	if err != nil {
+	mailDomain := new(repository.MailDomain)
+	if err := mailDomain.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(mailDomain.DB)
+	defer mailDomain.Close()
 	domainRow, err := mailDomain.SelectById(domain)
 	if err != nil {
 		sendError(c, err)
@@ -152,11 +152,11 @@ func UpdateMailListService(c *gin.Context, domain int, id string, req mail.Updat
 	if err != nil {
 		sendError(c, err)
 	}
-	mailDomain, err := repository.NewMailDomain()
-	if err != nil {
+	mailDomain := new(repository.MailDomain)
+	if err := mailDomain.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(mailDomain.DB)
+	defer mailDomain.Close()
 	domainRow, err := mailDomain.SelectById(domain)
 	if err != nil {
 		sendError(c, err)
@@ -198,11 +198,11 @@ func DeleteMailListService(c *gin.Context, domain int, id string) {
 	if err != nil {
 		sendError(c, err)
 	}
-	mailDomain, err := repository.NewMailDomain()
-	if err != nil {
+	mailDomain := new(repository.MailDomain)
+	if err := mailDomain.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(mailDomain.DB)
+	defer mailDomain.Close()
 	domainRow, err := mailDomain.SelectById(domain)
 	if err != nil {
 		sendError(c, err)

@@ -8,12 +8,17 @@ import (
 )
 
 type Group struct {
+	Repository
 	DB *sql.DB
 }
 
-func NewGroup() (*Group, error) {
+func (g *Group) New() error {
 	db, err := LoadMySQL()
-	return &Group{DB: db}, err
+	g.DB = db
+	return err
+}
+func (g *Group) Close() {
+	_ = g.DB.Close()
 }
 func (g *Group) Create() (sql.Result, error) {
 	return g.DB.Exec("CREATE TABLE IF NOT EXISTS `group`  (\n  `id` int NOT NULL AUTO_INCREMENT,\n  `name` varchar(255) NOT NULL,\n  `admin` int NOT NULL,\n  `permission` longtext NOT NULL,\n  PRIMARY KEY (`id`)\n);")

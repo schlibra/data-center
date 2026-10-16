@@ -16,8 +16,8 @@ import (
 )
 
 func LoginFrpApiService(c *gin.Context, req frp.LoginFrpApi) {
-	frpToken, err := repository.NewFrpToken()
-	if err != nil {
+	frpToken := new(repository.FrpToken)
+	if err := frpToken.New(); err != nil {
 		c.JSON(200, H{
 			"reject":        true,
 			"reject_reason": err.Error(),
@@ -25,7 +25,7 @@ func LoginFrpApiService(c *gin.Context, req frp.LoginFrpApi) {
 		log.Printf("Login error: %s", err.Error())
 		return
 	}
-	defer closeDB(frpToken.DB)
+	defer frpToken.Close()
 	user := req.Content.User
 	token := req.Content.Metas.Token
 	tokenRow, err := frpToken.SelectByName(user)
@@ -59,23 +59,24 @@ func LoginFrpApiService(c *gin.Context, req frp.LoginFrpApi) {
 	})
 }
 func ProxyFrpApiService(c *gin.Context, req frp.ProxyFrpApi) {
-	frpToken, err := repository.NewFrpToken()
-	if err != nil {
+	frpToken := new(repository.FrpToken)
+	if err := frpToken.New(); err != nil {
 		c.JSON(200, H{
 			"reject":        true,
 			"reject_reason": err.Error(),
 		})
 		return
 	}
-	defer closeDB(frpToken.DB)
-	frpRule, err := repository.NewFrpRule()
-	if err != nil {
+	defer frpToken.Close()
+	frpRule := new(repository.FrpRule)
+	if err := frpRule.New(); err != nil {
 		c.JSON(200, gin.H{
 			"reject":        true,
 			"reject_reason": err.Error(),
 		})
 		return
 	}
+	defer frpRule.Close()
 	user := req.Content.User.User
 	tokenRow, err := frpToken.SelectByName(user)
 	if err != nil {
@@ -118,11 +119,11 @@ func ProxiesFrpApiService(c *gin.Context, row models.UserTable) {
 	frpsHost := cfg.FrpsWeb.Host
 	frpsPort := cfg.FrpsWeb.Port
 	frpsToken := cfg.FrpsWeb.Token
-	frpToken, err := repository.NewFrpToken()
-	if err != nil {
+	frpToken := new(repository.FrpToken)
+	if err := frpToken.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(frpToken.DB)
+	defer frpToken.Close()
 	tokens, err := frpToken.SelectByUser(row.ID)
 	var tokenList []string
 	for _, token := range tokens {
@@ -157,11 +158,11 @@ func ClientFrpApiService(c *gin.Context, row models.UserTable) {
 	frpsHost := cfg.FrpsWeb.Host
 	frpsPort := cfg.FrpsWeb.Port
 	frpsToken := cfg.FrpsWeb.Token
-	frpToken, err := repository.NewFrpToken()
-	if err != nil {
+	frpToken := new(repository.FrpToken)
+	if err := frpToken.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(frpToken.DB)
+	defer frpToken.Close()
 	tokens, err := frpToken.SelectByUser(row.ID)
 	var tokenList []string
 	for _, token := range tokens {

@@ -8,12 +8,17 @@ import (
 )
 
 type FrpToken struct {
+	Repository
 	DB *sql.DB
 }
 
-func NewFrpToken() (*FrpToken, error) {
+func (t *FrpToken) New() error {
 	db, err := LoadMySQL()
-	return &FrpToken{DB: db}, err
+	t.DB = db
+	return err
+}
+func (t *FrpToken) Close() {
+	_ = t.DB.Close()
 }
 func (t *FrpToken) Create() (sql.Result, error) {
 	return t.DB.Exec("CREATE TABLE `frp-token`  (\n  `id` int NOT NULL AUTO_INCREMENT,\n  `name` varchar(255) NOT NULL,\n  `token` varchar(255) NOT NULL,\n  `user` int NOT NULL,\n  `enable` int NOT NULL,\n  PRIMARY KEY (`id`)\n);")

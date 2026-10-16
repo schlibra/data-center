@@ -8,11 +8,11 @@ import (
 )
 
 func ListAdminGroupService(c *gin.Context) {
-	group, err := repository.NewGroup()
-	if err != nil {
+	group := new(repository.Group)
+	if err := group.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(group.DB)
+	defer group.Close()
 	groups, err := group.SelectAll()
 	if err != nil {
 		sendError(c, err)
@@ -20,11 +20,11 @@ func ListAdminGroupService(c *gin.Context) {
 	sendI18n(c, 200, "admin.group.get_success", groups)
 }
 func GetAdminGroupService(c *gin.Context, id int) {
-	group, err := repository.NewGroup()
-	if err != nil {
+	group := new(repository.Group)
+	if err := group.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(group.DB)
+	defer group.Close()
 	groupRow, err := group.SelectById(id)
 	if err != nil {
 		sendI18n(c, 400, "admin.group.not_exist", H{
@@ -34,11 +34,11 @@ func GetAdminGroupService(c *gin.Context, id int) {
 	sendI18n(c, 200, "admin.group.get_success", groupRow)
 }
 func CreateAdminGroupService(c *gin.Context, req admin.CreateAdminGroup) {
-	group, err := repository.NewGroup()
-	if err != nil {
+	group := new(repository.Group)
+	if err := group.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(group.DB)
+	defer group.Close()
 	if _, err := group.SelectByName(req.Name); err == nil {
 		sendI18n(c, 400, "admin.group.exist", nil)
 	}
@@ -51,11 +51,11 @@ func CreateAdminGroupService(c *gin.Context, req admin.CreateAdminGroup) {
 	}
 }
 func UpdateAdminGroupService(c *gin.Context, id int, req admin.UpdateAdminGroup) {
-	group, err := repository.NewGroup()
-	if err != nil {
+	group := new(repository.Group)
+	if err := group.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(group.DB)
+	defer group.Close()
 	groupRow, err := group.SelectById(id)
 	if err != nil {
 		sendI18n(c, 400, "admin.group.not_exist", H{
@@ -78,16 +78,16 @@ func UpdateAdminGroupService(c *gin.Context, id int, req admin.UpdateAdminGroup)
 	}
 }
 func DeleteAdminGroupService(c *gin.Context, id int) {
-	group, err := repository.NewGroup()
-	if err != nil {
+	group := new(repository.Group)
+	if err := group.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(group.DB)
-	user, err := repository.NewUser()
-	if err != nil {
+	defer group.Close()
+	user := new(repository.User)
+	if err := user.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(user.DB)
+	defer user.Close()
 	if _, err := group.SelectById(id); err != nil {
 		sendI18n(c, 400, "admin.group.not_exist", H{
 			"error": err.Error(),

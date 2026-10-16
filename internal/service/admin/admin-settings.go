@@ -8,11 +8,11 @@ import (
 )
 
 func ListAdminSettingsService(c *gin.Context) {
-	settings, err := repository.NewSettings()
-	if err != nil {
+	settings := new(repository.Settings)
+	if err := settings.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(settings.DB)
+	defer settings.Close()
 	rows, err := settings.SelectAll()
 	if err != nil {
 		sendError(c, err)
@@ -20,11 +20,11 @@ func ListAdminSettingsService(c *gin.Context) {
 	sendI18n(c, 200, "settings.get_success", rows)
 }
 func GetAdminSettingsService(c *gin.Context, id int) {
-	settings, err := repository.NewSettings()
-	if err != nil {
+	settings := new(repository.Settings)
+	if err := settings.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(settings.DB)
+	defer settings.Close()
 	row, err := settings.SelectById(id)
 	if err != nil {
 		sendI18n(c, 400, "settings.not_exists", nil)
@@ -32,29 +32,27 @@ func GetAdminSettingsService(c *gin.Context, id int) {
 	sendI18n(c, 200, "settings.get_success", row)
 }
 func CreateAdminSettingsService(c *gin.Context, req admin.CreateAdminSettings) {
-	settings, err := repository.NewSettings()
-	if err != nil {
+	settings := new(repository.Settings)
+	if err := settings.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(settings.DB)
-	_, err = settings.SelectByKey(req.Key)
-	if err == nil {
+	defer settings.Close()
+	if _, err := settings.SelectByKey(req.Key); err == nil {
 		sendI18n(c, 400, "settings.exists", nil)
 	}
 	if nw(c) {
-		_, err := settings.Insert(req.Key, req.Name, req.Value)
-		if err != nil {
+		if _, err := settings.Insert(req.Key, req.Name, req.Value); err != nil {
 			sendError(c, err)
 		}
 		sendI18n(c, 200, "settings.create_success", nil)
 	}
 }
 func UpdateAdminSettingsService(c *gin.Context, id int, req admin.UpdateAdminSettings) {
-	settings, err := repository.NewSettings()
-	if err != nil {
+	settings := new(repository.Settings)
+	if err := settings.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(settings.DB)
+	defer settings.Close()
 	row, err := settings.SelectById(id)
 	if err != nil {
 		sendI18n(c, 400, "settings.not_exists", nil)
@@ -69,30 +67,27 @@ func UpdateAdminSettingsService(c *gin.Context, id int, req admin.UpdateAdminSet
 	}
 }
 func DeleteAdminSettingsService(c *gin.Context, id int) {
-	settings, err := repository.NewSettings()
-	if err != nil {
+	settings := new(repository.Settings)
+	if err := settings.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(settings.DB)
-	_, err = settings.SelectById(id)
-	if err != nil {
+	defer settings.Close()
+	if _, err := settings.SelectById(id); err != nil {
 		sendI18n(c, 400, "settings.not_exists", nil)
-		return
 	}
 	if nw(c) {
-		_, err := settings.DeleteById(id)
-		if err != nil {
+		if _, err := settings.DeleteById(id); err != nil {
 			sendError(c, err)
 		}
 		sendI18n(c, 200, "settings.delete_success", nil)
 	}
 }
 func SetAdminSettingsService(c *gin.Context, req admin.CreateAdminSettings) {
-	settings, err := repository.NewSettings()
-	if err != nil {
+	settings := new(repository.Settings)
+	if err := settings.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(settings.DB)
+	defer settings.Close()
 	row, err := settings.SelectByKey(req.Key)
 	if err != nil {
 		_, err = settings.Insert(req.Key, req.Name, req.Value)

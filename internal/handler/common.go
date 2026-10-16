@@ -5,7 +5,6 @@ import (
 	"data-center/internal/repository"
 	"data-center/pkg/response"
 	"data-center/pkg/utils"
-	"database/sql"
 	"encoding/json"
 	"slices"
 	"strings"
@@ -24,10 +23,6 @@ func sendI18n(c *gin.Context, code int, messageId string, data any) {
 func sendError(c *gin.Context, err error) {
 	response.SendError(c, err)
 }
-
-func closeDB(db *sql.DB) {
-	_ = db.Close()
-}
 func GetId(c *gin.Context) int {
 	return getId(c)
 }
@@ -45,11 +40,11 @@ func ParseToken(c *gin.Context) models.UserTable {
 	return parseToken(c)
 }
 func parseToken(c *gin.Context) models.UserTable {
-	user, err := repository.NewUser()
-	if err != nil {
+	user := new(repository.User)
+	if err := user.New(); err != nil {
 		sendError(c, err)
 	}
-	defer closeDB(user.DB)
+	defer user.Close()
 	token := c.Request.Header.Get("Authorization")
 	if strings.HasPrefix(token, "Bearer ") {
 		token = token[7:]
@@ -85,10 +80,11 @@ func checkPermission(c *gin.Context, pmsKey string) models.UserTable {
 	if err := json.Unmarshal([]byte(row.GroupInfo.Permission), &groupPmsList); err != nil {
 		sendError(c, err)
 	}
-	permission, err := repository.NewPermission()
-	if err != nil {
+	permission := new(repository.Permission)
+	if err := permission.New(); err != nil {
 		sendError(c, err)
 	}
+	permission.Close()
 	p, err := permission.SelectByKey(pmsKey)
 	if err != nil {
 		sendI18n(c, 403, "user.permission.denied", H{
