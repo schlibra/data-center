@@ -9,7 +9,7 @@ import {
 } from "@/api/index.js";
 import {NButton, NFlex, NTag, useDialog, useLoadingBar, useMessage} from "naive-ui";
 import {usePveNodeStore, usePveQemuStore, useUserStore} from "@/stores/index.js";
-import {onMounted, onUnmounted, h, computed} from "vue";
+import {onMounted, onUnmounted, h, computed, ref} from "vue";
 import {event} from "@/utils/event.js";
 import {calcSize} from "@/utils/index.js";
 
@@ -21,6 +21,8 @@ const user = useUserStore()
 const pveNode = usePveNodeStore()
 const pveQemu = usePveQemuStore()
 
+const checkedRows = ref([])
+
 const pveNodeSelectOptions = computed(() => pveNode.nodes.map(item => {
   return {
     label: item.node,
@@ -29,6 +31,10 @@ const pveNodeSelectOptions = computed(() => pveNode.nodes.map(item => {
 }))
 
 const columns = [
+  {
+    type: 'selection',
+    key: 'vmid'
+  },
   {
     title: '状态',
     key: 'status',
@@ -60,6 +66,7 @@ const columns = [
     key: 'tags',
     width: 100,
     render(row) {
+      if (!row.tags) return "-"
       return h(NFlex, {}, row.tags.split(";").map(item => {
         return h(NTag, {type: item.indexOf('172.16.') > -1 ? 'success' : 'info'}, item)
       }))
@@ -167,6 +174,38 @@ function actionQemu(row, actionText, actionFunction) {
     }
   })
 }
+function multiActionQemu(actionText, actionFunction) {
+  if (checkedRows.value.length === 0) {
+    message.warning('请选择要批量操作的虚拟机')
+  } else {
+    dialog.info({
+      title: `批量${actionText}虚拟机`,
+      content: `确定要批量${actionText}虚拟机吗？`,
+      positiveText: '确定',
+      negativeText: '取消',
+      async onPositiveClick() {
+        let successCount = 0
+        let failCount = 0
+        let error_msg = []
+        for (const item of checkedRows.value) {
+          let [status, data] = await actionFunction(pveQemu.node, item)
+          if (!status) {
+            failCount++
+            error_msg.push(data)
+          } else {
+            successCount++
+          }
+        }
+        dialog.info({
+          title: `批量${actionText}完成`,
+          content: `批量${actionText}完成，成功${successCount}个，失败${failCount}个`+ (failCount ? `，失败原因：${error_msg.join(';')}` : ''+``),
+          positiveText: '确定'
+        })
+        await loadDataList()
+      }
+    })
+  }
+}
 async function loadUserInfo() {
   let [status, data] = await getUserInfo()
   if (!status) {
@@ -217,7 +256,16 @@ onUnmounted(() => {
     </template>
     <n-flex>
       <n-select :options="pveNodeSelectOptions" v-model:value="pveQemu.node" @update:value="loadDataList()"></n-select>
-      <n-data-table :columns="columns" :data="pveQemu.qemu"></n-data-table>
+      <n-space>
+        <n-button type="success" @click="multiActionQemu('启动', startPveQemuStatus)">批量开机</n-button>
+        <n-button type="error" @click="multiActionQemu('关闭', shutdownPveQemuStatus)">批量关机</n-button>
+        <n-button type="error" @click="multiActionQemu('停止', stopPveQemuStatus)">批量停止</n-button>
+        <n-button type="warning" @click="multiActionQemu('重启', rebootPveQemuStatus)">批量重启</n-button>
+        <n-button type="warning" @click="multiActionQemu('重置', resetPveQemuStatus)">批量重置</n-button>
+        <n-button type="info" @click="multiActionQemu('暂停', suspendPveQemuStatus)">批量暂停</n-button>
+        <n-button type="info" @click="multiActionQemu('恢复', resumePveQemuStatus)">批量恢复</n-button>
+      </n-space>
+      <n-data-table @update:checked-row-keys="keys => checkedRows = keys" :row-key="row => row.vmid" :columns="columns" :data="pveQemu.qemu"></n-data-table>
     </n-flex>
   </n-card>
 </template>
