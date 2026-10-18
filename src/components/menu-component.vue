@@ -24,7 +24,9 @@ import {
   FolderOpenOutline as IPGroupIcon,
   AppsOutline as AppsIcon,
   InformationCircleOutline as InfoCircleIcon,
+  ServerOutline as ServerIcon,
 } from '@vicons/ionicons5'
+import ProxmoxIcon from '@/components/icons/IconProxmox.vue'
 import { useUserStore, useMenuCollapseStore } from '@/stores'
 import {getConfig} from "@/api/config.js";
 import {useConfigStore} from "@/stores/";
@@ -135,6 +137,29 @@ const menuOptions = computed(() => [
       {
         label: '客户端管理',
         key: '/openvpn/client',
+        icon: renderIcon(ClientIcon)
+      }
+    ]
+  },
+  {
+    label: 'Proxmox VE管理',
+    key: '/pve',
+    show: user.isAdmin && !!config.config["proxmox.enable"],
+    icon: renderIcon(ProxmoxIcon),
+    children: [
+      {
+        label: '节点管理',
+        key: '/pve/node',
+        icon: renderIcon(ServerIcon)
+      },
+      {
+        label: 'QEMU管理',
+        key: '/pve/qemu',
+        icon: renderIcon(ClientIcon)
+      },
+      {
+        label: 'LXC管理',
+        key: '/pve/lxc',
         icon: renderIcon(ClientIcon)
       }
     ]
@@ -251,6 +276,7 @@ async function loadDataList() {
   await loadConfig("openvpn.enable")
   await loadConfig("mail.enable")
   await loadConfig("outlook.enable")
+  await loadConfig("proxmox.enable")
 }
 
 onMounted(() => {

@@ -120,6 +120,34 @@ import {
   listMailMessage,
   createMailMessage,
 } from './mail/mail-message.js'
+import {
+  listPveNode
+} from './pve/pve-node.js'
+import {
+  listPveQemu
+} from './pve/pve-qemu.js'
+import {
+  getPveQemuStatus,
+  rebootPveQemuStatus,
+  resetPveQemuStatus,
+  resumePveQemuStatus,
+  shutdownPveQemuStatus,
+  startPveQemuStatus,
+  stopPveQemuStatus,
+  suspendPveQemuStatus
+} from './pve/pve-qemu-status.js'
+import {
+  listPveLxc
+} from './pve/pve-lxc.js'
+import {
+  getPveLxcStatus,
+  rebootPveLxcStatus,
+  resumePveLxcStatus,
+  suspendPveLxcStatus,
+  stopPveLxcStatus,
+  startPveLxcStatus,
+  shutdownPveLxcStatus
+} from './pve/pve-lxc-status.js'
 
 export {
   getAdminGroupList,
@@ -208,4 +236,22 @@ export {
   listMailMessage,
   createMailMessage,
   clearOfflineProxyFrpAdmin,
+  getPveQemuStatus,
+  rebootPveQemuStatus,
+  resetPveQemuStatus,
+  resumePveQemuStatus,
+  shutdownPveQemuStatus,
+  startPveQemuStatus,
+  stopPveQemuStatus,
+  suspendPveQemuStatus,
+  listPveNode,
+  listPveQemu,
+  getPveLxcStatus,
+  rebootPveLxcStatus,
+  resumePveLxcStatus,
+  suspendPveLxcStatus,
+  stopPveLxcStatus,
+  startPveLxcStatus,
+  shutdownPveLxcStatus,
+  listPveLxc
 }

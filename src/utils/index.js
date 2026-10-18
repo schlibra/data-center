@@ -8,10 +8,14 @@ import {
 import {
   encrypt
 } from './encrypt.js'
+import {
+  calcTime
+} from "@/utils/date.js";
 
 export {
   apiBack,
   apiError,
   calcSize,
-  encrypt
+  encrypt,
+  calcTime
 }

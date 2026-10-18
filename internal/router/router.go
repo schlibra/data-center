@@ -23,4 +23,5 @@ func InitRouter(router *gin.Engine, version string, commit string, buildTime str
 	initOpenVPNRouter(api)
 	initConfigRouter(api)
 	initMailRouter(api)
+	initPveRouter(api)
 }

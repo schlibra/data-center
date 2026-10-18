@@ -22,6 +22,9 @@ import {useAdminVersionStore} from "@/stores/admin/admin-version.js";
 import {useMailDomainStore} from "@/stores/mail/mail-domain.js";
 import {useMailListStore} from "@/stores/mail/mail-list.js";
 import {useMailMessageStore} from "@/stores/mail/mail-message.js";
+import {usePveNodeStore} from "@/stores/pve/pve-node.js";
+import {usePveQemuStore} from "@/stores/pve/pve-qemu.js";
+import {usePveLxcStore} from "@/stores/pve/pve-lxc.js";
 
 export {
   useTokenStore,
@@ -48,4 +51,7 @@ export {
   useMailListStore,
   useMailMessageStore,
   useMailDomainStore,
+  usePveQemuStore,
+  usePveLxcStore,
+  usePveNodeStore
 }
