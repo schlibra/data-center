@@ -46,4 +46,21 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    rolldownOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('echarts')) {
+              return 'echarts'
+            }
+            if (id.includes('naive-ui')) {
+              return 'ui-vendor'
+            }
+            return 'vendor'
+          }
+        }
+      }
+    }
+  }
 })
