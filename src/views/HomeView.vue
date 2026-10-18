@@ -177,6 +177,7 @@ async function loadBasicData() {
   await loadConfig("openvpn.enable")
   await loadConfig("mail.enable")
   await loadConfig("outlook.enable")
+  await loadConfig("proxmox.enable")
   if (!!config.config["frp.enable"]) {
     if (user.hasPermission('frp.token.get')) {
       if (!(await loadFrpTokenList())) return

@@ -124,6 +124,21 @@ const router = createRouter({
       component: () => import('@/views/OpenVPN/OpenVPNGroup.vue')
     },
     {
+      path: '/pve/node',
+      name: 'pve node',
+      component: () => import('@/views/Pve/PveNodeView.vue')
+    },
+    {
+      path: '/pve/qemu',
+      name: 'pve qemu',
+      component: () => import('@/views/Pve/PveQemuView.vue')
+    },
+    {
+      path: '/pve/lxc',
+      name: 'pve lxc',
+      component: () => import('@/views/Pve/PveLxcView.vue')
+    },
+    {
       path: '/user',
       name: 'user',
       component: () => import("@/views/User/UserView.vue")

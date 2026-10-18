@@ -46,4 +46,9 @@ type Config struct {
 		Address string `yaml:"address"`
 		Key     string `yaml:"key"`
 	} `yaml:"teable"`
+	Pve struct {
+		Address string `yaml:"address"`
+		Id      string `yaml:"id"`
+		Token   string `yaml:"token"`
+	} `yaml:"pve"`
 }
