@@ -54,8 +54,8 @@ func GetAutoLoginService(c *gin.Context, id int) {
 	encStr := base64.StdEncoding.EncodeToString(enc)
 	autologinJson := []byte(fmt.Sprintf(`{"data": "%s", "key": "%s"}`, encStr, key))
 	autoLoginStr := strings.TrimRight(base64.StdEncoding.EncodeToString(autologinJson), "=")
-	autoLoginUrl := fmt.Sprintf("%s?autologin=%s", row.URL, autoLoginStr)
 	sendJson(c, 200, "Success", H{
-		"url": autoLoginUrl,
+		"url":  row.URL,
+		"data": autoLoginStr,
 	})
 }

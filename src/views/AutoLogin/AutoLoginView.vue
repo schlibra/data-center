@@ -52,7 +52,15 @@ async function openLogin(item) {
       positiveText: '确定'
     })
   } else {
-    window.open(data.url, '_blank')
+    const targetWindow = window.open(data.url, '_blank')
+    let timer = setInterval(() => {
+      targetWindow.postMessage({autologin: data.data}, data.url)
+    }, 100)
+    window.addEventListener("message", e => {
+	  if (e.data.autoLoginReady) {
+		clearInterval(timer)
+	  }
+    })
   }
 }
 
@@ -68,7 +76,7 @@ onMounted(() => {
     </template>
     <n-grid>
       <n-grid-item v-for="item in autoLogins.autoLogins" :key="item.id">
-        <n-button size="large" style="width: 80px!important;height: 80px!important;" @click="openLogin(item)">
+        <n-button size="large" style="height: 80px!important;" @click="openLogin(item)">
           <n-space justify="center">
             <n-avatar :src="item.icon"></n-avatar>
             <n-text>{{item.name}}</n-text>
