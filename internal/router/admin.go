@@ -60,4 +60,5 @@ func initAdminRouter(router *gin.RouterGroup) {
 	initAdminSettingsRouter(adminRouter)
 	initAdminVersionRouter(adminRouter)
 	initAdminBenchmarkRouter(adminRouter)
+	initAdminAutoLoginRouter(adminRouter)
 }

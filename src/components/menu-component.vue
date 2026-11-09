@@ -25,6 +25,7 @@ import {
   AppsOutline as AppsIcon,
   InformationCircleOutline as InfoCircleIcon,
   ServerOutline as ServerIcon,
+  OpenOutline as OpenIcon,
 } from '@vicons/ionicons5'
 import ProxmoxIcon from '@/components/icons/IconProxmox.vue'
 import { useUserStore, useMenuCollapseStore } from '@/stores'
@@ -52,6 +53,12 @@ const menuOptions = computed(() => [
     label: '首页',
     key: '/',
     icon: renderIcon(HomeIcon),
+  },
+  {
+    label: '快速登录',
+    icon: renderIcon(OpenIcon),
+    show: user.hasPermission('menu.autologin') && !!config.config["autologin.enable"],
+    key: '/autologin',
   },
   {
     label: 'Frp',
@@ -277,6 +284,7 @@ async function loadDataList() {
   await loadConfig("mail.enable")
   await loadConfig("outlook.enable")
   await loadConfig("proxmox.enable")
+  await loadConfig("autologin.enable")
 }
 
 onMounted(() => {

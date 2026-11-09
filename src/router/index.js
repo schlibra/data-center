@@ -19,6 +19,11 @@ const router = createRouter({
       component: () => import("@/views/User/RegisterView.vue")
     },
     {
+      path: '/autologin',
+      name: 'auto login',
+      component: () => import("@/views/AutoLogin/AutoLoginView.vue")
+    },
+    {
       path: '/frp/token',
       name: 'frp token',
       component: () => import("@/views/Frp/FrpTokenView.vue")

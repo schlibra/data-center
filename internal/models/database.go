@@ -61,3 +61,12 @@ type MailDomainTable struct {
 	Port    int    `json:"port"`
 	SSL     string `json:"ssl"`
 }
+type AutoLoginTable struct {
+	ID       int    `json:"id"`
+	URL      string `json:"url"`
+	Site     string `json:"site"`
+	Icon     string `json:"icon"`
+	Name     string `json:"name"`
+	Username string `json:"username"`
+	Password string `json:"password"`
+}

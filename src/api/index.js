@@ -148,6 +148,10 @@ import {
   startPveLxcStatus,
   shutdownPveLxcStatus
 } from './pve/pve-lxc-status.js'
+import {
+  getAutoLoginList,
+  getAutoLoginLink
+} from "@/api/autologin/autologin.js";
 
 export {
   getAdminGroupList,
@@ -253,5 +257,7 @@ export {
   stopPveLxcStatus,
   startPveLxcStatus,
   shutdownPveLxcStatus,
-  listPveLxc
+  listPveLxc,
+  getAutoLoginLink,
+  getAutoLoginList
 }

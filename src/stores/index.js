@@ -25,6 +25,8 @@ import {useMailMessageStore} from "@/stores/mail/mail-message.js";
 import {usePveNodeStore} from "@/stores/pve/pve-node.js";
 import {usePveQemuStore} from "@/stores/pve/pve-qemu.js";
 import {usePveLxcStore} from "@/stores/pve/pve-lxc.js";
+import {useAutoLoginStore} from "@/stores/autologin/autologin.js";
+import {useAdminAutoLoginStore} from "@/stores/autologin/admin-autologin.js";
 
 export {
   useTokenStore,
@@ -53,5 +55,7 @@ export {
   useMailDomainStore,
   usePveQemuStore,
   usePveLxcStore,
-  usePveNodeStore
+  usePveNodeStore,
+  useAutoLoginStore,
+  useAdminAutoLoginStore,
 }

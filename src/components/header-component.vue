@@ -20,6 +20,7 @@ const titleList = {
   '/login': '登录',
   '/register': '注册',
   '/developer': '开发者功能',
+  '/autologin': '快速登录',
   '/frp/token': 'Frp Token管理',
   '/frp/rule': 'Frp 端口规则管理',
   '/frp/client': 'Frp 客户端管理',

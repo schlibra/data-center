@@ -178,6 +178,7 @@ async function loadBasicData() {
   await loadConfig("mail.enable")
   await loadConfig("outlook.enable")
   await loadConfig("proxmox.enable")
+  await loadConfig("autologin.enable")
   if (!!config.config["frp.enable"]) {
     if (user.hasPermission('frp.token.get')) {
       if (!(await loadFrpTokenList())) return
